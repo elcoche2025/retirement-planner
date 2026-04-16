@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
+import { supabase } from './services/supabase';
+import type { Session } from '@supabase/supabase-js';
 import { AppStateProvider } from './state/AppStateContext';
 import { ThemeProvider } from './state/ThemeContext';
+import LoginScreen from './components/LoginScreen';
 import Layout from './components/Layout';
 import Dashboard from './routes/Dashboard';
 import ScenarioDetail from './routes/ScenarioDetail';
@@ -10,60 +13,10 @@ import Matrix from './routes/Matrix';
 import Plan from './routes/Plan';
 import Inputs from './routes/Inputs';
 import Report from './routes/Report';
-import './styles/gate.css';
 
-const HASH = '78163a9b32a43d0bf9bf5a80cd700105ddd6e3abe279bb190fa9b97f05c59e77';
-
-async function sha256(str: string): Promise<string> {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf))
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
-}
-
-function PasswordGate({ onAuth }: { onAuth: () => void }) {
-  const [pw, setPw] = useState('');
-  const [error, setError] = useState(false);
-  const [shake, setShake] = useState(false);
-
-  async function tryAuth() {
-    const hash = await sha256(pw);
-    if (hash === HASH) {
-      sessionStorage.setItem('planner-auth', 'true');
-      onAuth();
-    } else {
-      setError(true);
-      setShake(true);
-      setPw('');
-      setTimeout(() => setShake(false), 500);
-    }
-  }
-
+function AppRouter({ session }: { session: Session }) {
   return (
-    <div className="gate">
-      <div className={`gate-box ${shake ? 'shake' : ''}`}>
-        <h1 className="gate-title">Life Change Planner</h1>
-        <p className="gate-subtitle">CHART YOUR NEXT HORIZON</p>
-        <input
-          className={`gate-input ${error ? 'error' : ''}`}
-          type="password"
-          placeholder="password"
-          value={pw}
-          onChange={(e) => { setPw(e.target.value); setError(false); }}
-          onKeyDown={(e) => { if (e.key === 'Enter') tryAuth(); }}
-          autoFocus
-        />
-        <button className="gate-btn" onClick={tryAuth}>Enter</button>
-        {error && <p className="gate-error">incorrect</p>}
-        <p className="gate-note">Light privacy gate only, not secure storage or authentication.</p>
-      </div>
-    </div>
-  );
-}
-
-function AppRouter() {
-  return (
-    <AppStateProvider>
+    <AppStateProvider userId={session.user.id}>
       <HashRouter>
         <Routes>
           <Route element={<Layout />}>
@@ -82,24 +35,43 @@ function AppRouter() {
 }
 
 export default function App() {
-  const [authed, setAuthed] = useState(false);
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (sessionStorage.getItem('planner-auth') === 'true') {
-      setAuthed(true);
-    }
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLoading(false);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  if (!authed) {
+  if (loading) {
     return (
       <ThemeProvider>
-        <PasswordGate onAuth={() => setAuthed(true)} />
+        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <p className="text-tertiary">Loading...</p>
+        </div>
       </ThemeProvider>
     );
   }
+
+  if (!session) {
+    return (
+      <ThemeProvider>
+        <LoginScreen />
+      </ThemeProvider>
+    );
+  }
+
   return (
     <ThemeProvider>
-      <AppRouter />
+      <AppRouter session={session} />
     </ThemeProvider>
   );
 }

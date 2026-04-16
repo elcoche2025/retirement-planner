@@ -291,4 +291,5 @@ export interface AppState {
   profiles: Record<string, import('./profiles').UserProfile>;
   activeProfileId: string;
   lastVisited: string;
+  localUpdatedAt: string;
 }

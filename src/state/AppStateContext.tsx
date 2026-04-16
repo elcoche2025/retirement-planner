@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useReducer, useEffect, useMemo, useRef, ReactNode } from 'react';
 import type {
   AppState,
   FxRatesMeta,
@@ -17,9 +17,10 @@ import {
   getDefaultFxRatesMeta,
   shouldRefreshFxRates,
 } from '@/services/fx';
+import { pullState, pushState, createDebouncedSync } from '@/services/sync';
 
 const STORAGE_KEY = 'life-change-planner-state';
-const STATE_VERSION = 4;
+const STATE_VERSION = 5;
 
 function generateId(): string {
   return Date.now().toString(36) + Math.random().toString(36).substring(2, 8);
@@ -62,6 +63,7 @@ function getInitialState(): AppState {
     profiles: { [mekoce.id]: mekoce, [kara.id]: kara },
     activeProfileId: mekoce.id,
     lastVisited: 'dc-baseline',
+    localUpdatedAt: new Date().toISOString(),
   };
 }
 
@@ -147,6 +149,12 @@ function loadState(): AppState {
       parsed.version = 4;
     }
 
+    // Migrate v4 → v5: add localUpdatedAt for cloud sync
+    if (parsed.version === 4) {
+      parsed.localUpdatedAt = parsed.localUpdatedAt ?? new Date().toISOString();
+      parsed.version = 5;
+    }
+
     if (parsed.version !== STATE_VERSION) return getInitialState();
     return {
       ...parsed,
@@ -181,7 +189,8 @@ type Action =
   | { type: 'ADD_PROFILE'; payload: { name: string } }
   | { type: 'RENAME_PROFILE'; payload: { id: string; name: string } }
   | { type: 'DELETE_PROFILE'; payload: { id: string } }
-  | { type: 'RESET_ALL' };
+  | { type: 'RESET_ALL' }
+  | { type: 'REPLACE_STATE'; payload: AppState };
 
 function updateActivePrefs(state: AppState, updater: (prefs: UserPreferences) => UserPreferences): AppState {
   const profile = state.profiles[state.activeProfileId];
@@ -199,11 +208,17 @@ function updateActivePrefs(state: AppState, updater: (prefs: UserPreferences) =>
 }
 
 function reducer(state: AppState, action: Action): AppState {
+  if (action.type === 'REPLACE_STATE') {
+    return { ...action.payload, localUpdatedAt: action.payload.localUpdatedAt ?? new Date().toISOString() };
+  }
+
+  let newState: AppState;
   switch (action.type) {
     case 'SET_GLOBAL_ASSUMPTIONS':
-      return { ...state, globalAssumptions: { ...state.globalAssumptions, ...action.payload } };
+      newState = { ...state, globalAssumptions: { ...state.globalAssumptions, ...action.payload } };
+      break;
     case 'SET_EXCHANGE_RATES':
-      return {
+      newState = {
         ...state,
         globalAssumptions: {
           ...state.globalAssumptions,
@@ -221,8 +236,9 @@ function reducer(state: AppState, action: Action): AppState {
           error: null,
         },
       };
+      break;
     case 'SET_FX_STATUS':
-      return {
+      newState = {
         ...state,
         fxRatesMeta: {
           ...state.fxRatesMeta,
@@ -230,21 +246,24 @@ function reducer(state: AppState, action: Action): AppState {
           error: action.payload.error ?? null,
         },
       };
+      break;
     case 'SET_SCENARIO': {
       const { id, config } = action.payload;
-      return updateActivePrefs(state, (prefs) => ({
+      newState = updateActivePrefs(state, (prefs) => ({
         ...prefs,
         scenarioOverrides: {
           ...prefs.scenarioOverrides,
           [id]: { ...prefs.scenarioOverrides[id], ...config },
         },
       }));
+      break;
     }
     case 'SET_QOL_WEIGHTS':
-      return updateActivePrefs(state, (prefs) => ({ ...prefs, qolWeights: action.payload }));
+      newState = updateActivePrefs(state, (prefs) => ({ ...prefs, qolWeights: action.payload }));
+      break;
     case 'SET_QOL_RATING': {
       const { destinationId, dimension, value } = action.payload;
-      return updateActivePrefs(state, (prefs) => {
+      newState = updateActivePrefs(state, (prefs) => {
         const existing = prefs.scenarioOverrides[destinationId] ?? {};
         return {
           ...prefs,
@@ -257,10 +276,11 @@ function reducer(state: AppState, action: Action): AppState {
           },
         };
       });
+      break;
     }
     case 'RESET_QOL_RATING': {
       const { destinationId, dimension } = action.payload;
-      return updateActivePrefs(state, (prefs) => {
+      newState = updateActivePrefs(state, (prefs) => {
         const existing = prefs.scenarioOverrides[destinationId];
         if (!existing?.customQoLRatings) return prefs;
         const updated = { ...existing.customQoLRatings };
@@ -273,57 +293,81 @@ function reducer(state: AppState, action: Action): AppState {
           },
         };
       });
+      break;
     }
     case 'SET_LAST_VISITED':
-      return { ...state, lastVisited: action.payload };
+      newState = { ...state, lastVisited: action.payload };
+      break;
     case 'SET_COMPARE_SELECTION':
-      return updateActivePrefs(state, (prefs) => ({ ...prefs, compareSelection: action.payload }));
+      newState = updateActivePrefs(state, (prefs) => ({ ...prefs, compareSelection: action.payload }));
+      break;
     case 'SET_MATRIX_PRESET':
-      return updateActivePrefs(state, (prefs) => ({ ...prefs, matrixPreset: action.payload }));
+      newState = updateActivePrefs(state, (prefs) => ({ ...prefs, matrixPreset: action.payload }));
+      break;
     case 'SWITCH_PROFILE': {
-      if (!state.profiles[action.payload]) return state;
-      return { ...state, activeProfileId: action.payload };
+      if (!state.profiles[action.payload]) {
+        newState = state;
+      } else {
+        newState = { ...state, activeProfileId: action.payload };
+      }
+      break;
     }
     case 'ADD_PROFILE': {
       const activeProfile = state.profiles[state.activeProfileId];
       const newProfile = createProfile(action.payload.name, activeProfile?.preferences);
-      return {
+      newState = {
         ...state,
         profiles: { ...state.profiles, [newProfile.id]: newProfile },
         activeProfileId: newProfile.id,
       };
+      break;
     }
     case 'RENAME_PROFILE': {
       const { id, name } = action.payload;
       const profile = state.profiles[id];
-      if (!profile) return state;
-      return {
-        ...state,
-        profiles: {
-          ...state.profiles,
-          [id]: { ...profile, name },
-        },
-      };
+      if (!profile) {
+        newState = state;
+      } else {
+        newState = {
+          ...state,
+          profiles: {
+            ...state.profiles,
+            [id]: { ...profile, name },
+          },
+        };
+      }
+      break;
     }
     case 'DELETE_PROFILE': {
       const { id } = action.payload;
       const profileIds = Object.keys(state.profiles);
-      if (profileIds.length <= 1) return state; // Can't delete last profile
-      const { [id]: _removed, ...remaining } = state.profiles;
-      const newActiveId = id === state.activeProfileId
-        ? Object.keys(remaining)[0]
-        : state.activeProfileId;
-      return {
-        ...state,
-        profiles: remaining,
-        activeProfileId: newActiveId,
-      };
+      if (profileIds.length <= 1) {
+        newState = state; // Can't delete last profile
+      } else {
+        const { [id]: _removed, ...remaining } = state.profiles;
+        const newActiveId = id === state.activeProfileId
+          ? Object.keys(remaining)[0]
+          : state.activeProfileId;
+        newState = {
+          ...state,
+          profiles: remaining,
+          activeProfileId: newActiveId,
+        };
+      }
+      break;
     }
     case 'RESET_ALL':
-      return getInitialState();
+      newState = getInitialState();
+      break;
     default:
-      return state;
+      newState = state;
   }
+
+  // Auto-update localUpdatedAt on any state-changing action
+  if (newState !== state) {
+    newState = { ...newState, localUpdatedAt: new Date().toISOString() };
+  }
+  return newState;
 }
 
 interface AppStateContextValue {
@@ -333,13 +377,16 @@ interface AppStateContextValue {
 
 const AppStateCtx = createContext<AppStateContextValue | null>(null);
 
-export function AppStateProvider({ children }: { children: ReactNode }) {
+export function AppStateProvider({ children, userId }: { children: ReactNode; userId?: string }) {
   const [state, dispatch] = useReducer(reducer, null, loadState);
+  const initialSyncDone = useRef(false);
 
+  // Persist to localStorage
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
 
+  // FX rate auto-refresh
   useEffect(() => {
     const shouldAutoRefresh =
       state.fxRatesMeta.status === 'idle' ||
@@ -372,6 +419,36 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       cancelled = true;
     };
   }, [state.fxRatesMeta]);
+
+  // Initial cloud sync on mount (when userId is present)
+  useEffect(() => {
+    if (!userId || initialSyncDone.current) return;
+    initialSyncDone.current = true;
+
+    pullState(userId).then((remote) => {
+      if (!remote) {
+        // No cloud row — push local state
+        pushState(userId, state).catch(console.error);
+        return;
+      }
+      const localTime = state.localUpdatedAt ?? '1970-01-01T00:00:00Z';
+      if (remote.updatedAt > localTime) {
+        // Cloud is newer — replace local
+        dispatch({ type: 'REPLACE_STATE', payload: remote.state });
+      } else if (localTime > remote.updatedAt) {
+        // Local is newer — push
+        pushState(userId, state).catch(console.error);
+      }
+    }).catch(console.error);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]);
+
+  // Debounced push on state change
+  const debouncedPush = useMemo(() => createDebouncedSync(2000), []);
+  useEffect(() => {
+    if (!userId || !initialSyncDone.current) return;
+    debouncedPush(userId, state);
+  }, [state, userId, debouncedPush]);
 
   return (
     <AppStateCtx.Provider value={{ state, dispatch }}>
