@@ -1,5 +1,13 @@
 import { useState, useEffect } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
+import { AppStateProvider } from './state/AppStateContext';
+import Layout from './components/Layout';
+import Dashboard from './routes/Dashboard';
+import ScenarioDetail from './routes/ScenarioDetail';
+import Compare from './routes/Compare';
+import Matrix from './routes/Matrix';
+import Plan from './routes/Plan';
+import Inputs from './routes/Inputs';
 import './styles/gate.css';
 
 const HASH = '78163a9b32a43d0bf9bf5a80cd700105ddd6e3abe279bb190fa9b97f05c59e77';
@@ -50,18 +58,22 @@ function PasswordGate({ onAuth }: { onAuth: () => void }) {
   );
 }
 
-function PlaceholderApp() {
+function AppRouter() {
   return (
-    <HashRouter>
-      <Routes>
-        <Route path="/" element={
-          <div className="page-enter" style={{ padding: 48, textAlign: 'center' }}>
-            <h1>Life Change Planner</h1>
-            <p className="text-secondary" style={{ marginTop: 12 }}>Dashboard coming soon</p>
-          </div>
-        } />
-      </Routes>
-    </HashRouter>
+    <AppStateProvider>
+      <HashRouter>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="scenario/:id/*" element={<ScenarioDetail />} />
+            <Route path="compare" element={<Compare />} />
+            <Route path="matrix" element={<Matrix />} />
+            <Route path="plan" element={<Plan />} />
+            <Route path="inputs" element={<Inputs />} />
+          </Route>
+        </Routes>
+      </HashRouter>
+    </AppStateProvider>
   );
 }
 
@@ -75,5 +87,5 @@ export default function App() {
   }, []);
 
   if (!authed) return <PasswordGate onAuth={() => setAuthed(true)} />;
-  return <PlaceholderApp />;
+  return <AppRouter />;
 }

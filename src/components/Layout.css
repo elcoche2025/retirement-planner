@@ -1,0 +1,131 @@
+/* ================================================
+   Layout shell — top nav + bottom bar + content
+   ================================================ */
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Top navigation bar --- */
+.top-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: 0 var(--space-5);
+  height: 52px;
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-bg-tertiary);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.top-nav-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.top-nav-title:hover {
+  text-decoration: none;
+  color: var(--color-highlight);
+}
+
+.top-nav-links {
+  display: flex;
+  gap: 0;
+  height: 100%;
+}
+
+.top-nav-links a {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-4);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.top-nav-links a:hover {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+}
+
+.top-nav-links a.active {
+  color: var(--color-highlight);
+  border-bottom-color: var(--color-highlight);
+}
+
+/* --- Main content --- */
+.layout-main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--max-content);
+  margin: 0 auto;
+  padding: var(--space-5);
+  padding-bottom: var(--space-10);
+}
+
+/* --- Bottom bar (mobile only) --- */
+.bottom-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: var(--color-bg-secondary);
+  border-top: 1px solid var(--color-bg-tertiary);
+  z-index: 100;
+}
+
+.bottom-bar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  flex: 1;
+  color: var(--color-text-tertiary);
+  text-decoration: none;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: color var(--transition-fast);
+}
+
+.bottom-bar-item:hover {
+  text-decoration: none;
+}
+
+.bottom-bar-item.active {
+  color: var(--color-highlight);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .top-nav-links {
+    display: none;
+  }
+
+  .bottom-bar {
+    display: flex;
+  }
+
+  .layout-main {
+    padding-bottom: calc(64px + var(--space-5));
+  }
+}
