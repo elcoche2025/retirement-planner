@@ -106,6 +106,13 @@
   border-color: var(--color-accent-medellin);
 }
 
+.timeline-milestone-education .timeline-dot {
+  background: transparent;
+  border-color: var(--color-highlight);
+  border-style: dashed;
+  border-width: 2px;
+}
+
 .timeline-label {
   display: flex;
   flex-direction: column;

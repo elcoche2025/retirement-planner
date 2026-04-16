@@ -134,8 +134,141 @@
   border-color: var(--color-highlight);
 }
 
+/* --- Education Path section --- */
+.life-education-section {
+  background: var(--color-life-bg);
+  border-radius: var(--card-radius);
+}
+
+.life-education-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.life-education-card {
+  background: var(--color-bg-secondary);
+  border: var(--card-border);
+  border-radius: var(--card-radius);
+  padding: var(--space-4);
+}
+
+.life-education-card-header {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: var(--space-3);
+}
+
+.life-education-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.life-education-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+  font-size: 0.8rem;
+}
+
+.life-education-row-label {
+  color: var(--color-text-tertiary);
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.life-education-row-value {
+  text-align: right;
+  color: var(--color-text-primary);
+  line-height: 1.3;
+}
+
+/* --- Transition assessment --- */
+.life-education-transition {
+  background: var(--color-bg-secondary);
+  border: var(--card-border);
+  border-radius: var(--card-radius);
+  padding: var(--space-4);
+}
+
+.life-education-transition-header {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.life-education-transition-age {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--color-text-tertiary);
+  margin-left: var(--space-2);
+}
+
+.life-education-transition-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: var(--space-3);
+}
+
+.edu-risk-ideal {
+  background: rgba(74, 222, 128, 0.12);
+  color: var(--color-positive);
+}
+
+.edu-risk-good {
+  background: rgba(96, 165, 250, 0.12);
+  color: var(--color-highlight);
+}
+
+.edu-risk-moderate {
+  background: rgba(251, 191, 36, 0.12);
+  color: #fbbc04;
+}
+
+.edu-risk-difficult {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--color-negative);
+}
+
+.life-education-notes {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.life-education-notes li {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+  padding-left: var(--space-3);
+  position: relative;
+}
+
+.life-education-notes li::before {
+  content: '\2022';
+  position: absolute;
+  left: 0;
+  color: var(--color-text-tertiary);
+}
+
 @media (max-width: 768px) {
   .life-dimensions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .life-education-grid {
     grid-template-columns: 1fr;
   }
 }

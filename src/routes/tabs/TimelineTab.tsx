@@ -6,7 +6,7 @@ import './TimelineTab.css';
 interface Milestone {
   year: number;
   label: string;
-  type: 'now' | 'move' | 'child' | 'return' | 'retire';
+  type: 'now' | 'move' | 'child' | 'return' | 'retire' | 'education';
 }
 
 const DECISION_CHECKLIST = [
@@ -34,10 +34,8 @@ export default function TimelineTab({ destinationId }: { destinationId: string }
   const currentYear = 2026;
   const retirementYear = currentYear + (globals.retirementAge - globals.currentAge);
 
-  // Daughter: born ~2023, starts school at ~5, middle school at ~11
-  const daughterBirthYear = 2023;
-  const schoolStartYear = daughterBirthYear + 5;
-  const middleSchoolYear = daughterBirthYear + 11;
+  const daughterAge = globals.daughterAge;
+  const edu = destination.educationSystem;
 
   // Build milestones
   const milestones: Milestone[] = [
@@ -45,12 +43,26 @@ export default function TimelineTab({ destinationId }: { destinationId: string }
     { year: moveYear, label: `Move to ${destination.city}`, type: 'move' },
   ];
 
-  if (schoolStartYear >= currentYear && schoolStartYear <= retirementYear + 2) {
-    milestones.push({ year: schoolStartYear, label: 'Daughter starts school', type: 'child' });
+  // Education milestones based on destination's education system
+  const edStages: { age: number; label: string }[] = [
+    { age: edu.preschoolAge, label: 'Preschool starts' },
+    { age: edu.primaryAge, label: 'Primary school' },
+    { age: edu.secondaryAge, label: 'Secondary school' },
+  ];
+  if (edu.highSchoolAge !== edu.secondaryAge) {
+    edStages.push({ age: edu.highSchoolAge, label: 'High school' });
   }
 
-  if (middleSchoolYear >= currentYear && middleSchoolYear <= retirementYear + 2) {
-    milestones.push({ year: middleSchoolYear, label: 'Daughter middle school', type: 'child' });
+  for (const stage of edStages) {
+    const yearsUntil = stage.age - daughterAge;
+    const stageYear = currentYear + yearsUntil;
+    if (stageYear >= currentYear && stageYear <= retirementYear + 2) {
+      milestones.push({
+        year: stageYear,
+        label: stage.label,
+        type: 'education',
+      });
+    }
   }
 
   if (hasReturn && returnYear) {
