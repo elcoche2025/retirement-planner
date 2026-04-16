@@ -3,6 +3,46 @@ import { simulate } from './simulate';
 import { GLOBAL_DEFAULTS } from '@/data/global-defaults';
 import { getDestination } from '@/data/destinations';
 
+describe('simulate — education costs', () => {
+  it('charges childcare for young daughter, free school for older', () => {
+    const dc = getDestination('dc-baseline')!;
+    const career = dc.careerPresets[0];
+    const result = simulate(dc, career, { ...GLOBAL_DEFAULTS, daughterAge: 2 }, {
+      dcHomeDecision: 'keep', moveYear: 2027, returnYear: null,
+    });
+    // First year daughter is 3 — preschool age (DC preschoolAge=3, primaryAge=5)
+    const earlyYear = result[0]; // daughter age 3
+    const laterYear = result[5]; // daughter age 8
+    // DC has free public school, so school-age cost should be $0
+    // But childcare at age 3 should be non-zero for DC
+    expect(earlyYear.schooling).toBeGreaterThan(0); // childcare
+    expect(laterYear.schooling).toBe(0); // free public school
+  });
+});
+
+describe('simulate — currency adjustment', () => {
+  it('weaker local currency reduces income for local-currency presets', () => {
+    const hague = getDestination('nl-the-hague')!;
+    const career = hague.careerPresets.find(p => p.localCurrencyIncome)!;
+
+    const normalResult = simulate(hague, career, GLOBAL_DEFAULTS, {
+      dcHomeDecision: 'sell', moveYear: 2027, returnYear: null,
+    });
+
+    // Weaker EUR (more EUR per USD = local currency lost value)
+    const weakEurGlobals = {
+      ...GLOBAL_DEFAULTS,
+      exchangeRates: { ...GLOBAL_DEFAULTS.exchangeRates, EUR: 1.10 },
+    };
+    const weakResult = simulate(hague, career, weakEurGlobals, {
+      dcHomeDecision: 'sell', moveYear: 2027, returnYear: null,
+    });
+
+    // Weaker EUR means less USD income
+    expect(weakResult[0].grossIncome).toBeLessThan(normalResult[0].grossIncome);
+  });
+});
+
 describe('simulate', () => {
   const globals = GLOBAL_DEFAULTS;
 

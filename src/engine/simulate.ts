@@ -2,6 +2,7 @@ import type { Destination, CareerPreset, GlobalAssumptions, YearlyProjection } f
 import { estimateEffectiveTax } from './taxes';
 import { calculateSaleProceeds, calculateRentalCashFlow, projectHomeEquity } from './housing';
 import { getDestination } from '@/data/destinations';
+import { getEducationCost } from './education';
 
 interface SimulateOverrides {
   dcHomeDecision: 'sell' | 'rent' | 'keep';
@@ -52,7 +53,19 @@ export function simulate(
     const karasIncome = overrides.customIncome?.karas ?? activeCareer.karaAnnualIncome;
     const yearsInRole = isAbroad ? year - overrides.moveYear : y;
     const growthMultiplier = Math.pow(1 + activeCareer.incomeGrowthRate / 100, yearsInRole);
-    const grossIncome = (yourIncome + karasIncome) * growthMultiplier;
+
+    let adjustedYourIncome = yourIncome;
+    let adjustedKarasIncome = karasIncome;
+
+    if (isAbroad && activeCareer.localCurrencyIncome && activeDest.currency !== 'USD') {
+      const currentRate = globals.exchangeRates?.[activeDest.currency] ?? activeDest.defaultExchangeRate;
+      const fxAdjustment = activeDest.defaultExchangeRate / currentRate;
+      // fxAdjustment < 1 means local currency weakened (bad for local earners)
+      adjustedYourIncome = yourIncome * fxAdjustment;
+      adjustedKarasIncome = karasIncome * fxAdjustment;
+    }
+
+    const grossIncome = (adjustedYourIncome + adjustedKarasIncome) * growthMultiplier;
     const benefitsValue = activeCareer.benefitsMonetaryValue;
     const totalCompensation = grossIncome + benefitsValue;
 
@@ -63,7 +76,8 @@ export function simulate(
     const housingCost = activeDest.id === 'dc-baseline'
       ? globals.monthlyMortgage * 12
       : activeDest.housing.rentMonthly3BR * 12;
-    const schooling = activeDest.costOfLiving.internationalSchoolAnnual;
+    const daughterAgeThisYear = (globals.daughterAge ?? 3) + y;
+    const schooling = getEducationCost(activeDest, activeCareer, daughterAgeThisYear);
     const healthInsurance = activeDest.costOfLiving.healthInsuranceMonthly * 12;
     const totalExpenses = livingExpenses + housingCost + schooling + healthInsurance;
 
