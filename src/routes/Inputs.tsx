@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useGlobalAssumptions } from '@/state/hooks';
 import SliderInput from '@/components/SliderInput';
 import './Inputs.css';
@@ -7,6 +8,15 @@ const fmtPct = (v: number) => v + '%';
 
 export default function Inputs() {
   const { globals, updateGlobals } = useGlobalAssumptions();
+
+  const updateExchangeRate = useCallback(
+    (currency: string, value: number) => {
+      updateGlobals({
+        exchangeRates: { ...globals.exchangeRates, [currency]: value },
+      });
+    },
+    [globals.exchangeRates, updateGlobals],
+  );
 
   return (
     <div className="page-enter inputs-page">
@@ -36,6 +46,16 @@ export default function Inputs() {
             value={globals.moveYear}
             onChange={(v) => updateGlobals({ moveYear: v })}
             min={2026} max={2032} step={1}
+          />
+          <SliderInput
+            label="Daughter's Age"
+            value={globals.daughterAge}
+            onChange={(v) => updateGlobals({ daughterAge: v })}
+            min={0}
+            max={10}
+            step={1}
+            format={(v) => `${v}`}
+            suffix=" yrs"
           />
         </div>
       </div>
@@ -174,6 +194,61 @@ export default function Inputs() {
           </div>
         </div>
       )}
+
+      {/* Currency Exchange Rates */}
+      <div className="card inputs-section">
+        <h3 className="section-title">Currency Exchange Rates</h3>
+        <p className="text-secondary inputs-fx-helper">
+          Adjust to model exchange rate changes. Only affects destinations with local-currency income.
+        </p>
+        <div className="inputs-grid">
+          <SliderInput
+            label="EUR/USD"
+            value={globals.exchangeRates.EUR ?? 0.92}
+            onChange={(v) => updateExchangeRate('EUR', v)}
+            min={0.65}
+            max={1.2}
+            step={0.01}
+            format={(v) => `1\u20AC = $${v.toFixed(2)}`}
+          />
+          <SliderInput
+            label="KES/USD"
+            value={globals.exchangeRates.KES ?? 130}
+            onChange={(v) => updateExchangeRate('KES', v)}
+            min={90}
+            max={180}
+            step={1}
+            format={(v) => `${v} KES = $1`}
+          />
+          <SliderInput
+            label="MXN/USD"
+            value={globals.exchangeRates.MXN ?? 17.5}
+            onChange={(v) => updateExchangeRate('MXN', v)}
+            min={12}
+            max={25}
+            step={0.5}
+            format={(v) => `${v.toFixed(1)} MXN = $1`}
+          />
+          <SliderInput
+            label="COP/USD"
+            value={globals.exchangeRates.COP ?? 4200}
+            onChange={(v) => updateExchangeRate('COP', v)}
+            min={3000}
+            max={5500}
+            step={50}
+            format={(v) => `${v.toLocaleString('en-US')} COP = $1`}
+          />
+          <SliderInput
+            label="UYU/USD"
+            value={globals.exchangeRates.UYU ?? 42}
+            onChange={(v) => updateExchangeRate('UYU', v)}
+            min={30}
+            max={60}
+            step={1}
+            format={(v) => `${v} UYU = $1`}
+          />
+        </div>
+      </div>
     </div>
   );
 }

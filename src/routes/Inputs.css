@@ -48,3 +48,9 @@
   color: var(--color-highlight);
   font-variant-numeric: tabular-nums;
 }
+
+.inputs-fx-helper {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  margin-bottom: var(--space-4);
+}
