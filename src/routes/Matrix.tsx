@@ -13,6 +13,7 @@ import {
   rankDestinations,
 } from '@/engine/scoring';
 import WeightSlider from '@/components/WeightSlider';
+import { Printer } from 'lucide-react';
 import type { QoLDimension, QualityOfLifeRatings, QoLWeights, Destination } from '@/types';
 import { QOL_DIMENSIONS } from '@/types';
 import './Matrix.css';
@@ -220,8 +221,34 @@ export default function Matrix() {
 
   return (
     <div className="page-enter matrix-page">
-      <h1>Decision Matrix</h1>
-      <p className="matrix-subtitle">Weighted scoring across all dimensions.</p>
+      <div className="matrix-header">
+        <div>
+          <h1>Decision Matrix</h1>
+          <p className="matrix-subtitle">Weighted scoring across all dimensions.</p>
+        </div>
+        <button className="btn matrix-print-btn" onClick={() => window.print()}>
+          <Printer size={16} />
+          Print Results
+        </button>
+      </div>
+
+      {/* Print-only weight summary (hidden on screen, visible in print) */}
+      <div className="print-only matrix-print-summary">
+        <h2>Weight Configuration</h2>
+        <p><strong>Preset:</strong> {WEIGHT_PRESETS.find(p => {
+          return QOL_DIMENSIONS.every(d => p.weights.weights[d] === weights.weights[d]) &&
+                 p.weights.financialWeight === weights.financialWeight;
+        })?.name ?? 'Custom'}</p>
+        <p><strong>Financial Weight:</strong> {weights.financialWeight}/10</p>
+        <div className="matrix-print-weights">
+          {QOL_DIMENSION_META.map(dim => (
+            <span key={dim.id} className="matrix-print-weight-item">
+              {dim.label}: {weights.weights[dim.id]}/10
+            </span>
+          ))}
+        </div>
+        <p className="matrix-print-date">Printed {new Date().toLocaleDateString()}</p>
+      </div>
 
       {/* Weight configuration */}
       <section className="matrix-weights-section card">
