@@ -58,9 +58,9 @@ export async function revokeUser(userId: string): Promise<void> {
 }
 
 export async function deleteUserApproval(userId: string): Promise<void> {
-  const { error } = await supabase
-    .from('user_approvals')
-    .delete()
-    .eq('user_id', userId);
+  // Use SECURITY DEFINER RPC — cascades through auth.users → approval row + state row
+  const { error } = await supabase.rpc('delete_life_planner_user', {
+    target_user_id: userId,
+  });
   if (error) throw error;
 }
