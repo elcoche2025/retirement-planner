@@ -161,7 +161,7 @@ export default function Inputs() {
               label="Insurance + Tax"
               value={globals.monthlyInsuranceTax}
               onChange={(v) => updateGlobals({ monthlyInsuranceTax: v })}
-              min={400} max={1500} step={50}
+              min={0} max={1500} step={50}
               format={fmtDollar}
             />
             <SliderInput
