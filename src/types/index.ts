@@ -1,3 +1,5 @@
+export type { UserProfile, UserPreferences, ScenarioPreferenceOverrides } from './profiles';
+
 // ============================================
 // EDUCATION SYSTEM
 // ============================================
@@ -286,9 +288,7 @@ export interface AppState {
   version: number;
   globalAssumptions: GlobalAssumptions;
   fxRatesMeta: FxRatesMeta;
-  scenarios: Record<string, ScenarioConfig>;
-  qolWeights: QoLWeights;
+  profiles: Record<string, import('./profiles').UserProfile>;
+  activeProfileId: string;
   lastVisited: string;
-  compareSelection: string[];
-  matrixPreset: string;
 }
