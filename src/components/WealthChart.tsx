@@ -8,7 +8,7 @@ import {
   ResponsiveContainer,
   ReferenceLine,
 } from 'recharts';
-import type { YearlyProjection } from '@/types';
+import type { YearlyProjection, MonteCarloResult } from '@/types';
 import { chartColors } from '@/styles/theme';
 import { useTheme } from '@/state/ThemeContext';
 
@@ -17,6 +17,7 @@ interface WealthChartProps {
   dcProjections?: YearlyProjection[];
   accentColor: string;
   currentYear?: number;
+  monteCarlo?: MonteCarloResult;
 }
 
 const fmtAxis = (n: number) =>
@@ -34,6 +35,8 @@ interface ChartRow {
   year: number;
   netWorth: number;
   dcNetWorth?: number;
+  p10_p90?: [number, number];
+  p25_p75?: [number, number];
 }
 
 export default function WealthChart({
@@ -41,15 +44,24 @@ export default function WealthChart({
   dcProjections,
   accentColor,
   currentYear,
+  monteCarlo,
 }: WealthChartProps) {
   const { isLight } = useTheme();
   const colors = useMemo(() => chartColors(), [isLight]);
-  const data: ChartRow[] = projections.map((p, i) => ({
-    age: p.age,
-    year: p.year,
-    netWorth: p.totalNetWorth,
-    dcNetWorth: dcProjections?.[i]?.totalNetWorth,
-  }));
+
+  const data: ChartRow[] = projections.map((p, i) => {
+    const row: ChartRow = {
+      age: p.age,
+      year: p.year,
+      netWorth: monteCarlo ? (monteCarlo.percentiles.p50[i] ?? p.totalNetWorth) : p.totalNetWorth,
+      dcNetWorth: dcProjections?.[i]?.totalNetWorth,
+    };
+    if (monteCarlo) {
+      row.p10_p90 = [monteCarlo.percentiles.p10[i] ?? 0, monteCarlo.percentiles.p90[i] ?? 0];
+      row.p25_p75 = [monteCarlo.percentiles.p25[i] ?? 0, monteCarlo.percentiles.p75[i] ?? 0];
+    }
+    return row;
+  });
 
   const nowAge = currentYear
     ? data.find((d) => d.year >= currentYear)?.age
@@ -86,10 +98,18 @@ export default function WealthChart({
             fontSize: '0.75rem',
             color: colors.tooltipText,
           }}
-          formatter={(value: number, name: string) => [
-            fmtTooltip(value),
-            name === 'dcNetWorth' ? 'DC Baseline' : 'Net Worth',
-          ]}
+          formatter={(value: number | [number, number], name: string) => {
+            if (Array.isArray(value)) {
+              return [
+                `${fmtTooltip(value[0])} - ${fmtTooltip(value[1])}`,
+                name === 'p10_p90' ? 'P10-P90 Range' : 'P25-P75 Range',
+              ];
+            }
+            return [
+              fmtTooltip(value),
+              name === 'dcNetWorth' ? 'DC Baseline' : monteCarlo ? 'Median Net Worth' : 'Net Worth',
+            ];
+          }}
           labelFormatter={(age: number) => `Age ${age}`}
         />
         {nowAge !== undefined && (
@@ -104,6 +124,31 @@ export default function WealthChart({
               fontSize: 10,
             }}
           />
+        )}
+        {/* Monte Carlo bands — rendered behind the main line */}
+        {monteCarlo && (
+          <>
+            <Area
+              type="monotone"
+              dataKey="p10_p90"
+              stroke="none"
+              fill={accentColor}
+              fillOpacity={0.05}
+              dot={false}
+              activeDot={false}
+              isAnimationActive={false}
+            />
+            <Area
+              type="monotone"
+              dataKey="p25_p75"
+              stroke="none"
+              fill={accentColor}
+              fillOpacity={0.12}
+              dot={false}
+              activeDot={false}
+              isAnimationActive={false}
+            />
+          </>
         )}
         {dcProjections && (
           <Area
@@ -121,7 +166,7 @@ export default function WealthChart({
           dataKey="netWorth"
           stroke={accentColor}
           strokeWidth={2}
-          fill="url(#areaFill)"
+          fill={monteCarlo ? 'none' : 'url(#areaFill)'}
           dot={false}
         />
       </AreaChart>

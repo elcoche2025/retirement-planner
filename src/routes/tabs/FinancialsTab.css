@@ -52,6 +52,58 @@
   background-color: transparent;
 }
 
+/* --- MC toggle + chart header --- */
+.financials-chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.financials-chart-header .section-title {
+  margin-bottom: 0;
+}
+
+.financials-mc-toggle {
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--color-bg-tertiary);
+  border-radius: 3px;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.financials-mc-toggle:hover {
+  color: var(--color-highlight);
+  border-color: var(--color-highlight);
+}
+
+.financials-mc-toggle-active {
+  color: var(--color-highlight);
+  border-color: var(--color-highlight);
+}
+
+/* --- MC legend band swatch --- */
+.financials-legend-band {
+  display: inline-block;
+  width: 20px;
+  height: 8px;
+  border-radius: 2px;
+  opacity: 0.2;
+}
+
+/* --- MC stats row --- */
+.financials-mc-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+
 .financials-table-section {
   margin-bottom: var(--space-4);
 }
