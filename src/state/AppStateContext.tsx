@@ -1,0 +1,145 @@
+import { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
+import type { AppState, GlobalAssumptions, ScenarioConfig, QoLWeights, QualityOfLifeRatings } from '@/types';
+import { GLOBAL_DEFAULTS } from '@/data/global-defaults';
+import { WEIGHT_PRESETS } from '@/data/weight-presets';
+import { ALL_DESTINATIONS } from '@/data/destinations';
+
+const STORAGE_KEY = 'life-change-planner-state';
+const STATE_VERSION = 1;
+
+function getDefaultScenarios(): Record<string, ScenarioConfig> {
+  const scenarios: Record<string, ScenarioConfig> = {};
+  for (const dest of ALL_DESTINATIONS) {
+    scenarios[dest.id] = {
+      destinationId: dest.id,
+      selectedCareerPreset: dest.careerPresets[0]?.id ?? '',
+      customQoLRatings: {},
+      dcHomeDecision: dest.id === 'dc-baseline' ? 'keep' : 'sell',
+      moveYear: GLOBAL_DEFAULTS.moveYear,
+      returnYear: null,
+    };
+  }
+  return scenarios;
+}
+
+function getInitialState(): AppState {
+  return {
+    version: STATE_VERSION,
+    globalAssumptions: { ...GLOBAL_DEFAULTS },
+    scenarios: getDefaultScenarios(),
+    qolWeights: WEIGHT_PRESETS[0].weights,
+    lastVisited: 'dc-baseline',
+    compareSelection: ['dc-baseline', 'kenya-nairobi'],
+    matrixPreset: 'balanced',
+  };
+}
+
+function loadState(): AppState {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return getInitialState();
+    const parsed = JSON.parse(raw);
+    if (parsed.version !== STATE_VERSION) return getInitialState();
+    return parsed as AppState;
+  } catch {
+    return getInitialState();
+  }
+}
+
+type Action =
+  | { type: 'SET_GLOBAL_ASSUMPTIONS'; payload: Partial<GlobalAssumptions> }
+  | { type: 'SET_SCENARIO'; payload: { id: string; config: Partial<ScenarioConfig> } }
+  | { type: 'SET_QOL_WEIGHTS'; payload: QoLWeights }
+  | { type: 'SET_QOL_RATING'; payload: { destinationId: string; dimension: keyof QualityOfLifeRatings; value: number } }
+  | { type: 'RESET_QOL_RATING'; payload: { destinationId: string; dimension: keyof QualityOfLifeRatings } }
+  | { type: 'SET_LAST_VISITED'; payload: string }
+  | { type: 'SET_COMPARE_SELECTION'; payload: string[] }
+  | { type: 'SET_MATRIX_PRESET'; payload: string }
+  | { type: 'RESET_ALL' };
+
+function reducer(state: AppState, action: Action): AppState {
+  switch (action.type) {
+    case 'SET_GLOBAL_ASSUMPTIONS':
+      return { ...state, globalAssumptions: { ...state.globalAssumptions, ...action.payload } };
+    case 'SET_SCENARIO': {
+      const existing = state.scenarios[action.payload.id] ?? {};
+      return {
+        ...state,
+        scenarios: {
+          ...state.scenarios,
+          [action.payload.id]: { ...existing, ...action.payload.config } as ScenarioConfig,
+        },
+      };
+    }
+    case 'SET_QOL_WEIGHTS':
+      return { ...state, qolWeights: action.payload };
+    case 'SET_QOL_RATING': {
+      const { destinationId, dimension, value } = action.payload;
+      const scenario = state.scenarios[destinationId];
+      if (!scenario) return state;
+      return {
+        ...state,
+        scenarios: {
+          ...state.scenarios,
+          [destinationId]: {
+            ...scenario,
+            customQoLRatings: { ...scenario.customQoLRatings, [dimension]: value },
+          },
+        },
+      };
+    }
+    case 'RESET_QOL_RATING': {
+      const { destinationId, dimension } = action.payload;
+      const scenario = state.scenarios[destinationId];
+      if (!scenario) return state;
+      const updated = { ...scenario.customQoLRatings };
+      delete updated[dimension];
+      return {
+        ...state,
+        scenarios: {
+          ...state.scenarios,
+          [destinationId]: { ...scenario, customQoLRatings: updated },
+        },
+      };
+    }
+    case 'SET_LAST_VISITED':
+      return { ...state, lastVisited: action.payload };
+    case 'SET_COMPARE_SELECTION':
+      return { ...state, compareSelection: action.payload };
+    case 'SET_MATRIX_PRESET':
+      return { ...state, matrixPreset: action.payload };
+    case 'RESET_ALL':
+      return getInitialState();
+    default:
+      return state;
+  }
+}
+
+interface AppStateContextValue {
+  state: AppState;
+  dispatch: React.Dispatch<Action>;
+}
+
+const AppStateCtx = createContext<AppStateContextValue | null>(null);
+
+export function AppStateProvider({ children }: { children: ReactNode }) {
+  const [state, dispatch] = useReducer(reducer, null, loadState);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }, [state]);
+
+  return (
+    <AppStateCtx.Provider value={{ state, dispatch }}>
+      {children}
+    </AppStateCtx.Provider>
+  );
+}
+
+export function useAppState(): AppStateContextValue {
+  const ctx = useContext(AppStateCtx);
+  if (!ctx) throw new Error('useAppState must be used within AppStateProvider');
+  return ctx;
+}
+
+export type { Action };
