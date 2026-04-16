@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import {
   Radar,
   RadarChart as RechartsRadarChart,
@@ -8,6 +9,8 @@ import {
 } from 'recharts';
 import type { QualityOfLifeRatings, QoLDimension } from '@/types';
 import { QOL_DIMENSIONS } from '@/types';
+import { chartColors } from '@/styles/theme';
+import { useTheme } from '@/state/ThemeContext';
 
 const SHORT_LABELS: Record<QoLDimension, string> = {
   familyProximity: 'Family',
@@ -38,6 +41,8 @@ function resolveColor(cssVar: string): string {
 }
 
 export default function RadarChart({ ratings, dcRatings, accentColor }: RadarChartProps) {
+  const { isLight } = useTheme();
+  const colors = useMemo(() => chartColors(), [isLight]);
   const data = QOL_DIMENSIONS.map((dim) => ({
     dimension: SHORT_LABELS[dim],
     value: ratings[dim],
@@ -45,19 +50,19 @@ export default function RadarChart({ ratings, dcRatings, accentColor }: RadarCha
   }));
 
   const resolvedAccent = resolveColor(accentColor);
-  const resolvedDc = '#c9a96e';
+  const resolvedDc = colors.accentDc;
 
   return (
     <ResponsiveContainer width="100%" height={300}>
       <RechartsRadarChart data={data} cx="50%" cy="50%" outerRadius="70%">
-        <PolarGrid stroke="#2e2e28" />
+        <PolarGrid stroke={colors.gridStroke} />
         <PolarAngleAxis
           dataKey="dimension"
-          tick={{ fill: '#a09a8c', fontSize: 11, fontFamily: 'var(--font-body)' }}
+          tick={{ fill: colors.labelFill, fontSize: 11, fontFamily: 'var(--font-body)' }}
         />
         <PolarRadiusAxis
           domain={[0, 10]}
-          tick={{ fill: '#6b6560', fontSize: 9 }}
+          tick={{ fill: colors.tickFill, fontSize: 9 }}
           axisLine={false}
           tickCount={6}
         />

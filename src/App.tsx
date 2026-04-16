@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import { AppStateProvider } from './state/AppStateContext';
+import { ThemeProvider } from './state/ThemeContext';
 import Layout from './components/Layout';
 import Dashboard from './routes/Dashboard';
 import ScenarioDetail from './routes/ScenarioDetail';
@@ -86,6 +87,16 @@ export default function App() {
     }
   }, []);
 
-  if (!authed) return <PasswordGate onAuth={() => setAuthed(true)} />;
-  return <AppRouter />;
+  if (!authed) {
+    return (
+      <ThemeProvider>
+        <PasswordGate onAuth={() => setAuthed(true)} />
+      </ThemeProvider>
+    );
+  }
+  return (
+    <ThemeProvider>
+      <AppRouter />
+    </ThemeProvider>
+  );
 }

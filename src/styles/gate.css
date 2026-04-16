@@ -70,7 +70,7 @@
   display: block;
   width: 100%;
   padding: 11px;
-  background: #a08840;
+  background: var(--color-highlight);
   border: none;
   border-radius: var(--card-radius);
   color: var(--color-bg-primary);

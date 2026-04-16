@@ -37,6 +37,24 @@
   color: var(--color-highlight);
 }
 
+/* --- Theme toggle --- */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  padding: var(--space-1);
+  border-radius: var(--card-radius);
+  transition: color var(--transition-fast);
+}
+
+.theme-toggle:hover {
+  color: var(--color-highlight);
+}
+
 .top-nav-links {
   display: flex;
   gap: 0;

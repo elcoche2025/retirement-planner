@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import {
   LineChart,
   Line,
@@ -8,6 +9,8 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import type { YearlyProjection, Destination } from '@/types';
+import { chartColors } from '@/styles/theme';
+import { useTheme } from '@/state/ThemeContext';
 
 interface Dataset {
   destination: Destination;
@@ -40,6 +43,8 @@ interface ChartRow {
 }
 
 export default function ComparisonChart({ datasets, dcProjections }: ComparisonChartProps) {
+  const { isLight } = useTheme();
+  const colors = useMemo(() => chartColors(), [isLight]);
   const length = dcProjections.length;
   const data: ChartRow[] = [];
 
@@ -63,25 +68,25 @@ export default function ComparisonChart({ datasets, dcProjections }: ComparisonC
       <LineChart data={data} margin={{ top: 8, right: 16, bottom: 0, left: 8 }}>
         <XAxis
           dataKey="age"
-          tick={{ fill: '#6b6560', fontSize: 11, fontFamily: 'var(--font-mono)' }}
-          axisLine={{ stroke: '#2e2e28' }}
+          tick={{ fill: colors.tickFill, fontSize: 11, fontFamily: 'var(--font-mono)' }}
+          axisLine={{ stroke: colors.axisStroke }}
           tickLine={false}
         />
         <YAxis
           tickFormatter={fmtAxis}
-          tick={{ fill: '#6b6560', fontSize: 11, fontFamily: 'var(--font-mono)' }}
+          tick={{ fill: colors.tickFill, fontSize: 11, fontFamily: 'var(--font-mono)' }}
           axisLine={false}
           tickLine={false}
           width={60}
         />
         <Tooltip
           contentStyle={{
-            background: '#242420',
-            border: '1px solid #2e2e28',
+            background: colors.tooltipBg,
+            border: `1px solid ${colors.tooltipBorder}`,
             borderRadius: '4px',
             fontFamily: 'var(--font-mono)',
             fontSize: '0.75rem',
-            color: '#e8e4dc',
+            color: colors.tooltipText,
           }}
           formatter={(value: number, name: string) => {
             const label = name === 'dcNetWorth'
@@ -96,7 +101,7 @@ export default function ComparisonChart({ datasets, dcProjections }: ComparisonC
             if (value === 'dcNetWorth') return 'DC Baseline';
             return datasets.find((d) => d.destination.id === value)?.destination.name ?? value;
           }}
-          wrapperStyle={{ fontSize: '0.7rem', color: '#a09a8c' }}
+          wrapperStyle={{ fontSize: '0.7rem', color: colors.labelFill }}
         />
         {/* DC baseline — always dashed gold */}
         <Line

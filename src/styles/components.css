@@ -48,7 +48,7 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius: 50%;
   background: var(--color-highlight);
   border: 2px solid var(--color-bg-primary);
-  box-shadow: 0 0 4px rgba(201, 169, 110, 0.3);
+  box-shadow: 0 0 4px var(--color-highlight-glow);
   cursor: pointer;
 }
 
@@ -89,12 +89,12 @@ input[type="range"]::-moz-range-thumb {
 
 .data-table td {
   padding: var(--space-2) var(--space-3);
-  border-bottom: 1px solid rgba(46, 46, 40, 0.5);
+  border-bottom: 1px solid var(--color-row-border);
   color: var(--color-text-primary);
 }
 
 .data-table tr:hover td {
-  background: rgba(46, 46, 40, 0.3);
+  background: var(--color-row-hover);
 }
 
 /* === Buttons === */

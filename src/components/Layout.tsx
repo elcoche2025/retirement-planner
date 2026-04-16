@@ -1,5 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboard, GitCompare, Grid3x3, Map, Settings } from 'lucide-react';
+import { LayoutDashboard, GitCompare, Grid3x3, Map, Settings, Sun, Moon } from 'lucide-react';
+import { useTheme } from '@/state/ThemeContext';
 import './Layout.css';
 
 const NAV_ITEMS: { to: string; label: string; icon: typeof LayoutDashboard; end?: boolean }[] = [
@@ -11,11 +12,21 @@ const NAV_ITEMS: { to: string; label: string; icon: typeof LayoutDashboard; end?
 ];
 
 export default function Layout() {
+  const { isLight, toggle } = useTheme();
+
   return (
     <div className="layout">
       {/* Desktop top nav */}
       <header className="top-nav">
         <NavLink to="/" className="top-nav-title">Life Change Planner</NavLink>
+        <button
+          className="theme-toggle"
+          onClick={toggle}
+          aria-label={isLight ? 'Switch to dark mode' : 'Switch to light mode'}
+          title={isLight ? 'Switch to dark mode' : 'Switch to light mode'}
+        >
+          {isLight ? <Moon size={16} strokeWidth={1.5} /> : <Sun size={16} strokeWidth={1.5} />}
+        </button>
         <nav className="top-nav-links">
           {NAV_ITEMS.map(({ to, label, end }) => (
             <NavLink key={to} to={to} end={end} className={({ isActive }) => isActive ? 'active' : ''}>

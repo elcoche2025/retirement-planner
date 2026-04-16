@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import {
   AreaChart,
   Area,
@@ -8,6 +9,8 @@ import {
   ReferenceLine,
 } from 'recharts';
 import type { YearlyProjection } from '@/types';
+import { chartColors } from '@/styles/theme';
+import { useTheme } from '@/state/ThemeContext';
 
 interface WealthChartProps {
   projections: YearlyProjection[];
@@ -39,6 +42,8 @@ export default function WealthChart({
   accentColor,
   currentYear,
 }: WealthChartProps) {
+  const { isLight } = useTheme();
+  const colors = useMemo(() => chartColors(), [isLight]);
   const data: ChartRow[] = projections.map((p, i) => ({
     age: p.age,
     year: p.year,
@@ -61,25 +66,25 @@ export default function WealthChart({
         </defs>
         <XAxis
           dataKey="age"
-          tick={{ fill: '#6b6560', fontSize: 11, fontFamily: 'var(--font-mono)' }}
-          axisLine={{ stroke: '#2e2e28' }}
+          tick={{ fill: colors.tickFill, fontSize: 11, fontFamily: 'var(--font-mono)' }}
+          axisLine={{ stroke: colors.axisStroke }}
           tickLine={false}
         />
         <YAxis
           tickFormatter={fmtAxis}
-          tick={{ fill: '#6b6560', fontSize: 11, fontFamily: 'var(--font-mono)' }}
+          tick={{ fill: colors.tickFill, fontSize: 11, fontFamily: 'var(--font-mono)' }}
           axisLine={false}
           tickLine={false}
           width={60}
         />
         <Tooltip
           contentStyle={{
-            background: '#242420',
-            border: '1px solid #2e2e28',
+            background: colors.tooltipBg,
+            border: `1px solid ${colors.tooltipBorder}`,
             borderRadius: '4px',
             fontFamily: 'var(--font-mono)',
             fontSize: '0.75rem',
-            color: '#e8e4dc',
+            color: colors.tooltipText,
           }}
           formatter={(value: number, name: string) => [
             fmtTooltip(value),
@@ -90,12 +95,12 @@ export default function WealthChart({
         {nowAge !== undefined && (
           <ReferenceLine
             x={nowAge}
-            stroke="#6b6560"
+            stroke={colors.refLineStroke}
             strokeDasharray="4 4"
             label={{
               value: 'Now',
               position: 'top',
-              fill: '#6b6560',
+              fill: colors.refLineStroke,
               fontSize: 10,
             }}
           />
@@ -104,7 +109,7 @@ export default function WealthChart({
           <Area
             type="monotone"
             dataKey="dcNetWorth"
-            stroke="#c9a96e"
+            stroke={colors.accentDc}
             strokeWidth={1.5}
             strokeDasharray="6 3"
             fill="none"

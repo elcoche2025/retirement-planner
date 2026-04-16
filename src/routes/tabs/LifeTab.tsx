@@ -80,7 +80,7 @@ export default function LifeTab({ destinationId }: { destinationId: string }) {
           <span className="life-radar-legend-item">
             <span
               className="life-radar-legend-swatch"
-              style={{ background: '#c9a96e' }}
+              style={{ background: 'var(--color-accent-dc)' }}
             />
             DC Baseline
           </span>

@@ -52,8 +52,47 @@
   --card-border: 1px solid var(--color-bg-tertiary);
   --card-padding: var(--space-5);
 
+  /* Semi-transparent theme surfaces */
+  --color-row-border: rgba(46, 46, 40, 0.5);
+  --color-row-hover: rgba(46, 46, 40, 0.3);
+  --color-winner-bg: rgba(201, 169, 110, 0.06);
+  --color-highlight-glow: rgba(201, 169, 110, 0.4);
+
   /* Transitions */
   --transition-fast: 150ms ease;
   --transition-normal: 200ms ease-out;
   --transition-number: 400ms ease-out;
+}
+
+/* ================================================
+   Light mode overrides
+   ================================================ */
+html.light {
+  --color-bg-primary: #f5f3ef;
+  --color-bg-secondary: #ffffff;
+  --color-bg-tertiary: #e8e4dc;
+  --color-bg-input: #f0ece5;
+
+  --color-text-primary: #1a1a17;
+  --color-text-secondary: #5c574e;
+  --color-text-tertiary: #8a8578;
+
+  --color-positive: #2d7d46;
+  --color-negative: #b83a3a;
+  --color-neutral: #6b6560;
+  --color-highlight: #a07d2e;
+
+  --color-financial-bg: #ffffff;
+  --color-life-bg: #faf8f4;
+
+  /* Accent overrides for contrast on white backgrounds */
+  --color-accent-dc: #9a7530;
+  --color-accent-medellin: #9a7d1e;
+  --color-accent-amsterdam: #c46520;
+
+  /* Semi-transparent surfaces for light mode */
+  --color-row-border: rgba(200, 196, 186, 0.6);
+  --color-row-hover: rgba(200, 196, 186, 0.3);
+  --color-winner-bg: rgba(160, 125, 46, 0.08);
+  --color-highlight-glow: rgba(160, 125, 46, 0.4);
 }
