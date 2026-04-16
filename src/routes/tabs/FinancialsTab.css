@@ -1,0 +1,69 @@
+/* ================================================
+   Financials Tab
+   ================================================ */
+
+.financials-tab {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.financials-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+}
+
+.financials-chart {
+  padding: var(--space-4);
+}
+
+.financials-chart-legend {
+  display: flex;
+  gap: var(--space-5);
+  justify-content: center;
+  margin-top: var(--space-3);
+}
+
+.financials-legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.7rem;
+  color: var(--color-text-tertiary);
+}
+
+.financials-legend-line {
+  display: inline-block;
+  width: 20px;
+  height: 2px;
+  border-radius: 1px;
+}
+
+.financials-legend-dashed {
+  background: var(--color-accent-dc);
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--color-accent-dc) 0,
+    var(--color-accent-dc) 4px,
+    transparent 4px,
+    transparent 7px
+  );
+  background-color: transparent;
+}
+
+.financials-table-section {
+  margin-bottom: var(--space-4);
+}
+
+@media (max-width: 768px) {
+  .financials-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .financials-metrics {
+    grid-template-columns: 1fr;
+  }
+}

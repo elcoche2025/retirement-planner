@@ -1,0 +1,64 @@
+/* ================================================
+   Scenario Detail — destination deep-dive shell
+   ================================================ */
+
+.scenario-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* --- Header --- */
+.scenario-detail-header {
+  padding: var(--space-5) var(--space-4);
+  margin: calc(-1 * var(--space-5));
+  margin-bottom: var(--space-4);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent, var(--color-highlight)) 5%, var(--color-bg-primary)) 0%,
+    var(--color-bg-primary) 60%
+  );
+  border-bottom: 1px solid var(--color-bg-tertiary);
+}
+
+.scenario-detail-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.scenario-detail-flag {
+  font-size: 1.5rem;
+}
+
+.scenario-detail-name {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.scenario-detail-narrative {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  max-width: 680px;
+}
+
+/* --- Content area below tabs --- */
+.scenario-detail-content {
+  padding-top: var(--space-5);
+}
+
+@media (max-width: 640px) {
+  .scenario-detail-header {
+    padding: var(--space-4) var(--space-3);
+    margin: calc(-1 * var(--space-4));
+    margin-bottom: var(--space-3);
+  }
+
+  .scenario-detail-name {
+    font-size: 1.2rem;
+  }
+}
