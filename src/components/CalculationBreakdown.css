@@ -1,0 +1,150 @@
+.calc-breakdown {
+  background: var(--color-bg-tertiary);
+  border-radius: var(--card-radius);
+  padding: var(--space-4) var(--space-5);
+  margin-top: var(--space-2);
+  font-size: 0.78rem;
+  line-height: 1.7;
+}
+
+.calc-breakdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-bg-primary);
+}
+
+.calc-breakdown-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-highlight);
+}
+
+.calc-breakdown-location {
+  font-size: 0.7rem;
+  color: var(--color-text-tertiary);
+}
+
+.calc-section {
+  margin-bottom: var(--space-4);
+}
+
+.calc-section-title {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-tertiary);
+  margin-bottom: var(--space-2);
+}
+
+.calc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 2px 0;
+  gap: var(--space-4);
+}
+
+.calc-row span:first-child {
+  color: var(--color-text-secondary);
+  flex: 1;
+  min-width: 0;
+}
+
+.calc-row .mono {
+  font-size: 0.78rem;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.calc-indent {
+  padding-left: var(--space-4);
+}
+
+.calc-indent span:first-child {
+  color: var(--color-text-tertiary);
+  font-size: 0.73rem;
+}
+
+.calc-note span:first-child {
+  font-style: italic;
+}
+
+.calc-total {
+  border-top: 1px solid var(--color-bg-primary);
+  margin-top: var(--space-1);
+  padding-top: var(--space-1);
+  font-weight: 600;
+}
+
+.calc-total span:first-child {
+  color: var(--color-text-primary);
+}
+
+.calc-total .mono {
+  font-weight: 600;
+}
+
+.calc-grand-total {
+  border-top: 2px solid var(--color-highlight);
+  margin-top: var(--space-2);
+  padding-top: var(--space-2);
+}
+
+.calc-grand-total .mono {
+  color: var(--color-highlight);
+  font-size: 0.9rem;
+}
+
+.calc-total-value {
+  font-weight: 600;
+}
+
+/* Clickable row indicator in the cash flow table */
+.cashflow-expandable {
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.cashflow-expandable:hover td {
+  background: var(--color-bg-tertiary);
+}
+
+.cashflow-expanded td {
+  background: rgba(46, 46, 40, 0.4);
+}
+
+.cashflow-expand-indicator {
+  display: inline-block;
+  width: 16px;
+  font-size: 0.65rem;
+  color: var(--color-text-tertiary);
+  transition: transform var(--transition-fast);
+}
+
+.cashflow-expanded .cashflow-expand-indicator {
+  transform: rotate(90deg);
+  color: var(--color-highlight);
+}
+
+@media (max-width: 600px) {
+  .calc-breakdown {
+    padding: var(--space-3);
+    font-size: 0.72rem;
+  }
+
+  .calc-breakdown-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+  }
+
+  .calc-row {
+    flex-wrap: wrap;
+  }
+}

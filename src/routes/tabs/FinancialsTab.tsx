@@ -7,6 +7,7 @@ import { getDestination } from '@/data/destinations';
 import MetricCard from '@/components/MetricCard';
 import WealthChart from '@/components/WealthChart';
 import PageGuide from '@/components/PageGuide';
+import CalculationBreakdown from '@/components/CalculationBreakdown';
 import { getFinancialsGuide } from '@/data/page-guides';
 import type { YearlyProjection, MonteCarloResult } from '@/types';
 import './FinancialsTab.css';
@@ -28,6 +29,7 @@ export default function FinancialsTab({ destinationId }: { destinationId: string
   const { state } = useAppState();
   const globals = state.globalAssumptions;
   const [showMC, setShowMC] = useState(false);
+  const [expandedYear, setExpandedYear] = useState<number | null>(null);
 
   const projections = useMemo<YearlyProjection[]>(() => {
     if (!destination || !selectedPreset) return [];
@@ -168,13 +170,32 @@ export default function FinancialsTab({ destinationId }: { destinationId: string
         </div>
       )}
 
-      {/* Cash flow table */}
+      {/* Year 1 calculation breakdown — always visible */}
+      {projections.length > 0 && (
+        <section className="financials-table-section">
+          <h3 className="section-title">Year 1 Calculation Breakdown</h3>
+          <CalculationBreakdown
+            year={projections[0]}
+            yearIndex={1}
+            destination={destination}
+            career={selectedPreset}
+            globals={globals}
+            dcHomeDecision={config?.dcHomeDecision ?? 'sell'}
+            moveYear={config?.moveYear ?? globals.moveYear}
+            returnYear={config?.returnYear ?? null}
+            isFirstYear
+          />
+        </section>
+      )}
+
+      {/* Cash flow table — click any row to see its breakdown */}
       <section className="financials-table-section">
-        <h3 className="section-title">Cash Flow</h3>
+        <h3 className="section-title">Cash Flow <span className="text-tertiary" style={{ fontSize: '0.65rem', fontWeight: 400, fontFamily: 'var(--font-body)' }}>— click any row to see calculation details</span></h3>
         <div className="scroll-x">
           <table className="data-table">
             <thead>
               <tr>
+                <th></th>
                 <th>Age</th>
                 <th className="right">Income</th>
                 <th className="right">Est. Tax</th>
@@ -184,18 +205,52 @@ export default function FinancialsTab({ destinationId }: { destinationId: string
               </tr>
             </thead>
             <tbody>
-              {projections.map((p) => (
-                <tr key={p.year}>
-                  <td>{p.age}</td>
-                  <td className="right">{formatCompactCurrency(p.grossIncome)}</td>
-                  <td className="right">{formatCompactCurrency(p.totalTax)}</td>
-                  <td className="right">{formatCompactCurrency(p.totalExpenses)}</td>
-                  <td className={`right ${p.netCashFlow < 0 ? 'text-negative' : ''}`}>
-                    {formatCompactCurrency(p.netCashFlow)}
-                  </td>
-                  <td className="right">{formatCompactCurrency(p.totalNetWorth)}</td>
-                </tr>
-              ))}
+              {projections.map((p, i) => {
+                const yearIdx = i + 1;
+                const isExpanded = expandedYear === yearIdx;
+                return (
+                  <tr key={p.year}>
+                    <td colSpan={7} style={{ padding: 0 }}>
+                      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <tbody>
+                          <tr
+                            className={`cashflow-expandable ${isExpanded ? 'cashflow-expanded' : ''}`}
+                            onClick={() => setExpandedYear(isExpanded ? null : yearIdx)}
+                          >
+                            <td style={{ width: 24, paddingLeft: 8 }}>
+                              <span className="cashflow-expand-indicator">{isExpanded ? '▼' : '▶'}</span>
+                            </td>
+                            <td>{p.age}</td>
+                            <td className="right">{formatCompactCurrency(p.grossIncome)}</td>
+                            <td className="right">{formatCompactCurrency(p.totalTax)}</td>
+                            <td className="right">{formatCompactCurrency(p.totalExpenses)}</td>
+                            <td className={`right ${p.netCashFlow < 0 ? 'text-negative' : ''}`}>
+                              {formatCompactCurrency(p.netCashFlow)}
+                            </td>
+                            <td className="right">{formatCompactCurrency(p.totalNetWorth)}</td>
+                          </tr>
+                          {isExpanded && (
+                            <tr>
+                              <td colSpan={7} style={{ padding: 0, border: 'none' }}>
+                                <CalculationBreakdown
+                                  year={p}
+                                  yearIndex={yearIdx}
+                                  destination={destination}
+                                  career={selectedPreset}
+                                  globals={globals}
+                                  dcHomeDecision={config?.dcHomeDecision ?? 'sell'}
+                                  moveYear={config?.moveYear ?? globals.moveYear}
+                                  returnYear={config?.returnYear ?? null}
+                                />
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
