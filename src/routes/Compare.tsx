@@ -73,62 +73,80 @@ export default function Compare() {
     setSearchParams({ a: idA, b: id }, { replace: true });
   };
 
+  const profile = state.profiles[state.activeProfileId];
+  const scenarioOverrides = profile?.preferences.scenarioOverrides ?? {};
+  const qolWeights = profile?.preferences.qolWeights;
+
   const dcCareer = dc.careerPresets[0];
-  const dcConfig = state.scenarios['dc-baseline'];
+  const dcOverrides = scenarioOverrides['dc-baseline'];
 
   const dcProjections = useMemo<YearlyProjection[]>(() => {
     return simulate(dc, dcCareer, globals, {
-      dcHomeDecision: dcConfig?.dcHomeDecision ?? 'keep',
-      moveYear: dcConfig?.moveYear ?? globals.moveYear,
-      returnYear: dcConfig?.returnYear ?? null,
+      dcHomeDecision: dcOverrides?.dcHomeDecision ?? 'keep',
+      moveYear: globals.moveYear,
+      returnYear: globals.returnYear ?? null,
     });
-  }, [dc, dcCareer, globals, dcConfig]);
+  }, [dc, dcCareer, globals, dcOverrides]);
 
   const projA = useMemo<YearlyProjection[]>(() => {
     if (!destA) return [];
-    const configA = state.scenarios[destA.id];
+    const overridesA = scenarioOverrides[destA.id];
     const career = destA.careerPresets.find(
-      (p) => p.id === configA?.selectedCareerPreset,
+      (p) => p.id === overridesA?.selectedCareerPreset,
     ) ?? destA.careerPresets[0];
+    const configA: ReturnType<typeof useScenario>['config'] = {
+      destinationId: destA.id,
+      selectedCareerPreset: overridesA?.selectedCareerPreset ?? career.id,
+      customQoLRatings: overridesA?.customQoLRatings ?? {},
+      dcHomeDecision: overridesA?.dcHomeDecision ?? 'sell',
+      moveYear: globals.moveYear,
+      returnYear: globals.returnYear ?? null,
+    };
     return getSimulation(destA, career, globals, configA);
-  }, [destA, globals, state.scenarios]);
+  }, [destA, globals, scenarioOverrides]);
 
   const projB = useMemo<YearlyProjection[]>(() => {
     if (!destB) return [];
-    const configB = state.scenarios[destB.id];
+    const overridesB = scenarioOverrides[destB.id];
     const career = destB.careerPresets.find(
-      (p) => p.id === configB?.selectedCareerPreset,
+      (p) => p.id === overridesB?.selectedCareerPreset,
     ) ?? destB.careerPresets[0];
+    const configB: ReturnType<typeof useScenario>['config'] = {
+      destinationId: destB.id,
+      selectedCareerPreset: overridesB?.selectedCareerPreset ?? career.id,
+      customQoLRatings: overridesB?.customQoLRatings ?? {},
+      dcHomeDecision: overridesB?.dcHomeDecision ?? 'sell',
+      moveYear: globals.moveYear,
+      returnYear: globals.returnYear ?? null,
+    };
     return getSimulation(destB, career, globals, configB);
-  }, [destB, globals, state.scenarios]);
+  }, [destB, globals, scenarioOverrides]);
 
   const mcA = useMemo<MonteCarloResult | undefined>(() => {
     if (!showMC || !destA) return undefined;
-    const configA = state.scenarios[destA.id];
+    const overridesA = scenarioOverrides[destA.id];
     const career = destA.careerPresets.find(
-      (p) => p.id === configA?.selectedCareerPreset,
+      (p) => p.id === overridesA?.selectedCareerPreset,
     ) ?? destA.careerPresets[0];
     return runMonteCarlo(destA, career, globals, {
-      dcHomeDecision: configA?.dcHomeDecision ?? 'sell',
-      moveYear: configA?.moveYear ?? globals.moveYear,
-      returnYear: configA?.returnYear ?? null,
-      customIncome: configA?.customIncome,
+      dcHomeDecision: overridesA?.dcHomeDecision ?? 'sell',
+      moveYear: globals.moveYear,
+      returnYear: globals.returnYear ?? null,
     });
-  }, [showMC, destA, globals, state.scenarios]);
+  }, [showMC, destA, globals, scenarioOverrides]);
 
   const mcB = useMemo<MonteCarloResult | undefined>(() => {
     if (!showMC || !destB) return undefined;
-    const configB = state.scenarios[destB.id];
+    const overridesB = scenarioOverrides[destB.id];
     const career = destB.careerPresets.find(
-      (p) => p.id === configB?.selectedCareerPreset,
+      (p) => p.id === overridesB?.selectedCareerPreset,
     ) ?? destB.careerPresets[0];
     return runMonteCarlo(destB, career, globals, {
-      dcHomeDecision: configB?.dcHomeDecision ?? 'sell',
-      moveYear: configB?.moveYear ?? globals.moveYear,
-      returnYear: configB?.returnYear ?? null,
-      customIncome: configB?.customIncome,
+      dcHomeDecision: overridesB?.dcHomeDecision ?? 'sell',
+      moveYear: globals.moveYear,
+      returnYear: globals.returnYear ?? null,
     });
-  }, [showMC, destB, globals, state.scenarios]);
+  }, [showMC, destB, globals, scenarioOverrides]);
 
   const datasets = useMemo(() => {
     const ds: { destination: Destination; projections: YearlyProjection[]; monteCarlo?: MonteCarloResult }[] = [];
@@ -145,10 +163,10 @@ export default function Compare() {
     const firstA = projA[0];
     const firstB = projB[0];
 
-    const qolA = { ...destA.qolDefaults, ...state.scenarios[destA.id]?.customQoLRatings };
-    const qolB = { ...destB.qolDefaults, ...state.scenarios[destB.id]?.customQoLRatings };
-    const qolScoreA = calculateQoLScore(qolA, state.qolWeights);
-    const qolScoreB = calculateQoLScore(qolB, state.qolWeights);
+    const qolA = { ...destA.qolDefaults, ...scenarioOverrides[destA.id]?.customQoLRatings };
+    const qolB = { ...destB.qolDefaults, ...scenarioOverrides[destB.id]?.customQoLRatings };
+    const qolScoreA = qolWeights ? calculateQoLScore(qolA, qolWeights) : 0;
+    const qolScoreB = qolWeights ? calculateQoLScore(qolB, qolWeights) : 0;
 
     return [
       {

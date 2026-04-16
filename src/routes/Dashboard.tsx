@@ -26,21 +26,23 @@ interface SimResult {
 
 export default function Dashboard() {
   const { state } = useAppState();
-  const { globalAssumptions, scenarios, qolWeights } = state;
+  const { globalAssumptions } = state;
+  const profile = state.profiles[state.activeProfileId];
+  const scenarioOverrides = profile?.preferences.scenarioOverrides ?? {};
+  const qolWeights = profile?.preferences.qolWeights;
 
   const results = useMemo<SimResult[]>(() => {
     return ALL_DESTINATIONS.map((dest) => {
-      const config = scenarios[dest.id];
-      const career = dest.careerPresets.find((p) => p.id === config?.selectedCareerPreset)
+      const overrides = scenarioOverrides[dest.id];
+      const career = dest.careerPresets.find((p) => p.id === overrides?.selectedCareerPreset)
         ?? dest.careerPresets[0];
       const projections = simulate(dest, career, globalAssumptions, {
-        dcHomeDecision: config?.dcHomeDecision ?? 'sell',
-        moveYear: config?.moveYear ?? globalAssumptions.moveYear,
-        returnYear: config?.returnYear ?? null,
-        customIncome: config?.customIncome,
+        dcHomeDecision: overrides?.dcHomeDecision ?? (dest.id === 'dc-baseline' ? 'keep' : 'sell'),
+        moveYear: globalAssumptions.moveYear,
+        returnYear: globalAssumptions.returnYear ?? null,
       });
-      const effectiveQoL = { ...dest.qolDefaults, ...config?.customQoLRatings };
-      const qolScore = calculateQoLScore(effectiveQoL, qolWeights);
+      const effectiveQoL = { ...dest.qolDefaults, ...overrides?.customQoLRatings };
+      const qolScore = qolWeights ? calculateQoLScore(effectiveQoL, qolWeights) : 0;
       return {
         destination: dest,
         projections,
@@ -48,7 +50,7 @@ export default function Dashboard() {
         qolScore,
       };
     });
-  }, [globalAssumptions, scenarios, qolWeights]);
+  }, [globalAssumptions, scenarioOverrides, qolWeights]);
 
   const dcResult = results.find((r) => r.destination.id === 'dc-baseline');
   const otherResults = results.filter((r) => r.destination.id !== 'dc-baseline');

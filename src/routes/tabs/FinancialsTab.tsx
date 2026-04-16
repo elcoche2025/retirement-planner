@@ -41,17 +41,20 @@ export default function FinancialsTab({ destinationId }: { destinationId: string
     });
   }, [destination, selectedPreset, globals, config]);
 
+  const profile = state.profiles[state.activeProfileId];
+  const scenarioOverrides = profile?.preferences.scenarioOverrides ?? {};
+
   const dcProjections = useMemo<YearlyProjection[]>(() => {
     const dc = getDestination('dc-baseline');
     if (!dc) return [];
     const dcCareer = dc.careerPresets[0];
-    const dcConfig = state.scenarios['dc-baseline'];
+    const dcOverrides = scenarioOverrides['dc-baseline'];
     return simulate(dc, dcCareer, globals, {
-      dcHomeDecision: dcConfig?.dcHomeDecision ?? 'keep',
-      moveYear: dcConfig?.moveYear ?? globals.moveYear,
-      returnYear: dcConfig?.returnYear ?? null,
+      dcHomeDecision: dcOverrides?.dcHomeDecision ?? 'keep',
+      moveYear: globals.moveYear,
+      returnYear: globals.returnYear ?? null,
     });
-  }, [globals, state.scenarios]);
+  }, [globals, scenarioOverrides]);
 
   const mcResult = useMemo<MonteCarloResult | undefined>(() => {
     if (!showMC || !destination || !selectedPreset) return undefined;

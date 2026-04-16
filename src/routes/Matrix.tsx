@@ -85,20 +85,22 @@ export default function Matrix() {
 
   const currentPresetId = getMatchingWeightPresetId(weights) ?? 'custom';
 
+  const profile = state.profiles[state.activeProfileId];
+  const scenarioOverrides = profile?.preferences.scenarioOverrides ?? {};
+
   // Build columns: simulate each destination, compute scores
   const columns = useMemo<DestColumn[]>(() => {
     // First pass: simulate to get net worths
     const rawCols = NON_DC_DESTINATIONS.map((dest) => {
-      const scenarioConfig = state.scenarios[dest.id];
+      const overrides = scenarioOverrides[dest.id];
       const career =
-        dest.careerPresets.find((p) => p.id === scenarioConfig?.selectedCareerPreset) ??
+        dest.careerPresets.find((p) => p.id === overrides?.selectedCareerPreset) ??
         dest.careerPresets[0];
 
       const projections = simulate(dest, career, globals, {
-        dcHomeDecision: scenarioConfig?.dcHomeDecision ?? 'sell',
-        moveYear: scenarioConfig?.moveYear ?? globals.moveYear,
-        returnYear: scenarioConfig?.returnYear ?? null,
-        customIncome: scenarioConfig?.customIncome,
+        dcHomeDecision: overrides?.dcHomeDecision ?? 'sell',
+        moveYear: globals.moveYear,
+        returnYear: globals.returnYear ?? null,
       });
 
       const lastYear = projections[projections.length - 1];
@@ -106,7 +108,7 @@ export default function Matrix() {
 
       const effectiveQoL: QualityOfLifeRatings = {
         ...dest.qolDefaults,
-        ...scenarioConfig?.customQoLRatings,
+        ...overrides?.customQoLRatings,
       };
 
       return { destination: dest, effectiveQoL, netWorth };
@@ -143,7 +145,7 @@ export default function Matrix() {
       .sort((a, b) => a.rank - b.rank);
 
     return withRank;
-  }, [globals, state.scenarios, weights]);
+  }, [globals, scenarioOverrides, weights]);
 
   // Heat map: per row, determine best/worst
   function cellClass(values: number[], idx: number, higherIsBetter: boolean): string {

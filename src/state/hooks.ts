@@ -15,11 +15,37 @@ export function useGlobalAssumptions() {
 
 export function useScenario(destinationId: string) {
   const { state, dispatch } = useAppState();
-  const config = state.scenarios[destinationId];
+  const profile = state.profiles[state.activeProfileId];
+  const overrides = profile?.preferences.scenarioOverrides[destinationId];
   const destination = getDestination(destinationId);
 
+  // Build a ScenarioConfig-compatible object from profile overrides + globals
+  const config: ScenarioConfig | undefined = destination ? {
+    destinationId,
+    selectedCareerPreset: overrides?.selectedCareerPreset ?? destination.careerPresets[0]?.id ?? '',
+    customQoLRatings: overrides?.customQoLRatings ?? {},
+    dcHomeDecision: overrides?.dcHomeDecision ?? (destinationId === 'dc-baseline' ? 'keep' : 'sell'),
+    moveYear: state.globalAssumptions.moveYear,
+    returnYear: state.globalAssumptions.returnYear,
+  } : undefined;
+
   const update = useCallback(
-    (values: Partial<ScenarioConfig>) => dispatch({ type: 'SET_SCENARIO', payload: { id: destinationId, config: values } }),
+    (values: Partial<ScenarioConfig>) => {
+      // Split: moveYear/returnYear go to globals, rest go to profile overrides
+      const { moveYear, returnYear, destinationId: _destId, ...profileUpdates } = values;
+      if (moveYear !== undefined || returnYear !== undefined) {
+        dispatch({
+          type: 'SET_GLOBAL_ASSUMPTIONS',
+          payload: {
+            ...(moveYear !== undefined ? { moveYear } : {}),
+            ...(returnYear !== undefined ? { returnYear } : {}),
+          },
+        });
+      }
+      if (Object.keys(profileUpdates).length > 0) {
+        dispatch({ type: 'SET_SCENARIO', payload: { id: destinationId, config: profileUpdates } });
+      }
+    },
     [dispatch, destinationId],
   );
 
@@ -36,7 +62,7 @@ export function useScenario(destinationId: string) {
   );
 
   const effectiveQoL: QualityOfLifeRatings | undefined = destination
-    ? { ...destination.qolDefaults, ...config?.customQoLRatings }
+    ? { ...destination.qolDefaults, ...overrides?.customQoLRatings }
     : undefined;
 
   const selectedPreset = destination?.careerPresets.find((p) => p.id === config?.selectedCareerPreset);
@@ -46,20 +72,49 @@ export function useScenario(destinationId: string) {
 
 export function useQoLWeights() {
   const { state, dispatch } = useAppState();
+  const profile = state.profiles[state.activeProfileId];
+  const weights = profile?.preferences.qolWeights ?? { weights: {} as Record<string, number>, financialWeight: 5 } as QoLWeights;
   const update = useCallback(
-    (weights: QoLWeights) => dispatch({ type: 'SET_QOL_WEIGHTS', payload: weights }),
+    (w: QoLWeights) => dispatch({ type: 'SET_QOL_WEIGHTS', payload: w }),
     [dispatch],
   );
-  return { weights: state.qolWeights, updateWeights: update };
+  return { weights, updateWeights: update };
 }
 
 export function useCompareSelection() {
   const { state, dispatch } = useAppState();
+  const profile = state.profiles[state.activeProfileId];
+  const selection = profile?.preferences.compareSelection ?? ['dc-baseline', 'kenya-nairobi'];
   const update = useCallback(
     (ids: string[]) => dispatch({ type: 'SET_COMPARE_SELECTION', payload: ids }),
     [dispatch],
   );
-  return { selection: state.compareSelection, updateSelection: update };
+  return { selection, updateSelection: update };
+}
+
+export function useProfiles() {
+  const { state, dispatch } = useAppState();
+  const profiles = Object.values(state.profiles);
+  const activeProfile = state.profiles[state.activeProfileId];
+
+  const switchProfile = useCallback(
+    (id: string) => dispatch({ type: 'SWITCH_PROFILE', payload: id }),
+    [dispatch],
+  );
+  const addProfile = useCallback(
+    (name: string) => dispatch({ type: 'ADD_PROFILE', payload: { name } }),
+    [dispatch],
+  );
+  const renameProfile = useCallback(
+    (id: string, name: string) => dispatch({ type: 'RENAME_PROFILE', payload: { id, name } }),
+    [dispatch],
+  );
+  const deleteProfile = useCallback(
+    (id: string) => dispatch({ type: 'DELETE_PROFILE', payload: { id } }),
+    [dispatch],
+  );
+
+  return { profiles, activeProfile, switchProfile, addProfile, renameProfile, deleteProfile };
 }
 
 export function useExchangeRates() {
