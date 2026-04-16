@@ -65,7 +65,8 @@ export function useScenario(destinationId: string) {
     ? { ...destination.qolDefaults, ...overrides?.customQoLRatings }
     : undefined;
 
-  const selectedPreset = destination?.careerPresets.find((p) => p.id === config?.selectedCareerPreset);
+  const selectedPreset = destination?.careerPresets.find((p) => p.id === config?.selectedCareerPreset)
+    ?? destination?.careerPresets[0];
 
   return { config, destination, update, setQoLRating, resetQoLRating, effectiveQoL, selectedPreset };
 }
