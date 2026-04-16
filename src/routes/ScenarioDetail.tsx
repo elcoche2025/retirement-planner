@@ -2,6 +2,7 @@ import { useParams, Routes, Route, Navigate } from 'react-router-dom';
 import { useScenario } from '@/state/hooks';
 import TabNav from '@/components/TabNav';
 import FinancialsTab from './tabs/FinancialsTab';
+import CareerTab from './tabs/CareerTab';
 import './ScenarioDetail.css';
 
 export default function ScenarioDetail() {
@@ -51,7 +52,7 @@ export default function ScenarioDetail() {
         <Routes>
           <Route index element={<Navigate to="financials" replace />} />
           <Route path="financials" element={<FinancialsTab destinationId={destination.id} />} />
-          <Route path="career" element={<div className="text-tertiary">Career tab coming soon.</div>} />
+          <Route path="career" element={<CareerTab destinationId={destination.id} />} />
           <Route path="housing" element={<div className="text-tertiary">Housing tab coming soon.</div>} />
           <Route path="life" element={<div className="text-tertiary">Life tab coming soon.</div>} />
           <Route path="visa" element={<div className="text-tertiary">Visa tab coming soon.</div>} />

@@ -1,0 +1,126 @@
+/* ================================================
+   Career Tab
+   ================================================ */
+
+.career-tab {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.career-tab-intro {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* --- Toggle group cards (vertical stacked) --- */
+.toggle-group-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.toggle-group-card {
+  text-align: left;
+  cursor: pointer;
+  border: 1px solid var(--color-bg-tertiary);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+  width: 100%;
+}
+
+.toggle-group-card:hover {
+  background: var(--color-bg-tertiary);
+}
+
+.toggle-group-card-selected {
+  background: color-mix(in srgb, var(--toggle-accent, var(--color-highlight)) 4%, var(--color-bg-secondary));
+}
+
+.toggle-group-card-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.toggle-group-card-label {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.toggle-group-card-sublabel {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+}
+
+.toggle-group-card-content {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+/* --- Preset detail within card --- */
+.career-preset-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.career-preset-description {
+  line-height: 1.5;
+}
+
+.career-preset-roles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-size: 0.8rem;
+}
+
+.career-preset-role strong {
+  color: var(--color-text-primary);
+}
+
+.career-preset-benefits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.career-preset-warning {
+  font-size: 0.75rem;
+  color: var(--color-negative);
+  padding: var(--space-2) var(--space-3);
+  border: 1px dashed var(--color-negative);
+  border-radius: var(--card-radius);
+}
+
+.career-preset-notes {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+  font-style: italic;
+}
+
+/* --- Summary card --- */
+.career-tab-summary {
+  border-left: 3px solid var(--color-highlight);
+}
+
+.career-tab-summary h4 {
+  font-size: 0.85rem;
+  margin-bottom: var(--space-3);
+}
+
+.career-tab-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+
+@media (max-width: 640px) {
+  .career-tab-summary-grid {
+    grid-template-columns: 1fr;
+  }
+}
