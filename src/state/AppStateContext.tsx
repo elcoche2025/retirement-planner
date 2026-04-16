@@ -5,7 +5,7 @@ import { WEIGHT_PRESETS } from '@/data/weight-presets';
 import { ALL_DESTINATIONS } from '@/data/destinations';
 
 const STORAGE_KEY = 'life-change-planner-state';
-const STATE_VERSION = 1;
+const STATE_VERSION = 2;
 
 function getDefaultScenarios(): Record<string, ScenarioConfig> {
   const scenarios: Record<string, ScenarioConfig> = {};
@@ -39,6 +39,16 @@ function loadState(): AppState {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return getInitialState();
     const parsed = JSON.parse(raw);
+
+    // Migrate v1 → v2: add daughterAge + exchangeRates
+    if (parsed.version === 1) {
+      parsed.globalAssumptions.daughterAge = parsed.globalAssumptions.daughterAge ?? 3;
+      parsed.globalAssumptions.exchangeRates = parsed.globalAssumptions.exchangeRates ?? {
+        EUR: 0.92, KES: 130, MXN: 17.5, COP: 4200, UYU: 42,
+      };
+      parsed.version = 2;
+    }
+
     if (parsed.version !== STATE_VERSION) return getInitialState();
     return parsed as AppState;
   } catch {
