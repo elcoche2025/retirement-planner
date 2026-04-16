@@ -8,10 +8,11 @@ export interface UserApproval {
   created_at: string;
 }
 
-export async function getMyApproval(): Promise<UserApproval | null> {
+export async function getMyApproval(userId: string): Promise<UserApproval | null> {
   const { data, error } = await supabase
     .from('user_approvals')
     .select('*')
+    .eq('user_id', userId)
     .single();
   if (error) return null;
   return data;
@@ -19,7 +20,7 @@ export async function getMyApproval(): Promise<UserApproval | null> {
 
 export async function ensureApprovalRow(userId: string, email: string): Promise<UserApproval> {
   // Try to read first
-  const existing = await getMyApproval();
+  const existing = await getMyApproval(userId);
   if (existing) return existing;
 
   // No row — create one (trigger may not have fired for pre-existing users)
