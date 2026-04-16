@@ -84,7 +84,7 @@ export const nlAmsterdam: Destination = {
       yourAnnualIncome: 55000,
       karaAnnualIncome: 75000,
       householdAnnualIncome: 130000,
-      incomeGrowthRate: 3.5,
+      incomeGrowthRate: 3,
       benefits: [
         'Both qualify for 30% ruling',
         'High earning potential',

@@ -101,7 +101,7 @@ export const uruguayMontevideo: Destination = {
       yourAnnualIncome: 30000,
       karaAnnualIncome: 60000,
       householdAnnualIncome: 90000,
-      incomeGrowthRate: 4,
+      incomeGrowthRate: 10,
       benefits: [
         'Tax Holiday shelters investment income',
         'Free-trade zone companies taxed at 0%',

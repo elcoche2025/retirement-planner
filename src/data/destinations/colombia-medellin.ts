@@ -99,7 +99,7 @@ export const colombiaMedellin: Destination = {
       yourAnnualIncome: 25000,
       karaAnnualIncome: 70000,
       householdAnnualIncome: 95000,
-      incomeGrowthRate: 5,
+      incomeGrowthRate: 12,
       benefits: [
         'Growing EdTech ecosystem',
         'Low burn rate',

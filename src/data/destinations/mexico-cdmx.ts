@@ -102,7 +102,7 @@ export const mexicoCdmx: Destination = {
       yourAnnualIncome: 30000,
       karaAnnualIncome: 50000,
       householdAnnualIncome: 80000,
-      incomeGrowthRate: 5,
+      incomeGrowthRate: 12,
       benefits: [
         'Lower burn rate for startup',
         'Entrepreneurial freedom',
