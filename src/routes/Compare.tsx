@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useCompareSelection, useGlobalAssumptions, useScenario } from '@/state/hooks';
 import { useAppState } from '@/state/AppStateContext';
 import { getDestination } from '@/data/destinations';
@@ -41,16 +42,32 @@ export default function Compare() {
   const { selection, updateSelection } = useCompareSelection();
   const { globals } = useGlobalAssumptions();
   const { state } = useAppState();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const idA = selection[0] || '';
   const idB = selection[1] || '';
+
+  // Seed from URL on mount
+  useEffect(() => {
+    const paramA = searchParams.get('a');
+    const paramB = searchParams.get('b');
+    if (paramA && paramB && getDestination(paramA) && getDestination(paramB) && paramA !== paramB) {
+      updateSelection([paramA, paramB]);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const destA = getDestination(idA);
   const destB = getDestination(idB);
   const dc = getDestination('dc-baseline')!;
 
-  const setA = (id: string) => updateSelection([id, idB]);
-  const setB = (id: string) => updateSelection([idA, id]);
+  const setA = (id: string) => {
+    updateSelection([id, idB]);
+    setSearchParams({ a: id, b: idB }, { replace: true });
+  };
+  const setB = (id: string) => {
+    updateSelection([idA, id]);
+    setSearchParams({ a: idA, b: id }, { replace: true });
+  };
 
   const dcCareer = dc.careerPresets[0];
   const dcConfig = state.scenarios['dc-baseline'];
