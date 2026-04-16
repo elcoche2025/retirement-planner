@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useQoLWeights, useGlobalAssumptions } from '@/state/hooks';
 import { useAppState } from '@/state/AppStateContext';
 import { ALL_DESTINATIONS, getDestination } from '@/data/destinations';
@@ -32,20 +33,39 @@ export default function Matrix() {
   const { weights, updateWeights } = useQoLWeights();
   const { globals } = useGlobalAssumptions();
   const { state } = useAppState();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Seed preset from URL on mount
+  useEffect(() => {
+    const paramPreset = searchParams.get('preset');
+    if (paramPreset) {
+      const preset = WEIGHT_PRESETS.find((p) => p.id === paramPreset);
+      if (preset) {
+        applyPreset(preset.weights);
+      }
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const setDimensionWeight = (dim: QoLDimension, val: number) => {
     updateWeights({
       ...weights,
       weights: { ...weights.weights, [dim]: val },
     });
+    setSearchParams({}, { replace: true });
   };
 
   const setFinancialWeight = (val: number) => {
     updateWeights({ ...weights, financialWeight: val });
+    setSearchParams({}, { replace: true });
   };
 
   const applyPreset = (preset: QoLWeights) => {
     updateWeights(preset);
+  };
+
+  const handlePresetClick = (preset: typeof WEIGHT_PRESETS[0]) => {
+    applyPreset(preset.weights);
+    setSearchParams({ preset: preset.id }, { replace: true });
   };
 
   // Build columns: simulate each destination, compute scores
@@ -212,7 +232,7 @@ export default function Matrix() {
             <button
               key={preset.id}
               className={`btn ${state.matrixPreset === preset.id ? 'btn-active' : ''}`}
-              onClick={() => applyPreset(preset.weights)}
+              onClick={() => handlePresetClick(preset)}
             >
               {preset.name}
             </button>
