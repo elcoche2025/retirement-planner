@@ -1,6 +1,7 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboard, GitCompare, Grid3x3, Map, Settings, Sun, Moon } from 'lucide-react';
+import { LayoutDashboard, GitCompare, Grid3x3, Map, Settings, FileText, Sun, Moon } from 'lucide-react';
 import { useTheme } from '@/state/ThemeContext';
+import ProfileSwitcher from './ProfileSwitcher';
 import './Layout.css';
 
 const NAV_ITEMS: { to: string; label: string; icon: typeof LayoutDashboard; end?: boolean }[] = [
@@ -9,6 +10,7 @@ const NAV_ITEMS: { to: string; label: string; icon: typeof LayoutDashboard; end?
   { to: '/matrix', label: 'Matrix', icon: Grid3x3 },
   { to: '/plan', label: 'Plan', icon: Map },
   { to: '/inputs', label: 'Settings', icon: Settings },
+  { to: '/report', label: 'Report', icon: FileText },
 ];
 
 export default function Layout() {
@@ -19,6 +21,7 @@ export default function Layout() {
       {/* Desktop top nav */}
       <header className="top-nav">
         <NavLink to="/" className="top-nav-title">Life Change Planner</NavLink>
+        <ProfileSwitcher />
         <button
           className="theme-toggle"
           onClick={toggle}

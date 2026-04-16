@@ -1,0 +1,195 @@
+/* ================================================
+   Profile Switcher — dropdown in top nav
+   ================================================ */
+
+.profile-switcher {
+  position: relative;
+}
+
+.profile-switcher-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--card-radius);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.profile-switcher-trigger:hover {
+  border-color: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
+}
+
+.profile-switcher-trigger .chevron-open {
+  transform: rotate(180deg);
+}
+
+.profile-switcher-trigger svg:last-child {
+  transition: transform var(--transition-fast);
+}
+
+/* --- Dropdown panel --- */
+.profile-switcher-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 200px;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-bg-tertiary);
+  border-radius: var(--card-radius);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  z-index: 200;
+  overflow: hidden;
+}
+
+/* --- Profile row --- */
+.profile-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  border-bottom: 1px solid var(--color-row-border);
+}
+
+.profile-row:hover {
+  background: var(--color-bg-tertiary);
+}
+
+.profile-row-active .profile-name-btn {
+  color: var(--color-highlight);
+}
+
+.profile-name-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: color var(--transition-fast);
+}
+
+.profile-name-btn:hover {
+  color: var(--color-highlight);
+}
+
+.profile-check {
+  flex-shrink: 0;
+  color: var(--color-highlight);
+}
+
+.profile-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding-right: var(--space-2);
+}
+
+/* --- Icon buttons --- */
+.profile-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background: none;
+  border: none;
+  border-radius: var(--card-radius);
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.profile-icon-btn:hover:not(:disabled) {
+  color: var(--color-text-primary);
+  background: var(--color-bg-tertiary);
+}
+
+.profile-icon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* --- Rename inline row --- */
+.profile-rename-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  width: 100%;
+  padding: var(--space-1) var(--space-2);
+}
+
+/* --- Inline text input --- */
+.profile-inline-input {
+  flex: 1;
+  padding: var(--space-1) var(--space-2);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--color-text-primary);
+  background: var(--color-bg-input);
+  border: 1px solid var(--color-bg-tertiary);
+  border-radius: var(--card-radius);
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.profile-inline-input:focus {
+  border-color: var(--color-highlight);
+}
+
+/* --- Add section --- */
+.profile-add-section {
+  padding: var(--space-1) 0;
+}
+
+.profile-add-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.profile-add-btn:hover {
+  color: var(--color-highlight);
+  background: var(--color-bg-tertiary);
+}
+
+.profile-add-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+}
+
+/* --- Mobile adjustments --- */
+@media (max-width: 768px) {
+  .profile-switcher-dropdown {
+    right: 0;
+    left: auto;
+    min-width: 180px;
+  }
+}

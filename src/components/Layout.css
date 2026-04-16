@@ -59,6 +59,7 @@
   display: flex;
   gap: 0;
   height: 100%;
+  margin-left: auto;
 }
 
 .top-nav-links a {
