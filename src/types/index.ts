@@ -1,4 +1,20 @@
 // ============================================
+// EDUCATION SYSTEM
+// ============================================
+
+export interface EducationSystem {
+  preschoolAge: number;
+  primaryAge: number;
+  secondaryAge: number;
+  highSchoolAge: number;
+  systemName: string;
+  languageOfInstruction: string;
+  curriculumType: string;
+  internationalSchoolOptions: string[];
+  transitionNotes: string[];
+}
+
+// ============================================
 // DESTINATION & SCENARIO DATA
 // ============================================
 
@@ -24,6 +40,11 @@ export interface Destination {
   pros: string[];
   cons: string[];
   dealbreakers: string[];
+  currency: string;              // ISO code: 'USD' | 'EUR' | 'KES' | 'MXN' | 'COP' | 'UYU'
+  defaultExchangeRate: number;   // local currency units per 1 USD
+  educationSystem: EducationSystem;
+  publicSchoolFree: boolean;
+  childcareMonthly: number;      // USD, pre-school age
 }
 
 export interface CostOfLiving {
@@ -86,6 +107,7 @@ export interface CareerPreset {
   benefitsMonetaryValue: number;
   visaCompatible: boolean;
   notes: string[];
+  localCurrencyIncome: boolean;  // true if income is denominated in local currency (affected by FX)
 }
 
 // ============================================
@@ -169,6 +191,8 @@ export interface GlobalAssumptions {
   convertToRoth: boolean;
   rothConversionTaxRate: number;
   annualRothContribution: number;
+  daughterAge: number;
+  exchangeRates: Record<string, number>;  // currency code → units per USD
 }
 
 export interface YearlyProjection {
@@ -219,6 +243,28 @@ export interface MatrixResult {
   qolScore: number;
   compositeScore: number;
   rank: number;
+}
+
+// ============================================
+// MONTE CARLO
+// ============================================
+
+export interface MonteCarloResult {
+  percentiles: {
+    p10: number[];
+    p25: number[];
+    p50: number[];
+    p75: number[];
+    p90: number[];
+  };
+  summary: {
+    p10Final: number;
+    p25Final: number;
+    p50Final: number;
+    p75Final: number;
+    p90Final: number;
+  };
+  years: number[];
 }
 
 // ============================================

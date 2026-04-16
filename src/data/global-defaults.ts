@@ -28,4 +28,13 @@ export const GLOBAL_DEFAULTS: GlobalAssumptions = {
   convertToRoth: true,
   rothConversionTaxRate: 22,
   annualRothContribution: 7000,
+
+  daughterAge: 3,
+  exchangeRates: {
+    EUR: 0.92,
+    KES: 130,
+    MXN: 17.5,
+    COP: 4200,
+    UYU: 42,
+  },
 };
