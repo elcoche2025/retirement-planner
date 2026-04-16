@@ -1,0 +1,50 @@
+/* === Inputs / Settings page === */
+
+.inputs-page h1 {
+  margin-bottom: var(--space-1);
+}
+
+.inputs-subtitle {
+  font-size: 0.85rem;
+  margin-bottom: var(--space-6);
+}
+
+.inputs-section {
+  margin-bottom: var(--space-5);
+}
+
+.inputs-section .section-title {
+  margin-bottom: var(--space-5);
+}
+
+.inputs-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* Slider row: label + value header, then range beneath */
+.slider-input-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.slider-input-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.slider-input-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.slider-input-value {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-highlight);
+  font-variant-numeric: tabular-nums;
+}
