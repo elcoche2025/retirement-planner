@@ -1,13 +1,14 @@
-import { useMemo, useEffect } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useCompareSelection, useGlobalAssumptions, useScenario } from '@/state/hooks';
 import { useAppState } from '@/state/AppStateContext';
 import { getDestination } from '@/data/destinations';
 import { simulate } from '@/engine/simulate';
+import { runMonteCarlo } from '@/engine/montecarlo';
 import { calculateQoLScore } from '@/engine/scoring';
 import ComparisonChart from '@/components/ComparisonChart';
 import DestinationSelector from '@/components/DestinationSelector';
-import type { YearlyProjection, Destination, CareerPreset } from '@/types';
+import type { YearlyProjection, Destination, CareerPreset, MonteCarloResult } from '@/types';
 import './Compare.css';
 
 const fmt = (n: number) =>
@@ -43,6 +44,7 @@ export default function Compare() {
   const { globals } = useGlobalAssumptions();
   const { state } = useAppState();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [showMC, setShowMC] = useState(false);
 
   const idA = selection[0] || '';
   const idB = selection[1] || '';
@@ -98,12 +100,40 @@ export default function Compare() {
     return getSimulation(destB, career, globals, configB);
   }, [destB, globals, state.scenarios]);
 
+  const mcA = useMemo<MonteCarloResult | undefined>(() => {
+    if (!showMC || !destA) return undefined;
+    const configA = state.scenarios[destA.id];
+    const career = destA.careerPresets.find(
+      (p) => p.id === configA?.selectedCareerPreset,
+    ) ?? destA.careerPresets[0];
+    return runMonteCarlo(destA, career, globals, {
+      dcHomeDecision: configA?.dcHomeDecision ?? 'sell',
+      moveYear: configA?.moveYear ?? globals.moveYear,
+      returnYear: configA?.returnYear ?? null,
+      customIncome: configA?.customIncome,
+    });
+  }, [showMC, destA, globals, state.scenarios]);
+
+  const mcB = useMemo<MonteCarloResult | undefined>(() => {
+    if (!showMC || !destB) return undefined;
+    const configB = state.scenarios[destB.id];
+    const career = destB.careerPresets.find(
+      (p) => p.id === configB?.selectedCareerPreset,
+    ) ?? destB.careerPresets[0];
+    return runMonteCarlo(destB, career, globals, {
+      dcHomeDecision: configB?.dcHomeDecision ?? 'sell',
+      moveYear: configB?.moveYear ?? globals.moveYear,
+      returnYear: configB?.returnYear ?? null,
+      customIncome: configB?.customIncome,
+    });
+  }, [showMC, destB, globals, state.scenarios]);
+
   const datasets = useMemo(() => {
-    const ds: { destination: Destination; projections: YearlyProjection[] }[] = [];
-    if (destA && projA.length) ds.push({ destination: destA, projections: projA });
-    if (destB && projB.length) ds.push({ destination: destB, projections: projB });
+    const ds: { destination: Destination; projections: YearlyProjection[]; monteCarlo?: MonteCarloResult }[] = [];
+    if (destA && projA.length) ds.push({ destination: destA, projections: projA, monteCarlo: mcA });
+    if (destB && projB.length) ds.push({ destination: destB, projections: projB, monteCarlo: mcB });
     return ds;
-  }, [destA, destB, projA, projB]);
+  }, [destA, destB, projA, projB, mcA, mcB]);
 
   const metricsRows = useMemo<MetricRow[]>(() => {
     if (!destA || !destB || !projA.length || !projB.length) return [];
@@ -195,7 +225,15 @@ export default function Compare() {
         <>
           {/* Chart */}
           <section className="compare-chart card">
-            <h3 className="section-title">Net Worth Projection</h3>
+            <div className="compare-chart-header">
+              <h3 className="section-title">Net Worth Projection</h3>
+              <button
+                className={`compare-mc-toggle ${showMC ? 'compare-mc-toggle-active' : ''}`}
+                onClick={() => setShowMC((v) => !v)}
+              >
+                {showMC ? 'Hide' : 'Show'} Projection Range
+              </button>
+            </div>
             <ComparisonChart datasets={datasets} dcProjections={dcProjections} />
             <div className="compare-chart-legend">
               <span className="compare-legend-item">
@@ -212,6 +250,49 @@ export default function Compare() {
               </span>
             </div>
           </section>
+
+          {/* MC stats row */}
+          {showMC && mcA && mcB && (
+            <section className="compare-mc-stats card">
+              <h3 className="section-title">Monte Carlo Range</h3>
+              <div className="compare-mc-stats-grid">
+                <div className="compare-mc-stats-col">
+                  <div className="compare-mc-stats-header" style={{ color: destA.accentColor }}>
+                    {destA.flag} {destA.name}
+                  </div>
+                  <div className="compare-mc-stat">
+                    <span className="compare-mc-stat-label">Pessimistic (p10)</span>
+                    <span className="compare-mc-stat-value mono">{fmt(mcA.summary.p10Final)}</span>
+                  </div>
+                  <div className="compare-mc-stat">
+                    <span className="compare-mc-stat-label">Median (p50)</span>
+                    <span className="compare-mc-stat-value mono">{fmt(mcA.summary.p50Final)}</span>
+                  </div>
+                  <div className="compare-mc-stat">
+                    <span className="compare-mc-stat-label">Optimistic (p90)</span>
+                    <span className="compare-mc-stat-value mono">{fmt(mcA.summary.p90Final)}</span>
+                  </div>
+                </div>
+                <div className="compare-mc-stats-col">
+                  <div className="compare-mc-stats-header" style={{ color: destB.accentColor }}>
+                    {destB.flag} {destB.name}
+                  </div>
+                  <div className="compare-mc-stat">
+                    <span className="compare-mc-stat-label">Pessimistic (p10)</span>
+                    <span className="compare-mc-stat-value mono">{fmt(mcB.summary.p10Final)}</span>
+                  </div>
+                  <div className="compare-mc-stat">
+                    <span className="compare-mc-stat-label">Median (p50)</span>
+                    <span className="compare-mc-stat-value mono">{fmt(mcB.summary.p50Final)}</span>
+                  </div>
+                  <div className="compare-mc-stat">
+                    <span className="compare-mc-stat-label">Optimistic (p90)</span>
+                    <span className="compare-mc-stat-value mono">{fmt(mcB.summary.p90Final)}</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
 
           {/* Metrics table */}
           <section className="card">

@@ -68,6 +68,81 @@
   border-color: var(--color-highlight);
 }
 
+/* --- Chart header + MC toggle --- */
+.compare-chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.compare-chart-header .section-title {
+  margin-bottom: 0;
+}
+
+.compare-mc-toggle {
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--color-bg-tertiary);
+  border-radius: 3px;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.compare-mc-toggle:hover {
+  color: var(--color-highlight);
+  border-color: var(--color-highlight);
+}
+
+.compare-mc-toggle-active {
+  color: var(--color-highlight);
+  border-color: var(--color-highlight);
+}
+
+/* --- MC stats section --- */
+.compare-mc-stats {
+  padding: var(--space-4);
+}
+
+.compare-mc-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+}
+
+.compare-mc-stats-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.compare-mc-stats-header {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+
+.compare-mc-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.8rem;
+}
+
+.compare-mc-stat-label {
+  color: var(--color-text-tertiary);
+}
+
+.compare-mc-stat-value {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+}
+
 /* --- Chart section --- */
 .compare-chart {
   padding: var(--space-4);
