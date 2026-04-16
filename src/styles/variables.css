@@ -1,0 +1,59 @@
+:root {
+  /* Core palette */
+  --color-bg-primary: #1a1a17;
+  --color-bg-secondary: #242420;
+  --color-bg-tertiary: #2e2e28;
+  --color-bg-input: #1f1f1b;
+
+  --color-text-primary: #e8e4dc;
+  --color-text-secondary: #a09a8c;
+  --color-text-tertiary: #6b6560;
+
+  /* Destination accents */
+  --color-accent-dc: #c9a96e;
+  --color-accent-kenya: #d4723c;
+  --color-accent-netherlands: #4a8fb8;
+  --color-accent-bilbao: #8b3a3a;
+  --color-accent-cdmx: #2d7d5e;
+  --color-accent-oaxaca: #9e6b3a;
+  --color-accent-medellin: #c4a035;
+  --color-accent-montevideo: #5b7a8a;
+  --color-accent-amsterdam: #e07a3a;
+  --color-accent-hague: #3a6b8b;
+
+  /* Semantic */
+  --color-positive: #6b9e6b;
+  --color-negative: #b85a5a;
+  --color-neutral: #8a8578;
+  --color-highlight: #c9a96e;
+
+  /* Section variants */
+  --color-financial-bg: var(--color-bg-secondary);
+  --color-life-bg: #262520;
+
+  /* Typography */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'IBM Plex Sans', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SF Mono', monospace;
+
+  /* Spacing (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-8: 48px;
+  --space-10: 64px;
+
+  /* Layout */
+  --max-content: 1200px;
+  --card-radius: 4px;
+  --card-border: 1px solid var(--color-bg-tertiary);
+  --card-padding: var(--space-5);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease-out;
+  --transition-number: 400ms ease-out;
+}
