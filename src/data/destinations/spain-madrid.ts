@@ -70,6 +70,7 @@ export const spainMadrid: Destination = {
       benefitsMonetaryValue: 8000,
       visaCompatible: true,
       notes: ['Digital Nomad Visa for remote work'],
+      localCurrencyIncome: false,
     },
     {
       id: 'mad-corporate-school',
@@ -91,6 +92,7 @@ export const spainMadrid: Destination = {
       benefitsMonetaryValue: 12000,
       visaCompatible: true,
       notes: ['Best career market in Spain'],
+      localCurrencyIncome: true,
     },
   ],
 
@@ -146,4 +148,24 @@ export const spainMadrid: Destination = {
   ],
 
   dealbreakers: [],
+
+  currency: 'EUR',
+  defaultExchangeRate: 0.92,
+  educationSystem: {
+    preschoolAge: 3,
+    primaryAge: 6,
+    secondaryAge: 12,
+    highSchoolAge: 16,
+    systemName: 'Spanish system (Madrid)',
+    languageOfInstruction: 'Spanish',
+    curriculumType: 'Spanish national, IB',
+    internationalSchoolOptions: ['American School of Madrid', 'International College Spain', 'British Council School'],
+    transitionNotes: [
+      'Madrid has the most international school options in Spain',
+      'Pure Castilian Spanish immersion in public schools',
+      'Many multinational families provide transition community',
+    ],
+  },
+  publicSchoolFree: true,
+  childcareMonthly: 400,
 };

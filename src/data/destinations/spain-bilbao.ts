@@ -71,6 +71,7 @@ export const spainBilbao: Destination = {
       benefitsMonetaryValue: 8000,
       visaCompatible: true,
       notes: ['Digital Nomad Visa or Non-Lucrative Visa'],
+      localCurrencyIncome: false,
     },
     {
       id: 'bilbao-local',
@@ -91,6 +92,7 @@ export const spainBilbao: Destination = {
       benefitsMonetaryValue: 12000,
       visaCompatible: true,
       notes: ['Lower income but extremely low cost of living'],
+      localCurrencyIncome: true,
     },
   ],
 
@@ -149,4 +151,24 @@ export const spainBilbao: Destination = {
   ],
 
   dealbreakers: [],
+
+  currency: 'EUR',
+  defaultExchangeRate: 0.92,
+  educationSystem: {
+    preschoolAge: 3,
+    primaryAge: 6,
+    secondaryAge: 12,
+    highSchoolAge: 16,
+    systemName: 'Spanish system (Basque Country)',
+    languageOfInstruction: 'Spanish / Basque (Euskara)',
+    curriculumType: 'Spanish national, Basque regional, IB',
+    internationalSchoolOptions: ['Colegio Ingles', 'Lauro Ikastola (Basque immersion)'],
+    transitionNotes: [
+      'Basque Country offers trilingual education (Basque + Spanish + English)',
+      'Public preschool available from age 3',
+      'Smaller expat community means faster language immersion',
+    ],
+  },
+  publicSchoolFree: true,
+  childcareMonthly: 400,
 };

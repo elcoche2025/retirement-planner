@@ -70,6 +70,7 @@ export const uruguayMontevideo: Destination = {
       benefitsMonetaryValue: 5000,
       visaCompatible: true,
       notes: ['Extraordinary tax benefit for remote workers'],
+      localCurrencyIncome: false,
     },
     {
       id: 'mvd-school-remote',
@@ -90,6 +91,7 @@ export const uruguayMontevideo: Destination = {
       benefitsMonetaryValue: 15000,
       visaCompatible: true,
       notes: ['Local teacher salary $20K-$30K'],
+      localCurrencyIncome: true,
     },
     {
       id: 'mvd-entrepreneur',
@@ -110,6 +112,7 @@ export const uruguayMontevideo: Destination = {
       benefitsMonetaryValue: 3000,
       visaCompatible: true,
       notes: ['Tax-optimized for investment and passive income streams'],
+      localCurrencyIncome: false,
     },
   ],
 
@@ -174,4 +177,24 @@ export const uruguayMontevideo: Destination = {
   ],
 
   dealbreakers: [],
+
+  currency: 'UYU',
+  defaultExchangeRate: 42,
+  educationSystem: {
+    preschoolAge: 3,
+    primaryAge: 6,
+    secondaryAge: 12,
+    highSchoolAge: 15,
+    systemName: 'Uruguayan education system',
+    languageOfInstruction: 'Spanish',
+    curriculumType: 'Uruguayan national, IB',
+    internationalSchoolOptions: ['Uruguayan American School (UAS)', 'GEMS Academy Montevideo', 'British Schools'],
+    transitionNotes: [
+      'UAS follows American curriculum — smooth transition from US schools',
+      'Tax Holiday benefits make international school tuition more affordable',
+      'Small but welcoming international community in Montevideo',
+    ],
+  },
+  publicSchoolFree: true,
+  childcareMonthly: 300,
 };

@@ -71,6 +71,7 @@ export const spainBarcelona: Destination = {
       benefitsMonetaryValue: 8000,
       visaCompatible: true,
       notes: ['Digital Nomad Visa required for remote work'],
+      localCurrencyIncome: false,
     },
     {
       id: 'bcn-tech-school',
@@ -90,6 +91,7 @@ export const spainBarcelona: Destination = {
       benefitsMonetaryValue: 12000,
       visaCompatible: true,
       notes: ['School sponsorship for work visa'],
+      localCurrencyIncome: true,
     },
   ],
 
@@ -150,4 +152,24 @@ export const spainBarcelona: Destination = {
   ],
 
   dealbreakers: [],
+
+  currency: 'EUR',
+  defaultExchangeRate: 0.92,
+  educationSystem: {
+    preschoolAge: 3,
+    primaryAge: 6,
+    secondaryAge: 12,
+    highSchoolAge: 16,
+    systemName: 'Spanish system (Catalonia)',
+    languageOfInstruction: 'Spanish / Catalan',
+    curriculumType: 'Spanish national, Catalan regional, IB',
+    internationalSchoolOptions: ['Benjamin Franklin International School', 'American School of Barcelona', 'British School of Barcelona'],
+    transitionNotes: [
+      'Catalan is the primary language of instruction in public schools',
+      'International schools teach in English with Spanish/Catalan',
+      'Large expat community provides transition support networks',
+    ],
+  },
+  publicSchoolFree: true,
+  childcareMonthly: 450,
 };

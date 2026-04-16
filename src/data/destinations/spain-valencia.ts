@@ -70,6 +70,7 @@ export const spainValencia: Destination = {
       benefitsMonetaryValue: 8000,
       visaCompatible: true,
       notes: ['Digital Nomad Visa for remote work'],
+      localCurrencyIncome: false,
     },
     {
       id: 'val-school-remote',
@@ -89,6 +90,7 @@ export const spainValencia: Destination = {
       benefitsMonetaryValue: 10000,
       visaCompatible: true,
       notes: ['Local school salary is lower but cost of living is very low'],
+      localCurrencyIncome: false,
     },
   ],
 
@@ -147,4 +149,24 @@ export const spainValencia: Destination = {
   ],
 
   dealbreakers: [],
+
+  currency: 'EUR',
+  defaultExchangeRate: 0.92,
+  educationSystem: {
+    preschoolAge: 3,
+    primaryAge: 6,
+    secondaryAge: 12,
+    highSchoolAge: 16,
+    systemName: 'Spanish system (Valencia)',
+    languageOfInstruction: 'Spanish / Valencian',
+    curriculumType: 'Spanish national, Valencian regional, IB',
+    internationalSchoolOptions: ['American School of Valencia', 'Caxton College', 'Cambridge House'],
+    transitionNotes: [
+      'Free public preschool available from age 3',
+      'Valencian (similar to Catalan) used alongside Spanish in public schools',
+      'Growing digital nomad family community eases transition',
+    ],
+  },
+  publicSchoolFree: true,
+  childcareMonthly: 350,
 };

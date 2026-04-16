@@ -66,6 +66,7 @@ export const dcBaseline: Destination = {
       benefitsMonetaryValue: 35000,
       visaCompatible: true,
       notes: ['Stable but potentially stagnant', 'Golden handcuffs with pension'],
+      localCurrencyIncome: false,
     },
   ],
 
@@ -116,4 +117,23 @@ export const dcBaseline: Destination = {
   ],
 
   dealbreakers: [],
+
+  currency: 'USD',
+  defaultExchangeRate: 1,
+  educationSystem: {
+    preschoolAge: 3,
+    primaryAge: 5,
+    secondaryAge: 11,
+    highSchoolAge: 14,
+    systemName: 'US K-12 system',
+    languageOfInstruction: 'English',
+    curriculumType: 'US Common Core / DCPS',
+    internationalSchoolOptions: [],
+    transitionNotes: [
+      'DCPS provides free public education K-12',
+      'Strong SPED services through IEP system',
+    ],
+  },
+  publicSchoolFree: true,
+  childcareMonthly: 2500,
 };

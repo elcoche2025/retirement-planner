@@ -78,6 +78,7 @@ export const nlTheHague: Destination = {
         'Kara\u2019s salary is ASH median \u20AC75K ($81K). Range: \u20AC68K-\u20AC80K.',
         'DAFT holders can ONLY be self-employed. Cannot accept salaried work.',
       ],
+      localCurrencyIncome: true,
     },
     {
       id: 'hague-daft-kara-independent',
@@ -103,6 +104,7 @@ export const nlTheHague: Destination = {
         'No 30% ruling (applies to salaried employees only).',
         'No tuition waiver without ASH employment.',
       ],
+      localCurrencyIncome: false,
     },
     {
       id: 'hague-both-schools',
@@ -129,6 +131,7 @@ export const nlTheHague: Destination = {
         'ASH actively recruits SPED teachers. 8+ SEN positions listed in current postings.',
         'Highest stable income but no IEP Pulse business growth.',
       ],
+      localCurrencyIncome: true,
     },
   ],
 
@@ -196,4 +199,25 @@ export const nlTheHague: Destination = {
   dealbreakers: [
     'Must renounce other citizenship for Dutch citizenship (if pursuing)',
   ],
+
+  currency: 'EUR',
+  defaultExchangeRate: 0.92,
+  educationSystem: {
+    preschoolAge: 2,
+    primaryAge: 4,
+    secondaryAge: 12,
+    highSchoolAge: 12,
+    systemName: 'Dutch basisschool (8 years, age 4-12)',
+    languageOfInstruction: 'Dutch (English at international schools)',
+    curriculumType: 'IB, American (ASH), British (BSN), Dutch national',
+    internationalSchoolOptions: ['ASH (American School of The Hague)', 'BSN (British School)', 'Lighthouse Special Education'],
+    transitionNotes: [
+      'Basisschool starts at age 4 — completely free',
+      'Age 2-4 ideal for Dutch language immersion via kinderdagverblijf',
+      'ASH tuition waiver if Kara is employed there',
+      'Childcare subsidized up to 96% at lower incomes',
+    ],
+  },
+  publicSchoolFree: true,
+  childcareMonthly: 600,
 };

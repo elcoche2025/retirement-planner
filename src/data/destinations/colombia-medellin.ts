@@ -68,6 +68,7 @@ export const colombiaMedellin: Destination = {
       benefitsMonetaryValue: 5000,
       visaCompatible: true,
       notes: ['Digital Nomad Visa (Type V)'],
+      localCurrencyIncome: false,
     },
     {
       id: 'med-school-remote',
@@ -88,6 +89,7 @@ export const colombiaMedellin: Destination = {
       benefitsMonetaryValue: 12000,
       visaCompatible: true,
       notes: ['Local teacher salary $20K-$35K'],
+      localCurrencyIncome: true,
     },
     {
       id: 'med-entrepreneur',
@@ -108,6 +110,7 @@ export const colombiaMedellin: Destination = {
       benefitsMonetaryValue: 3000,
       visaCompatible: true,
       notes: ['High growth potential; Medell\u00EDn is a startup hub'],
+      localCurrencyIncome: false,
     },
   ],
 
@@ -170,4 +173,24 @@ export const colombiaMedellin: Destination = {
   ],
 
   dealbreakers: [],
+
+  currency: 'COP',
+  defaultExchangeRate: 4200,
+  educationSystem: {
+    preschoolAge: 3,
+    primaryAge: 6,
+    secondaryAge: 11,
+    highSchoolAge: 15,
+    systemName: 'Colombian education system',
+    languageOfInstruction: 'Spanish',
+    curriculumType: 'Colombian national, IB',
+    internationalSchoolOptions: ['Columbus School', 'The Columbus School (TCS)', 'Colegio Montessori'],
+    transitionNotes: [
+      'Columbus School follows American curriculum with IB option',
+      'Several bilingual schools offer English-Spanish instruction',
+      'Medellin has a growing international family community',
+    ],
+  },
+  publicSchoolFree: true,
+  childcareMonthly: 200,
 };

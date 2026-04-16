@@ -71,6 +71,7 @@ export const mexicoCdmx: Destination = {
       benefitsMonetaryValue: 5000,
       visaCompatible: true,
       notes: ['Temporary Resident Visa required'],
+      localCurrencyIncome: false,
     },
     {
       id: 'cdmx-school-remote',
@@ -91,6 +92,7 @@ export const mexicoCdmx: Destination = {
       benefitsMonetaryValue: 15000,
       visaCompatible: true,
       notes: ['Local teacher salary $25K-$45K'],
+      localCurrencyIncome: true,
     },
     {
       id: 'cdmx-entrepreneur',
@@ -111,6 +113,7 @@ export const mexicoCdmx: Destination = {
       benefitsMonetaryValue: 3000,
       visaCompatible: true,
       notes: ['High growth potential but high risk in early years'],
+      localCurrencyIncome: false,
     },
     {
       id: 'cdmx-ngo',
@@ -131,6 +134,7 @@ export const mexicoCdmx: Destination = {
       benefitsMonetaryValue: 8000,
       visaCompatible: true,
       notes: ['NGO may sponsor work visa'],
+      localCurrencyIncome: true,
     },
   ],
 
@@ -194,4 +198,24 @@ export const mexicoCdmx: Destination = {
   ],
 
   dealbreakers: [],
+
+  currency: 'MXN',
+  defaultExchangeRate: 17.5,
+  educationSystem: {
+    preschoolAge: 3,
+    primaryAge: 6,
+    secondaryAge: 12,
+    highSchoolAge: 15,
+    systemName: 'Mexican SEP system',
+    languageOfInstruction: 'Spanish',
+    curriculumType: 'Mexican national (SEP), IB',
+    internationalSchoolOptions: ['American School Foundation', 'Greengates School', 'Westhill Institute'],
+    transitionNotes: [
+      'Many bilingual private schools offer smooth English-Spanish transition',
+      'International schools follow US/IB curriculum in English',
+      'Public preschool available from age 3 but quality varies',
+    ],
+  },
+  publicSchoolFree: true,
+  childcareMonthly: 250,
 };

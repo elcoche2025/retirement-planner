@@ -68,6 +68,7 @@ export const kenyaNairobi: Destination = {
       benefitsMonetaryValue: 30000,
       visaCompatible: true,
       notes: ['School typically sponsors work permit'],
+      localCurrencyIncome: true,
     },
     {
       id: 'kenya-both-remote',
@@ -87,6 +88,7 @@ export const kenyaNairobi: Destination = {
       benefitsMonetaryValue: 5000,
       visaCompatible: true,
       notes: ['Need to structure visa carefully for remote work'],
+      localCurrencyIncome: false,
     },
     {
       id: 'kenya-ngo-education',
@@ -108,6 +110,7 @@ export const kenyaNairobi: Destination = {
       benefitsMonetaryValue: 20000,
       visaCompatible: true,
       notes: ['NGO typically sponsors visa'],
+      localCurrencyIncome: true,
     },
   ],
 
@@ -169,4 +172,24 @@ export const kenyaNairobi: Destination = {
   dealbreakers: [
     'Healthcare access for serious medical emergencies',
   ],
+
+  currency: 'KES',
+  defaultExchangeRate: 130,
+  educationSystem: {
+    preschoolAge: 3,
+    primaryAge: 6,
+    secondaryAge: 14,
+    highSchoolAge: 14,
+    systemName: 'Kenyan 8-4-4 / CBC system',
+    languageOfInstruction: 'English and Swahili',
+    curriculumType: 'Kenyan CBC, British, IB (at international schools)',
+    internationalSchoolOptions: ['ISK (International School of Kenya)', 'Braeburn', 'Rosslyn Academy'],
+    transitionNotes: [
+      'International schools teach in English — smooth transition from US',
+      'ISK follows American curriculum with IB option',
+      'Age 3-5 ideal for dual-language immersion (English + Swahili)',
+    ],
+  },
+  publicSchoolFree: false,
+  childcareMonthly: 300,
 };

@@ -79,6 +79,7 @@ export const nlAmsterdam: Destination = {
         'ISA salary lower than ASH. Range: \u20AC60K-\u20AC71K.',
         'Amsterdam COL significantly higher than The Hague.',
       ],
+      localCurrencyIncome: true,
     },
     {
       id: 'ams-daft-tech',
@@ -104,6 +105,7 @@ export const nlAmsterdam: Destination = {
         'Kara needs HSM visa qualification through employer (salary \u20AC48K+).',
         'Higher COL than Hague offsets higher Kara salary.',
       ],
+      localCurrencyIncome: true,
     },
     {
       id: 'ams-both-schools',
@@ -128,6 +130,7 @@ export const nlAmsterdam: Destination = {
         'Requires employer-sponsored HSM visa (not DAFT).',
         'Stable but no IEP Pulse business growth.',
       ],
+      localCurrencyIncome: true,
     },
   ],
 
@@ -192,4 +195,24 @@ export const nlAmsterdam: Destination = {
   ],
 
   dealbreakers: [],
+
+  currency: 'EUR',
+  defaultExchangeRate: 0.92,
+  educationSystem: {
+    preschoolAge: 2,
+    primaryAge: 4,
+    secondaryAge: 12,
+    highSchoolAge: 12,
+    systemName: 'Dutch basisschool (8 years, age 4-12)',
+    languageOfInstruction: 'Dutch (English at international schools)',
+    curriculumType: 'IB, American (ISA), British, Dutch national',
+    internationalSchoolOptions: ['ISA (International School of Amsterdam)', 'British School of Amsterdam', 'Amsterdam International Community School'],
+    transitionNotes: [
+      'Basisschool starts at age 4 — completely free',
+      'Amsterdam has the most international school options in NL',
+      'Childcare subsidized but Amsterdam waitlists can be long',
+    ],
+  },
+  publicSchoolFree: true,
+  childcareMonthly: 700,
 };

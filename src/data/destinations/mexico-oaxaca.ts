@@ -71,6 +71,7 @@ export const mexicoOaxaca: Destination = {
       benefitsMonetaryValue: 3000,
       visaCompatible: true,
       notes: ['Highest potential savings rate on this list'],
+      localCurrencyIncome: false,
     },
     {
       id: 'oaxaca-creative-remote',
@@ -91,6 +92,7 @@ export const mexicoOaxaca: Destination = {
       benefitsMonetaryValue: 3000,
       visaCompatible: true,
       notes: ['Lifestyle choice over career optimization'],
+      localCurrencyIncome: false,
     },
     {
       id: 'oaxaca-local-school',
@@ -111,6 +113,7 @@ export const mexicoOaxaca: Destination = {
       benefitsMonetaryValue: 5000,
       visaCompatible: true,
       notes: ['Local salary $12K-$18K; Kara\u2019s remote income is the anchor'],
+      localCurrencyIncome: true,
     },
   ],
 
@@ -173,4 +176,24 @@ export const mexicoOaxaca: Destination = {
   dealbreakers: [
     'Limited schooling options may not work long-term for daughter',
   ],
+
+  currency: 'MXN',
+  defaultExchangeRate: 17.5,
+  educationSystem: {
+    preschoolAge: 3,
+    primaryAge: 6,
+    secondaryAge: 12,
+    highSchoolAge: 15,
+    systemName: 'Mexican SEP system',
+    languageOfInstruction: 'Spanish',
+    curriculumType: 'Mexican national (SEP)',
+    internationalSchoolOptions: ['Oaxaca International School'],
+    transitionNotes: [
+      'Limited international school options compared to CDMX',
+      'Bilingual private schools offer Spanish-English instruction',
+      'Deep cultural immersion opportunity but fewer English-language resources',
+    ],
+  },
+  publicSchoolFree: true,
+  childcareMonthly: 150,
 };
