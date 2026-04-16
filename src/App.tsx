@@ -3,7 +3,7 @@ import RetirementPlanner from "./RetirementPlanner";
 
 const HASH = "78163a9b32a43d0bf9bf5a80cd700105ddd6e3abe279bb190fa9b97f05c59e77";
 
-async function sha256(str) {
+async function sha256(str: string): Promise<string> {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
   return Array.from(new Uint8Array(buf))
     .map((b) => b.toString(16).padStart(2, "0"))
@@ -45,7 +45,7 @@ export default function App() {
     }
   }
 
-  function handleKeyDown(e) {
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") tryAuth();
     if (error) setError(false);
   }
