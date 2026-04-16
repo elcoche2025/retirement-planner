@@ -1,0 +1,173 @@
+/* ================================================
+   Decision Matrix Page
+   ================================================ */
+
+.matrix-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.matrix-page h1 {
+  margin-bottom: var(--space-1);
+}
+
+.matrix-subtitle {
+  font-size: 0.85rem;
+  color: var(--color-text-tertiary);
+  margin-bottom: var(--space-2);
+}
+
+/* --- Presets row --- */
+.matrix-presets {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-4);
+}
+
+/* --- Weights config --- */
+.matrix-weights-section {
+  padding: var(--space-4);
+}
+
+.matrix-weights-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4) var(--space-6);
+  margin-top: var(--space-4);
+}
+
+.matrix-financial-weight {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-bg-tertiary);
+}
+
+.weight-slider-desc {
+  font-size: 0.7rem;
+  color: var(--color-text-tertiary);
+  margin-top: 2px;
+  padding-left: 2px;
+}
+
+/* --- Matrix table --- */
+.matrix-table-section {
+  overflow: visible;
+}
+
+.matrix-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  min-width: 700px;
+}
+
+.matrix-table th {
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  padding: var(--space-2) var(--space-2);
+  border-bottom: 1px solid var(--color-bg-tertiary);
+  white-space: nowrap;
+}
+
+.matrix-table th:first-child {
+  text-align: left;
+  min-width: 120px;
+}
+
+.matrix-table td {
+  text-align: center;
+  padding: var(--space-2);
+  border-bottom: 1px solid rgba(46, 46, 40, 0.5);
+  color: var(--color-text-primary);
+}
+
+.matrix-table td:first-child {
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.matrix-table tr:hover td {
+  background: rgba(46, 46, 40, 0.2);
+}
+
+.matrix-table .matrix-row-composite td {
+  border-top: 2px solid var(--color-bg-tertiary);
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
+}
+
+.matrix-table .matrix-row-rank td {
+  font-weight: 600;
+  color: var(--color-text-tertiary);
+  font-size: 0.7rem;
+}
+
+.matrix-winner-col {
+  background: rgba(201, 169, 110, 0.06);
+}
+
+/* Heat map tinting */
+.matrix-cell-best {
+  color: var(--color-positive);
+}
+
+.matrix-cell-worst {
+  color: var(--color-negative);
+}
+
+/* --- Sensitivity analysis --- */
+.matrix-sensitivity {
+  margin-top: var(--space-4);
+}
+
+.matrix-sensitivity-card {
+  background: var(--color-bg-secondary);
+  border: 1px solid #c9a96e;
+  border-radius: var(--card-radius);
+  padding: var(--space-4);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+.matrix-sensitivity-card p {
+  margin: var(--space-2) 0;
+}
+
+.matrix-sensitivity-robust {
+  border-color: var(--color-positive);
+}
+
+.matrix-sensitivity-label {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-highlight);
+  margin-bottom: var(--space-2);
+}
+
+@media (max-width: 768px) {
+  .matrix-weights-grid {
+    grid-template-columns: 1fr;
+  }
+}

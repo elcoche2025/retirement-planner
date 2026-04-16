@@ -1,7 +1,348 @@
+import { useMemo } from 'react';
+import { useQoLWeights, useGlobalAssumptions } from '@/state/hooks';
+import { useAppState } from '@/state/AppStateContext';
+import { ALL_DESTINATIONS, getDestination } from '@/data/destinations';
+import { QOL_DIMENSION_META } from '@/data/qol-dimensions';
+import { WEIGHT_PRESETS } from '@/data/weight-presets';
+import { simulate } from '@/engine/simulate';
+import {
+  calculateQoLScore,
+  normalizeFinancialScore,
+  calculateCompositeScore,
+  rankDestinations,
+} from '@/engine/scoring';
+import WeightSlider from '@/components/WeightSlider';
+import type { QoLDimension, QualityOfLifeRatings, QoLWeights, Destination } from '@/types';
+import { QOL_DIMENSIONS } from '@/types';
+import './Matrix.css';
+
+const NON_DC_DESTINATIONS = ALL_DESTINATIONS.filter((d) => d.id !== 'dc-baseline');
+
+interface DestColumn {
+  destination: Destination;
+  effectiveQoL: QualityOfLifeRatings;
+  netWorth: number;
+  financialScore: number;
+  qolScore: number;
+  compositeScore: number;
+  rank: number;
+}
+
 export default function Matrix() {
+  const { weights, updateWeights } = useQoLWeights();
+  const { globals } = useGlobalAssumptions();
+  const { state } = useAppState();
+
+  const setDimensionWeight = (dim: QoLDimension, val: number) => {
+    updateWeights({
+      ...weights,
+      weights: { ...weights.weights, [dim]: val },
+    });
+  };
+
+  const setFinancialWeight = (val: number) => {
+    updateWeights({ ...weights, financialWeight: val });
+  };
+
+  const applyPreset = (preset: QoLWeights) => {
+    updateWeights(preset);
+  };
+
+  // Build columns: simulate each destination, compute scores
+  const columns = useMemo<DestColumn[]>(() => {
+    // First pass: simulate to get net worths
+    const rawCols = NON_DC_DESTINATIONS.map((dest) => {
+      const scenarioConfig = state.scenarios[dest.id];
+      const career =
+        dest.careerPresets.find((p) => p.id === scenarioConfig?.selectedCareerPreset) ??
+        dest.careerPresets[0];
+
+      const projections = simulate(dest, career, globals, {
+        dcHomeDecision: scenarioConfig?.dcHomeDecision ?? 'sell',
+        moveYear: scenarioConfig?.moveYear ?? globals.moveYear,
+        returnYear: scenarioConfig?.returnYear ?? null,
+        customIncome: scenarioConfig?.customIncome,
+      });
+
+      const lastYear = projections[projections.length - 1];
+      const netWorth = lastYear?.totalNetWorth ?? 0;
+
+      const effectiveQoL: QualityOfLifeRatings = {
+        ...dest.qolDefaults,
+        ...scenarioConfig?.customQoLRatings,
+      };
+
+      return { destination: dest, effectiveQoL, netWorth };
+    });
+
+    // Normalize financial scores
+    const netWorths = rawCols.map((c) => c.netWorth);
+    const minNW = Math.min(...netWorths);
+    const maxNW = Math.max(...netWorths);
+
+    const scored = rawCols.map((col) => {
+      const financialScore = normalizeFinancialScore(col.netWorth, minNW, maxNW);
+      const qolScore = calculateQoLScore(col.effectiveQoL, weights);
+      const compositeScore = calculateCompositeScore(financialScore, qolScore, weights.financialWeight);
+      return { ...col, financialScore, qolScore, compositeScore, rank: 0 };
+    });
+
+    // Rank and sort
+    const ranked = rankDestinations(
+      scored.map((s) => ({
+        destinationId: s.destination.id,
+        financialScore: s.financialScore,
+        qolScore: s.qolScore,
+        compositeScore: s.compositeScore,
+      })),
+    );
+
+    // Merge ranks, sort by rank
+    const withRank = scored
+      .map((s) => {
+        const r = ranked.find((rk) => rk.destinationId === s.destination.id);
+        return { ...s, rank: r?.rank ?? 99 };
+      })
+      .sort((a, b) => a.rank - b.rank);
+
+    return withRank;
+  }, [globals, state.scenarios, weights]);
+
+  // Heat map: per row, determine best/worst
+  function cellClass(values: number[], idx: number, higherIsBetter: boolean): string {
+    if (values.length < 2) return '';
+    const max = Math.max(...values);
+    const min = Math.min(...values);
+    if (max === min) return '';
+    const val = values[idx];
+    if (higherIsBetter) {
+      if (val === max) return 'matrix-cell-best';
+      if (val === min) return 'matrix-cell-worst';
+    } else {
+      if (val === min) return 'matrix-cell-best';
+      if (val === max) return 'matrix-cell-worst';
+    }
+    return '';
+  }
+
+  // Sensitivity analysis
+  const sensitivityFlips = useMemo<string[]>(() => {
+    if (columns.length < 2) return [];
+    const current1 = columns[0];
+    const current2 = columns[1];
+    const flips: string[] = [];
+
+    for (const dim of QOL_DIMENSIONS) {
+      const meta = QOL_DIMENSION_META.find((m) => m.id === dim);
+      const currentWeight = weights.weights[dim];
+      const testWeight = Math.min(10, currentWeight + 3);
+      if (testWeight === currentWeight) continue;
+
+      const testWeights: QoLWeights = {
+        ...weights,
+        weights: { ...weights.weights, [dim]: testWeight },
+      };
+
+      // Recompute scores with modified weight
+      const netWorths = columns.map((c) => c.netWorth);
+      const minNW = Math.min(...netWorths);
+      const maxNW = Math.max(...netWorths);
+
+      const rescored = columns.map((col) => {
+        const financialScore = normalizeFinancialScore(col.netWorth, minNW, maxNW);
+        const qolScore = calculateQoLScore(col.effectiveQoL, testWeights);
+        const compositeScore = calculateCompositeScore(financialScore, qolScore, testWeights.financialWeight);
+        return { destinationId: col.destination.id, compositeScore };
+      });
+
+      rescored.sort((a, b) => b.compositeScore - a.compositeScore);
+
+      if (rescored[0].destinationId !== current1.destination.id) {
+        const newWinner = getDestination(rescored[0].destinationId);
+        if (newWinner && meta) {
+          flips.push(
+            `If ${meta.label} weight goes from ${currentWeight} to ${testWeight}, ${newWinner.name} overtakes ${current1.destination.name}.`,
+          );
+        }
+      }
+    }
+
+    // Also test financial weight
+    const testFinWeight = Math.min(10, weights.financialWeight + 3);
+    if (testFinWeight !== weights.financialWeight) {
+      const netWorths = columns.map((c) => c.netWorth);
+      const minNW = Math.min(...netWorths);
+      const maxNW = Math.max(...netWorths);
+
+      const testWeights: QoLWeights = { ...weights, financialWeight: testFinWeight };
+      const rescored = columns.map((col) => {
+        const financialScore = normalizeFinancialScore(col.netWorth, minNW, maxNW);
+        const qolScore = calculateQoLScore(col.effectiveQoL, testWeights);
+        const compositeScore = calculateCompositeScore(financialScore, qolScore, testFinWeight);
+        return { destinationId: col.destination.id, compositeScore };
+      });
+      rescored.sort((a, b) => b.compositeScore - a.compositeScore);
+
+      if (rescored[0].destinationId !== columns[0].destination.id) {
+        const newWinner = getDestination(rescored[0].destinationId);
+        if (newWinner) {
+          flips.push(
+            `If Financial weight goes from ${weights.financialWeight} to ${testFinWeight}, ${newWinner.name} overtakes ${columns[0].destination.name}.`,
+          );
+        }
+      }
+    }
+
+    return flips;
+  }, [columns, weights]);
+
+  const winnerId = columns[0]?.destination.id;
+
   return (
-    <div className="page-enter">
-      <h1>Matrix</h1>
+    <div className="page-enter matrix-page">
+      <h1>Decision Matrix</h1>
+      <p className="matrix-subtitle">Weighted scoring across all dimensions.</p>
+
+      {/* Weight configuration */}
+      <section className="matrix-weights-section card">
+        <h3 className="section-title">Weights</h3>
+
+        <div className="matrix-presets">
+          {WEIGHT_PRESETS.map((preset) => (
+            <button
+              key={preset.id}
+              className={`btn ${state.matrixPreset === preset.id ? 'btn-active' : ''}`}
+              onClick={() => applyPreset(preset.weights)}
+            >
+              {preset.name}
+            </button>
+          ))}
+        </div>
+
+        <div className="matrix-weights-grid">
+          {QOL_DIMENSION_META.map((meta) => (
+            <WeightSlider
+              key={meta.id}
+              label={meta.label}
+              value={weights.weights[meta.id]}
+              onChange={(v) => setDimensionWeight(meta.id, v)}
+              description={meta.description}
+            />
+          ))}
+        </div>
+
+        <div className="matrix-financial-weight">
+          <WeightSlider
+            label="Financial Score"
+            value={weights.financialWeight}
+            onChange={setFinancialWeight}
+            description="How much terminal net worth matters vs quality of life"
+          />
+        </div>
+      </section>
+
+      {/* Matrix table */}
+      <section className="matrix-table-section card">
+        <h3 className="section-title">Ranking</h3>
+        <div className="matrix-table-wrapper">
+          <table className="matrix-table">
+            <thead>
+              <tr>
+                <th>Dimension</th>
+                {columns.map((col) => (
+                  <th
+                    key={col.destination.id}
+                    className={col.destination.id === winnerId ? 'matrix-winner-col' : ''}
+                  >
+                    {col.destination.flag} {col.destination.city}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {/* QoL dimension rows */}
+              {QOL_DIMENSION_META.map((meta) => {
+                const dim = meta.id as QoLDimension;
+                const values = columns.map((c) => c.effectiveQoL[dim]);
+                return (
+                  <tr key={dim}>
+                    <td>{meta.label}</td>
+                    {columns.map((col, i) => (
+                      <td
+                        key={col.destination.id}
+                        className={`${cellClass(values, i, true)} ${col.destination.id === winnerId ? 'matrix-winner-col' : ''}`}
+                      >
+                        {col.effectiveQoL[dim]}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+
+              {/* Financial score row */}
+              <tr>
+                <td>Financial Score</td>
+                {columns.map((col, i) => {
+                  const values = columns.map((c) => c.financialScore);
+                  return (
+                    <td
+                      key={col.destination.id}
+                      className={`${cellClass(values, i, true)} ${col.destination.id === winnerId ? 'matrix-winner-col' : ''}`}
+                    >
+                      {col.financialScore.toFixed(0)}
+                    </td>
+                  );
+                })}
+              </tr>
+
+              {/* Composite score row */}
+              <tr className="matrix-row-composite">
+                <td>Composite Score</td>
+                {columns.map((col) => (
+                  <td
+                    key={col.destination.id}
+                    className={col.destination.id === winnerId ? 'matrix-winner-col' : ''}
+                  >
+                    {col.compositeScore.toFixed(1)}
+                  </td>
+                ))}
+              </tr>
+
+              {/* Rank row */}
+              <tr className="matrix-row-rank">
+                <td>Rank</td>
+                {columns.map((col) => (
+                  <td
+                    key={col.destination.id}
+                    className={col.destination.id === winnerId ? 'matrix-winner-col' : ''}
+                  >
+                    #{col.rank}
+                  </td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* Sensitivity analysis */}
+      <section className="matrix-sensitivity">
+        <h3 className="section-title">Sensitivity Analysis</h3>
+        <div
+          className={`matrix-sensitivity-card ${sensitivityFlips.length === 0 ? 'matrix-sensitivity-robust' : ''}`}
+        >
+          <div className="matrix-sensitivity-label">
+            {sensitivityFlips.length > 0 ? 'Potential Flips' : 'Robust Result'}
+          </div>
+          {sensitivityFlips.length === 0 ? (
+            <p>
+              The current winner is robust. No single weight increase of +3 changes the top ranking.
+            </p>
+          ) : (
+            sensitivityFlips.map((flip, i) => <p key={i}>{flip}</p>)
+          )}
+        </div>
+      </section>
     </div>
   );
 }
