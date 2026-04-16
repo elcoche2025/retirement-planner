@@ -1,0 +1,78 @@
+/* ================================================
+   Destination Card — dashboard grid item
+   ================================================ */
+
+.destination-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  text-decoration: none;
+  color: inherit;
+  border-left: 3px solid var(--accent, var(--color-highlight));
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+  cursor: pointer;
+}
+
+.destination-card:hover {
+  text-decoration: none;
+  background: var(--color-bg-tertiary);
+}
+
+.destination-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.destination-card-flag {
+  font-size: 1.1rem;
+}
+
+.destination-card-name {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.destination-card-body {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.destination-card-stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.destination-card-stat-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent, var(--color-highlight));
+}
+
+.destination-card-stat-label {
+  font-size: 0.65rem;
+  color: var(--color-text-tertiary);
+  display: block;
+}
+
+.destination-card-sparkline {
+  width: 120px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.destination-card-footer {
+  border-top: 1px solid var(--color-bg-tertiary);
+  padding-top: var(--space-2);
+}
+
+.destination-card-career {
+  font-size: 0.7rem;
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.02em;
+}
