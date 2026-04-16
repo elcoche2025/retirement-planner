@@ -1,0 +1,88 @@
+import type { WeightPreset } from '@/types';
+
+export const WEIGHT_PRESETS: WeightPreset[] = [
+  {
+    id: 'balanced',
+    name: 'Balanced',
+    weights: {
+      weights: {
+        familyProximity: 5,
+        childEducation: 5,
+        languageEnvironment: 5,
+        healthcareQuality: 5,
+        safety: 5,
+        climate: 5,
+        culturalFit: 5,
+        careerSatisfaction: 5,
+        communityBuilding: 5,
+        politicalStability: 5,
+        adventureNovelty: 5,
+        returnFlexibility: 5,
+      },
+      financialWeight: 5,
+    },
+  },
+  {
+    id: 'family-first',
+    name: 'Family First',
+    weights: {
+      weights: {
+        familyProximity: 10,
+        childEducation: 9,
+        languageEnvironment: 5,
+        healthcareQuality: 8,
+        safety: 8,
+        climate: 5,
+        culturalFit: 6,
+        careerSatisfaction: 4,
+        communityBuilding: 5,
+        politicalStability: 6,
+        adventureNovelty: 4,
+        returnFlexibility: 7,
+      },
+      financialWeight: 4,
+    },
+  },
+  {
+    id: 'money-maximizer',
+    name: 'Money Maximizer',
+    weights: {
+      weights: {
+        familyProximity: 3,
+        childEducation: 5,
+        languageEnvironment: 3,
+        healthcareQuality: 5,
+        safety: 5,
+        climate: 2,
+        culturalFit: 3,
+        careerSatisfaction: 8,
+        communityBuilding: 3,
+        politicalStability: 5,
+        adventureNovelty: 2,
+        returnFlexibility: 7,
+      },
+      financialWeight: 10,
+    },
+  },
+  {
+    id: 'adventure-mode',
+    name: 'Adventure Mode',
+    weights: {
+      weights: {
+        familyProximity: 3,
+        childEducation: 5,
+        languageEnvironment: 8,
+        healthcareQuality: 4,
+        safety: 4,
+        climate: 7,
+        culturalFit: 8,
+        careerSatisfaction: 4,
+        communityBuilding: 5,
+        politicalStability: 3,
+        adventureNovelty: 10,
+        returnFlexibility: 2,
+      },
+      financialWeight: 3,
+    },
+  },
+];

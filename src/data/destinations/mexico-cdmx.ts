@@ -1,0 +1,197 @@
+import type { Destination } from '@/types';
+
+export const mexicoCdmx: Destination = {
+  id: 'mexico-cdmx',
+  name: 'Mexico City',
+  country: 'Mexico',
+  city: 'Mexico City',
+  region: 'CDMX',
+  accentColor: 'var(--color-accent-cdmx)',
+  flag: '\u{1F1F2}\u{1F1FD}',
+  timezone: 'America/Mexico_City',
+  utcOffset: -6,
+  usTimezoneGap: 1,
+  researchDepth: 'moderate',
+
+  costOfLiving: {
+    monthlyBaseline: 3200,
+    monthlyComfortable: 5000,
+    internationalSchoolAnnual: 13000,
+    healthInsuranceMonthly: 225,
+    costMultiplierVsDC: 0.45,
+    notes: [
+      'International schools $8K-$18K/yr',
+      'Private health insurance $150-$300/mo; public IMSS ~$50',
+      'World-class culture and food at 45% of DC costs',
+      'Largest city in North America',
+    ],
+  },
+
+  taxRegime: {
+    incomeTaxRate: 35,
+    capitalGainsTax: 35,
+    socialCharges: 2,
+    specialRegime: 'FEIE shelter',
+    specialRegimeDetails:
+      'No special regime; but FEIE ($126,500) shelters most US-source income from US tax. 183+ days = Mexican tax resident on worldwide income.',
+    usTaxObligation: 'Must still file US taxes; FEIE + FTC offsets available',
+    estimatedEffectiveTotalRate: 24,
+  },
+
+  housing: {
+    rentMonthly2BR: 1500,
+    rentMonthly3BR: 2300,
+    buyMedianPrice: 275000,
+    mortgageAvailable: true,
+    foreignOwnershipAllowed: true,
+    notes: [
+      'Roma/Condesa 2BR: $1,200-$1,800',
+      'Narvarte/Del Valle: cheaper ($800-$1,100 for 2BR)',
+      'CDMX is outside restricted zone \u2014 direct ownership allowed',
+    ],
+  },
+
+  careerPresets: [
+    {
+      id: 'cdmx-remote-dual',
+      name: 'Dual Remote (US-Based Income)',
+      description:
+        'Both work remotely for US employers, earning US income at Mexican cost of living.',
+      yourRole: 'Remote SPED consulting / EdTech',
+      karaRole: 'Remote US-based work',
+      yourAnnualIncome: 70000,
+      karaAnnualIncome: 60000,
+      householdAnnualIncome: 130000,
+      incomeGrowthRate: 3,
+      benefits: [
+        'US income at Mexican costs',
+        'FEIE tax shelter',
+        'World-class food and culture',
+      ],
+      benefitsMonetaryValue: 5000,
+      visaCompatible: true,
+      notes: ['Temporary Resident Visa required'],
+    },
+    {
+      id: 'cdmx-school-remote',
+      name: 'International School + Remote',
+      description:
+        'Mekoce teaches at an American/international school; Kara works remotely.',
+      yourRole: 'American/international school SPED teacher',
+      karaRole: 'Remote US-based work',
+      yourAnnualIncome: 35000,
+      karaAnnualIncome: 80000,
+      householdAnnualIncome: 115000,
+      incomeGrowthRate: 2.5,
+      benefits: [
+        'Tuition discount for daughter',
+        'Structured schedule',
+        'Kara\u2019s income stretches far',
+      ],
+      benefitsMonetaryValue: 15000,
+      visaCompatible: true,
+      notes: ['Local teacher salary $25K-$45K'],
+    },
+    {
+      id: 'cdmx-entrepreneur',
+      name: 'EdTech Startup + Freelance',
+      description:
+        'Mekoce builds IEP Pulse for LatAm market; Kara freelances or consults remotely.',
+      yourRole: 'Build SPED EdTech tools (IEP Pulse expansion for LatAm)',
+      karaRole: 'Freelance / remote consulting',
+      yourAnnualIncome: 30000,
+      karaAnnualIncome: 50000,
+      householdAnnualIncome: 80000,
+      incomeGrowthRate: 5,
+      benefits: [
+        'Lower burn rate for startup',
+        'Entrepreneurial freedom',
+        'Huge LatAm education market',
+      ],
+      benefitsMonetaryValue: 3000,
+      visaCompatible: true,
+      notes: ['High growth potential but high risk in early years'],
+    },
+    {
+      id: 'cdmx-ngo',
+      name: 'Education NGO + Remote',
+      description:
+        'Mekoce works at a disability inclusion NGO; Kara works remotely.',
+      yourRole: 'Disability inclusion NGO',
+      karaRole: 'Remote US-based work',
+      yourAnnualIncome: 30000,
+      karaAnnualIncome: 70000,
+      householdAnnualIncome: 100000,
+      incomeGrowthRate: 2,
+      benefits: [
+        'Mission-driven work',
+        'Growing SPED awareness in Mexico',
+        'Strong NGO sector in CDMX',
+      ],
+      benefitsMonetaryValue: 8000,
+      visaCompatible: true,
+      notes: ['NGO may sponsor work visa'],
+    },
+  ],
+
+  qolDefaults: {
+    familyProximity: 3,
+    childEducation: 7,
+    languageEnvironment: 9,
+    healthcareQuality: 7,
+    safety: 5,
+    climate: 8,
+    culturalFit: 8,
+    careerSatisfaction: 7,
+    communityBuilding: 8,
+    politicalStability: 6,
+    adventureNovelty: 9,
+    returnFlexibility: 8,
+  },
+
+  visa: {
+    type: 'Temporary Resident Visa (Residente Temporal)',
+    duration: '1 year, renewable up to 4 years total',
+    renewalProcess: 'Renew at INM before expiry; can apply for permanent after 4 years',
+    requirements: [
+      'Monthly income ~$4,400/mo (2026)',
+      'Or savings of ~$73K',
+      'Family unity route waives financial requirement if spouse qualifies',
+    ],
+    processingTime: '2-6 weeks at Mexican consulate',
+    costs: '~$400-600 per person (doubled in 2026; 50% discount for family unity)',
+    workRights: 'Full work rights with Temporary Resident visa',
+    spouseWorkRights: 'Full work rights under family unity',
+    pathToPR: 'Permanent residency after 4 years of temporary residence',
+    gotchas: [
+      '183-day presence triggers Mexican tax residency on worldwide income',
+      'Visa fees doubled in 2026',
+      'INM bureaucracy can be slow',
+    ],
+  },
+
+  narrative:
+    'The best bang-for-your-buck cosmopolitan move. Mexico City offers world-class culture, food, and bilingual immersion at 45% of DC costs, with easy flights home. The largest city in North America has everything \u2014 and your dollar goes incredibly far.',
+
+  pros: [
+    'Extreme cost advantage (0.45x DC)',
+    'Full Spanish immersion for daughter',
+    'Incredible food and culture',
+    'Huge expat community',
+    'Close to US (3.5hr flight)',
+    'Mild climate (eternal spring at altitude)',
+    'Direct ownership allowed',
+    'Growing education sector',
+  ],
+
+  cons: [
+    'Air quality issues',
+    'Traffic and commute challenges',
+    'Safety requires neighborhood awareness',
+    'Mexican tax residency triggers worldwide taxation',
+    'Bureaucracy',
+    'Distance from Kenya (20+ hr)',
+  ],
+
+  dealbreakers: [],
+};

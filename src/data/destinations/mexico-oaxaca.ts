@@ -1,0 +1,176 @@
+import type { Destination } from '@/types';
+
+export const mexicoOaxaca: Destination = {
+  id: 'mexico-oaxaca',
+  name: 'Oaxaca, Mexico',
+  country: 'Mexico',
+  city: 'Oaxaca de Ju\u00E1rez',
+  region: 'Oaxaca',
+  accentColor: 'var(--color-accent-oaxaca)',
+  flag: '\u{1F1F2}\u{1F1FD}',
+  timezone: 'America/Mexico_City',
+  utcOffset: -6,
+  usTimezoneGap: 1,
+  researchDepth: 'shallow',
+
+  costOfLiving: {
+    monthlyBaseline: 2200,
+    monthlyComfortable: 3500,
+    internationalSchoolAnnual: 4500,
+    healthInsuranceMonthly: 150,
+    costMultiplierVsDC: 0.32,
+    notes: [
+      'Limited international schools; mostly bilingual private ($3K-$6K/yr)',
+      'Private health insurance $100-$200/mo',
+      'Lowest cost of living on this list',
+      'Serious medical needs require travel to CDMX/Puebla',
+    ],
+  },
+
+  taxRegime: {
+    incomeTaxRate: 35,
+    capitalGainsTax: 35,
+    socialCharges: 2,
+    specialRegime: 'FEIE shelter',
+    specialRegimeDetails: 'Same federal Mexican tax law as CDMX',
+    usTaxObligation: 'Must still file US taxes; FEIE + FTC offsets available',
+    estimatedEffectiveTotalRate: 24,
+  },
+
+  housing: {
+    rentMonthly2BR: 700,
+    rentMonthly3BR: 1150,
+    buyMedianPrice: 170000,
+    mortgageAvailable: true,
+    foreignOwnershipAllowed: true,
+    notes: [
+      'Centro/Jalatlaco 2BR: $500-$900',
+      'Outer areas (Xoxocotlan): $250-$500 for 2BR',
+      'Purchase: $120K-$220K',
+      'Oaxaca City is outside restricted zone',
+    ],
+  },
+
+  careerPresets: [
+    {
+      id: 'oaxaca-remote-dual',
+      name: 'Dual Remote (US-Based)',
+      description:
+        'Both work remotely for US employers, maximizing the extreme cost differential.',
+      yourRole: 'Remote SPED consulting / EdTech / writing',
+      karaRole: 'Remote US-based work',
+      yourAnnualIncome: 60000,
+      karaAnnualIncome: 60000,
+      householdAnnualIncome: 120000,
+      incomeGrowthRate: 2.5,
+      benefits: [
+        'US income at extremely low costs',
+        'Artistic community',
+        'Slow living',
+      ],
+      benefitsMonetaryValue: 3000,
+      visaCompatible: true,
+      notes: ['Highest potential savings rate on this list'],
+    },
+    {
+      id: 'oaxaca-creative-remote',
+      name: 'Creative + Remote',
+      description:
+        'Mekoce focuses on writing and part-time remote SPED work; Kara anchors income remotely.',
+      yourRole: 'Writing (essays/book) + part-time remote SPED',
+      karaRole: 'Remote US-based work',
+      yourAnnualIncome: 35000,
+      karaAnnualIncome: 60000,
+      householdAnnualIncome: 95000,
+      incomeGrowthRate: 2,
+      benefits: [
+        'Space for creative work',
+        'Minimal cost pressure',
+        'Artisan culture inspires',
+      ],
+      benefitsMonetaryValue: 3000,
+      visaCompatible: true,
+      notes: ['Lifestyle choice over career optimization'],
+    },
+    {
+      id: 'oaxaca-local-school',
+      name: 'Local Bilingual School + Remote',
+      description:
+        'Mekoce teaches at a bilingual school locally; Kara works remotely.',
+      yourRole: 'Bilingual school teacher',
+      karaRole: 'Remote US-based work',
+      yourAnnualIncome: 15000,
+      karaAnnualIncome: 90000,
+      householdAnnualIncome: 105000,
+      incomeGrowthRate: 2,
+      benefits: [
+        'Daughter in bilingual environment',
+        'Kara\u2019s income carries the family easily',
+        'Cultural integration',
+      ],
+      benefitsMonetaryValue: 5000,
+      visaCompatible: true,
+      notes: ['Local salary $12K-$18K; Kara\u2019s remote income is the anchor'],
+    },
+  ],
+
+  qolDefaults: {
+    familyProximity: 2,
+    childEducation: 4,
+    languageEnvironment: 10,
+    healthcareQuality: 5,
+    safety: 6,
+    climate: 8,
+    culturalFit: 9,
+    careerSatisfaction: 5,
+    communityBuilding: 7,
+    politicalStability: 5,
+    adventureNovelty: 9,
+    returnFlexibility: 6,
+  },
+
+  visa: {
+    type: 'Temporary Resident Visa (same as CDMX)',
+    duration: '1 year, renewable up to 4 years',
+    renewalProcess: 'Renew at local INM office',
+    requirements: [
+      'Same as CDMX: ~$4,400/mo income or ~$73K savings',
+    ],
+    processingTime: '2-6 weeks',
+    costs: '~$400-600 per person',
+    workRights: 'Full work rights with Temporary Resident visa',
+    spouseWorkRights: 'Full work rights under family unity',
+    pathToPR: 'Permanent residency after 4 years',
+    gotchas: [
+      'Remote location \u2014 flights connect via CDMX',
+      'Teacher union strikes can disrupt',
+      'Road blockades occasionally',
+      'Healthcare limitations for serious needs',
+    ],
+  },
+
+  narrative:
+    'The radical downshift. Oaxaca is where you go to write the book, make the art, and live richly on very little. The food alone is worth it. But this is a lifestyle choice, not a career move \u2014 your daughter\u2019s education options are limited.',
+
+  pros: [
+    'Absurdly low cost of living (0.32x DC)',
+    'World\u2019s best food region',
+    'Deep cultural immersion',
+    'Creative artistic community',
+    'Warm dry climate',
+    'Space to breathe and create',
+  ],
+
+  cons: [
+    'Limited education options for daughter',
+    'Healthcare limitations for complex needs',
+    'Remote location (connections via CDMX)',
+    'Limited career opportunities',
+    'Infrastructure gaps',
+    'Occasional political disruptions (teacher strikes, blockades)',
+  ],
+
+  dealbreakers: [
+    'Limited schooling options may not work long-term for daughter',
+  ],
+};
