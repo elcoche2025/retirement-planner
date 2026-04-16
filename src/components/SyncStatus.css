@@ -1,0 +1,101 @@
+.sync-status {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sync-status-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sync-email {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-text-primary);
+}
+
+.sync-timestamp {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+}
+
+.sync-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.sync-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sync-dot--synced {
+  background: var(--color-positive);
+}
+
+.sync-dot--syncing {
+  background: var(--color-highlight);
+  animation: sync-pulse 1.2s ease-in-out infinite;
+}
+
+.sync-dot--error {
+  background: var(--color-negative);
+}
+
+.sync-dot--offline {
+  background: var(--color-text-tertiary);
+}
+
+@keyframes sync-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.sync-actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.sync-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 8px 14px;
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-bg-tertiary);
+  border-radius: var(--card-radius);
+  color: var(--color-text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.sync-btn:hover {
+  background: var(--color-highlight);
+  color: var(--color-bg-primary);
+}
+
+.sync-btn:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.sync-btn--signout {
+  border-color: var(--color-negative);
+  color: var(--color-negative);
+  background: transparent;
+}
+
+.sync-btn--signout:hover {
+  background: var(--color-negative);
+  color: var(--color-bg-primary);
+}

@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useExchangeRates, useGlobalAssumptions } from '@/state/hooks';
 import PageGuide from '@/components/PageGuide';
 import SliderInput from '@/components/SliderInput';
+import SyncStatus from '@/components/SyncStatus';
 import { INPUTS_GUIDE } from '@/data/page-guides';
 import { getCurrentPlanningYear } from '@/utils/date';
 import './Inputs.css';
@@ -45,6 +46,12 @@ export default function Inputs() {
         Global assumptions that apply across all scenarios.
       </p>
       <PageGuide sections={INPUTS_GUIDE} />
+
+      {/* Account & Sync */}
+      <div className="card inputs-section">
+        <h3 className="section-title">Account & Sync</h3>
+        <SyncStatus />
+      </div>
 
       {/* Personal */}
       <div className="card inputs-section">
