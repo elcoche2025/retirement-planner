@@ -43,6 +43,44 @@ describe('simulate — currency adjustment', () => {
   });
 });
 
+describe('simulate — inflation', () => {
+  it('expenses grow year over year due to inflation', () => {
+    const dc = getDestination('dc-baseline')!;
+    const career = dc.careerPresets[0];
+    const result = simulate(dc, career, GLOBAL_DEFAULTS, {
+      dcHomeDecision: 'keep', moveYear: 2027, returnYear: null,
+    });
+    // Living expenses should increase each year (3% inflation default)
+    expect(result[5].livingExpenses).toBeGreaterThan(result[0].livingExpenses);
+    expect(result[10].livingExpenses).toBeGreaterThan(result[5].livingExpenses);
+    // Health insurance should also inflate
+    expect(result[10].healthInsurance).toBeGreaterThan(result[0].healthInsurance);
+    // Compare years where schooling is the same (both school-age, free public)
+    // Year 5 = daughter age 8, Year 15 = daughter age 18 — both free public
+    if (result.length > 15) {
+      expect(result[15].totalExpenses).toBeGreaterThan(result[5].totalExpenses);
+    }
+  });
+
+  it('abroad rent inflates but DC mortgage stays fixed', () => {
+    const dc = getDestination('dc-baseline')!;
+    const dcCareer = dc.careerPresets[0];
+    const dcResult = simulate(dc, dcCareer, GLOBAL_DEFAULTS, {
+      dcHomeDecision: 'keep', moveYear: 2027, returnYear: null,
+    });
+    // DC mortgage is fixed — housing cost should NOT inflate
+    expect(dcResult[0].housingCost).toBe(dcResult[10].housingCost);
+
+    const kenya = getDestination('kenya-nairobi')!;
+    const keCareer = kenya.careerPresets[0];
+    const keResult = simulate(kenya, keCareer, GLOBAL_DEFAULTS, {
+      dcHomeDecision: 'sell', moveYear: 2027, returnYear: null,
+    });
+    // Kenya rent SHOULD inflate
+    expect(keResult[10].housingCost).toBeGreaterThan(keResult[0].housingCost);
+  });
+});
+
 describe('simulate', () => {
   const globals = GLOBAL_DEFAULTS;
 

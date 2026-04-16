@@ -38,6 +38,7 @@ export function simulate(
   }
 
   const returnRate = globals.investmentReturnRate / 100;
+  const inflationRate = globals.inflationRate / 100;
   const dcDest = getDestination('dc-baseline')!;
   const dcCareer = dcDest.careerPresets[0];
 
@@ -71,23 +72,29 @@ export function simulate(
 
     const taxes = estimateEffectiveTax(grossIncome, locationId);
 
+    // Apply inflation compounding to all expenses (year-over-year)
+    const inflationMultiplier = Math.pow(1 + inflationRate, y);
+
     const colMultiplier = activeDest.costOfLiving.costMultiplierVsDC;
-    const livingExpenses = 6500 * 12 * colMultiplier;
+    const livingExpenses = 6500 * 12 * colMultiplier * inflationMultiplier;
+    // Mortgage is fixed (locked rate), but rent inflates
     const housingCost = activeDest.id === 'dc-baseline'
-      ? globals.monthlyMortgage * 12
-      : activeDest.housing.rentMonthly3BR * 12;
+      ? globals.monthlyMortgage * 12  // fixed mortgage — no inflation
+      : activeDest.housing.rentMonthly3BR * 12 * inflationMultiplier;
     const daughterAgeThisYear = (globals.daughterAge ?? 3) + y;
-    const schooling = getEducationCost(activeDest, activeCareer, daughterAgeThisYear);
-    const healthInsurance = activeDest.costOfLiving.healthInsuranceMonthly * 12;
+    const schooling = getEducationCost(activeDest, activeCareer, daughterAgeThisYear) * inflationMultiplier;
+    const healthInsurance = activeDest.costOfLiving.healthInsuranceMonthly * 12 * inflationMultiplier;
     const totalExpenses = livingExpenses + housingCost + schooling + healthInsurance;
 
     let rentalNetIncome = 0;
     if (overrides.dcHomeDecision === 'rent' && isAbroad) {
+      // Rental income inflates (rent increases), but mortgage is fixed
+      // Insurance/tax and maintenance inflate with general costs
       rentalNetIncome = calculateRentalCashFlow(
-        globals.rentalIncomeMonthly,
-        globals.monthlyMortgage,
-        globals.monthlyInsuranceTax,
-        globals.monthlyMaintenance,
+        globals.rentalIncomeMonthly * inflationMultiplier,
+        globals.monthlyMortgage,  // fixed mortgage — no inflation
+        globals.monthlyInsuranceTax * inflationMultiplier,
+        globals.monthlyMaintenance * inflationMultiplier,
         globals.propertyMgmtPct,
       );
     }
