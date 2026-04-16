@@ -3,7 +3,10 @@ import { useScenario } from '@/state/hooks';
 import TabNav from '@/components/TabNav';
 import FinancialsTab from './tabs/FinancialsTab';
 import CareerTab from './tabs/CareerTab';
+import HousingTab from './tabs/HousingTab';
 import LifeTab from './tabs/LifeTab';
+import VisaTab from './tabs/VisaTab';
+import TimelineTab from './tabs/TimelineTab';
 import './ScenarioDetail.css';
 
 export default function ScenarioDetail() {
@@ -54,10 +57,10 @@ export default function ScenarioDetail() {
           <Route index element={<Navigate to="financials" replace />} />
           <Route path="financials" element={<FinancialsTab destinationId={destination.id} />} />
           <Route path="career" element={<CareerTab destinationId={destination.id} />} />
-          <Route path="housing" element={<div className="text-tertiary">Housing tab coming soon.</div>} />
+          <Route path="housing" element={<HousingTab destinationId={destination.id} />} />
           <Route path="life" element={<LifeTab destinationId={destination.id} />} />
-          <Route path="visa" element={<div className="text-tertiary">Visa tab coming soon.</div>} />
-          <Route path="timeline" element={<div className="text-tertiary">Timeline tab coming soon.</div>} />
+          <Route path="visa" element={<VisaTab destinationId={destination.id} />} />
+          <Route path="timeline" element={<TimelineTab destinationId={destination.id} />} />
         </Routes>
       </div>
     </div>

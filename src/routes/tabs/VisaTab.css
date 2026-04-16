@@ -1,0 +1,159 @@
+/* ================================================
+   Visa Tab
+   ================================================ */
+
+.visa-tab {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* --- No visa (DC) --- */
+.visa-no-visa {
+  text-align: center;
+  padding: var(--space-8) var(--space-5);
+}
+
+.visa-no-visa-icon {
+  font-size: 2rem;
+  color: var(--color-positive);
+  margin-bottom: var(--space-3);
+}
+
+.visa-no-visa h3 {
+  font-family: var(--font-display);
+  margin-bottom: var(--space-2);
+}
+
+.visa-no-visa p {
+  font-size: 0.85rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* --- Detail grid --- */
+.visa-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.visa-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.visa-detail-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.visa-detail-value {
+  font-size: 0.85rem;
+  color: var(--color-text-primary);
+  line-height: 1.4;
+}
+
+/* --- Work rights --- */
+.visa-work-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.visa-work-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.visa-work-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.visa-work-value {
+  font-size: 0.85rem;
+  color: var(--color-text-primary);
+  line-height: 1.4;
+}
+
+/* --- Requirements checklist --- */
+.visa-checklist {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.visa-checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+.visa-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  border: 1px solid var(--color-bg-tertiary);
+  border-radius: 2px;
+  background: var(--color-bg-primary);
+  margin-top: 1px;
+}
+
+/* --- Gotchas --- */
+.visa-gotchas-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.visa-gotcha-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: 0.85rem;
+  color: var(--color-negative);
+  line-height: 1.4;
+  padding: var(--space-3);
+  background: color-mix(in srgb, var(--color-negative) 6%, var(--color-bg-secondary));
+  border: 1px dashed color-mix(in srgb, var(--color-negative) 30%, transparent);
+  border-radius: var(--card-radius);
+}
+
+.visa-gotcha-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border-radius: 50%;
+  background: var(--color-negative);
+  color: var(--color-bg-primary);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .visa-detail-grid,
+  .visa-work-grid {
+    grid-template-columns: 1fr;
+  }
+}

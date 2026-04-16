@@ -1,0 +1,185 @@
+/* ================================================
+   Timeline Tab
+   ================================================ */
+
+.timeline-tab {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* --- Controls --- */
+.timeline-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.timeline-sliders {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.timeline-return-toggle {
+  display: flex;
+  align-items: center;
+}
+
+.timeline-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.timeline-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-highlight);
+  cursor: pointer;
+}
+
+/* --- Visual timeline --- */
+.timeline-visual-section {
+  padding: var(--space-5);
+}
+
+.timeline-track-container {
+  position: relative;
+  padding: var(--space-10) var(--space-5) var(--space-5);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.timeline-track {
+  position: relative;
+  height: 4px;
+  background: var(--color-bg-tertiary);
+  border-radius: 2px;
+  min-width: 100%;
+}
+
+.timeline-milestone {
+  position: absolute;
+  top: 50%;
+  transform: translateX(-50%);
+}
+
+.timeline-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-bg-tertiary);
+  border: 2px solid var(--color-text-tertiary);
+  position: relative;
+  top: -7px;
+  margin: 0 auto;
+}
+
+.timeline-milestone-now .timeline-dot {
+  background: var(--color-highlight);
+  border-color: var(--color-highlight);
+  box-shadow: 0 0 8px rgba(201, 169, 110, 0.4);
+}
+
+.timeline-milestone-move .timeline-dot {
+  background: var(--color-positive);
+  border-color: var(--color-positive);
+}
+
+.timeline-milestone-child .timeline-dot {
+  background: var(--color-accent-netherlands);
+  border-color: var(--color-accent-netherlands);
+}
+
+.timeline-milestone-return .timeline-dot {
+  background: var(--color-accent-dc);
+  border-color: var(--color-accent-dc);
+}
+
+.timeline-milestone-retire .timeline-dot {
+  background: var(--color-accent-medellin);
+  border-color: var(--color-accent-medellin);
+}
+
+.timeline-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  position: absolute;
+  top: -54px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.timeline-label-year {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.timeline-label-text {
+  font-size: 0.65rem;
+  color: var(--color-text-tertiary);
+  max-width: 100px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- Decision gate checklist --- */
+.timeline-checklist-intro {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: var(--space-3);
+}
+
+.timeline-checklist {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.timeline-checklist-item {
+  font-size: 0.85rem;
+}
+
+.timeline-checklist-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.timeline-checklist-label:hover {
+  color: var(--color-text-primary);
+}
+
+.timeline-checklist-checkbox {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  accent-color: var(--color-highlight);
+  cursor: pointer;
+}
+
+.timeline-checked {
+  text-decoration: line-through;
+  color: var(--color-text-tertiary);
+}
+
+@media (max-width: 640px) {
+  .timeline-track-container {
+    min-width: 500px;
+  }
+}
