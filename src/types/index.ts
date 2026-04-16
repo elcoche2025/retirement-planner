@@ -271,9 +271,21 @@ export interface MonteCarloResult {
 // APP STATE
 // ============================================
 
+export type FxSyncStatus = 'idle' | 'loading' | 'success' | 'error';
+
+export interface FxRatesMeta {
+  provider: string;
+  baseCurrency: string;
+  asOfDate: string | null;
+  fetchedAt: string | null;
+  status: FxSyncStatus;
+  error: string | null;
+}
+
 export interface AppState {
   version: number;
   globalAssumptions: GlobalAssumptions;
+  fxRatesMeta: FxRatesMeta;
   scenarios: Record<string, ScenarioConfig>;
   qolWeights: QoLWeights;
   lastVisited: string;

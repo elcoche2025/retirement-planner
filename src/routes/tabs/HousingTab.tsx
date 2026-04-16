@@ -1,5 +1,7 @@
 import { useScenario, useGlobalAssumptions } from '@/state/hooks';
 import { calculateSaleProceeds, calculateRentalCashFlow, projectHomeEquity } from '@/engine/housing';
+import PageGuide from '@/components/PageGuide';
+import { getHousingGuide } from '@/data/page-guides';
 import './HousingTab.css';
 
 const fmt = (n: number) =>
@@ -66,6 +68,8 @@ export default function HousingTab({ destinationId }: { destinationId: string })
 
   return (
     <div className="housing-tab">
+      <PageGuide sections={getHousingGuide(destination.name)} />
+
       {/* DC Home Decision */}
       {!isDC && (
         <section className="housing-dc-section">
@@ -131,7 +135,7 @@ export default function HousingTab({ destinationId }: { destinationId: string })
                     <span className="mono">-{fmtFull(Math.round(mgmtFee))}/mo</span>
                   </div>
                   <div className="housing-breakdown-row housing-breakdown-minus">
-                    <span>Insurance + Tax</span>
+                    <span>Additional Insurance + Tax</span>
                     <span className="mono">-{fmtFull(globals.monthlyInsuranceTax)}/mo</span>
                   </div>
                   <div className="housing-breakdown-row housing-breakdown-minus">
@@ -169,7 +173,7 @@ export default function HousingTab({ destinationId }: { destinationId: string })
                   </div>
                 </div>
                 <div className="housing-projection">
-                  Annual carrying costs: <strong className="mono text-negative">{fmtFull(carryingCosts)}</strong>
+                  Annual carrying costs (including mortgage): <strong className="mono text-negative">{fmtFull(carryingCosts)}</strong>
                 </div>
               </div>
             )}

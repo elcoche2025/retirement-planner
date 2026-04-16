@@ -33,7 +33,7 @@ export const mexicoCdmx: Destination = {
     socialCharges: 2,
     specialRegime: 'FEIE shelter',
     specialRegimeDetails:
-      'No special regime; but FEIE ($126,500) shelters most US-source income from US tax. 183+ days = Mexican tax resident on worldwide income.',
+      'No special regime; but FEIE ($132,900 for 2026) shelters most US-source income from US tax. 183+ days = Mexican tax resident on worldwide income.',
     usTaxObligation: 'Must still file US taxes; FEIE + FTC offsets available',
     estimatedEffectiveTotalRate: 24,
   },

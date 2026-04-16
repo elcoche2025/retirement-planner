@@ -2,6 +2,9 @@ import { describe, it, expect } from 'vitest';
 import { runMonteCarlo } from './montecarlo';
 import { getDestination } from '@/data/destinations';
 import { GLOBAL_DEFAULTS } from '@/data/global-defaults';
+import { getCurrentPlanningYear } from '@/utils/date';
+
+const NEXT_YEAR = getCurrentPlanningYear() + 1;
 
 describe('runMonteCarlo', () => {
   const globals = GLOBAL_DEFAULTS;
@@ -11,7 +14,7 @@ describe('runMonteCarlo', () => {
     const career = dc.careerPresets[0];
     const result = runMonteCarlo(dc, career, globals, {
       dcHomeDecision: 'keep',
-      moveYear: 2027,
+      moveYear: NEXT_YEAR,
       returnYear: null,
     }, 50);
     const expectedYears = globals.retirementAge - globals.currentAge;
@@ -26,7 +29,7 @@ describe('runMonteCarlo', () => {
     const career = dc.careerPresets[0];
     const result = runMonteCarlo(dc, career, globals, {
       dcHomeDecision: 'keep',
-      moveYear: 2027,
+      moveYear: NEXT_YEAR,
       returnYear: null,
     }, 100);
     for (let i = 0; i < result.percentiles.p50.length; i++) {
@@ -40,7 +43,7 @@ describe('runMonteCarlo', () => {
     const career = dc.careerPresets[0];
     const result = runMonteCarlo(dc, career, globals, {
       dcHomeDecision: 'keep',
-      moveYear: 2027,
+      moveYear: NEXT_YEAR,
       returnYear: null,
     }, 50);
     const last = result.percentiles.p50.length - 1;
@@ -52,7 +55,7 @@ describe('runMonteCarlo', () => {
   it('is deterministic (same inputs produce same outputs)', () => {
     const dc = getDestination('dc-baseline')!;
     const career = dc.careerPresets[0];
-    const overrides = { dcHomeDecision: 'keep' as const, moveYear: 2027, returnYear: null };
+    const overrides = { dcHomeDecision: 'keep' as const, moveYear: NEXT_YEAR, returnYear: null };
     const r1 = runMonteCarlo(dc, career, globals, overrides, 50);
     const r2 = runMonteCarlo(dc, career, globals, overrides, 50);
     expect(r1.summary.p50Final).toBe(r2.summary.p50Final);
@@ -63,7 +66,7 @@ describe('runMonteCarlo', () => {
     const career = kenya.careerPresets[0];
     const result = runMonteCarlo(kenya, career, globals, {
       dcHomeDecision: 'sell',
-      moveYear: 2027,
+      moveYear: NEXT_YEAR,
       returnYear: null,
     }, 200);
     const spread = result.summary.p90Final - result.summary.p10Final;

@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useAppState } from './AppStateContext';
 import type { GlobalAssumptions, ScenarioConfig, QoLWeights, QualityOfLifeRatings } from '@/types';
 import { getDestination } from '@/data/destinations';
+import { fetchLatestExchangeRates, shouldRefreshFxRates } from '@/services/fx';
 
 export function useGlobalAssumptions() {
   const { state, dispatch } = useAppState();
@@ -59,4 +60,31 @@ export function useCompareSelection() {
     [dispatch],
   );
   return { selection: state.compareSelection, updateSelection: update };
+}
+
+export function useExchangeRates() {
+  const { state, dispatch } = useAppState();
+
+  const refreshRates = useCallback(async () => {
+    dispatch({ type: 'SET_FX_STATUS', payload: { status: 'loading', error: null } });
+    try {
+      const payload = await fetchLatestExchangeRates();
+      dispatch({ type: 'SET_EXCHANGE_RATES', payload });
+    } catch (error) {
+      dispatch({
+        type: 'SET_FX_STATUS',
+        payload: {
+          status: 'error',
+          error: error instanceof Error ? error.message : 'Unable to refresh exchange rates',
+        },
+      });
+      throw error;
+    }
+  }, [dispatch]);
+
+  return {
+    fxRatesMeta: state.fxRatesMeta,
+    refreshRates,
+    ratesAreStale: shouldRefreshFxRates(state.fxRatesMeta),
+  };
 }

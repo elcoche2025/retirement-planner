@@ -54,6 +54,7 @@ function PasswordGate({ onAuth }: { onAuth: () => void }) {
         />
         <button className="gate-btn" onClick={tryAuth}>Enter</button>
         {error && <p className="gate-error">incorrect</p>}
+        <p className="gate-note">Light privacy gate only, not secure storage or authentication.</p>
       </div>
     </div>
   );

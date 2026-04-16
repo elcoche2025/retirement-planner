@@ -17,6 +17,12 @@
   margin-bottom: var(--space-5);
 }
 
+.inputs-helper {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  margin-bottom: var(--space-4);
+}
+
 .inputs-grid {
   display: flex;
   flex-direction: column;
@@ -52,5 +58,39 @@
 .inputs-fx-helper {
   font-size: 0.8rem;
   line-height: 1.4;
+  margin-bottom: var(--space-3);
+}
+
+.inputs-fx-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+
+.inputs-fx-refresh {
+  flex-shrink: 0;
+}
+
+.inputs-fx-refresh:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.inputs-fx-status {
+  font-size: 0.8rem;
+  line-height: 1.4;
   margin-bottom: var(--space-4);
+}
+
+@media (max-width: 720px) {
+  .inputs-fx-header {
+    flex-direction: column;
+  }
+
+  .inputs-fx-refresh {
+    width: 100%;
+    justify-content: center;
+  }
 }

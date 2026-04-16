@@ -4,7 +4,7 @@ import { useQoLWeights, useGlobalAssumptions } from '@/state/hooks';
 import { useAppState } from '@/state/AppStateContext';
 import { ALL_DESTINATIONS, getDestination } from '@/data/destinations';
 import { QOL_DIMENSION_META } from '@/data/qol-dimensions';
-import { WEIGHT_PRESETS } from '@/data/weight-presets';
+import { WEIGHT_PRESETS, getMatchingWeightPresetId } from '@/data/weight-presets';
 import { simulate } from '@/engine/simulate';
 import {
   calculateQoLScore,
@@ -13,6 +13,8 @@ import {
   rankDestinations,
 } from '@/engine/scoring';
 import WeightSlider from '@/components/WeightSlider';
+import PageGuide from '@/components/PageGuide';
+import { MATRIX_GUIDE } from '@/data/page-guides';
 import { Printer } from 'lucide-react';
 import type { QoLDimension, QualityOfLifeRatings, QoLWeights, Destination } from '@/types';
 import { QOL_DIMENSIONS } from '@/types';
@@ -33,7 +35,7 @@ interface DestColumn {
 export default function Matrix() {
   const { weights, updateWeights } = useQoLWeights();
   const { globals } = useGlobalAssumptions();
-  const { state } = useAppState();
+  const { state, dispatch } = useAppState();
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Seed preset from URL on mount
@@ -43,20 +45,31 @@ export default function Matrix() {
       const preset = WEIGHT_PRESETS.find((p) => p.id === paramPreset);
       if (preset) {
         applyPreset(preset.weights);
+        dispatch({ type: 'SET_MATRIX_PRESET', payload: preset.id });
       }
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [dispatch, searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const setDimensionWeight = (dim: QoLDimension, val: number) => {
-    updateWeights({
+    const nextWeights = {
       ...weights,
       weights: { ...weights.weights, [dim]: val },
+    };
+    updateWeights(nextWeights);
+    dispatch({
+      type: 'SET_MATRIX_PRESET',
+      payload: getMatchingWeightPresetId(nextWeights) ?? 'custom',
     });
     setSearchParams({}, { replace: true });
   };
 
   const setFinancialWeight = (val: number) => {
-    updateWeights({ ...weights, financialWeight: val });
+    const nextWeights = { ...weights, financialWeight: val };
+    updateWeights(nextWeights);
+    dispatch({
+      type: 'SET_MATRIX_PRESET',
+      payload: getMatchingWeightPresetId(nextWeights) ?? 'custom',
+    });
     setSearchParams({}, { replace: true });
   };
 
@@ -66,8 +79,11 @@ export default function Matrix() {
 
   const handlePresetClick = (preset: typeof WEIGHT_PRESETS[0]) => {
     applyPreset(preset.weights);
+    dispatch({ type: 'SET_MATRIX_PRESET', payload: preset.id });
     setSearchParams({ preset: preset.id }, { replace: true });
   };
+
+  const currentPresetId = getMatchingWeightPresetId(weights) ?? 'custom';
 
   // Build columns: simulate each destination, compute scores
   const columns = useMemo<DestColumn[]>(() => {
@@ -150,7 +166,6 @@ export default function Matrix() {
   const sensitivityFlips = useMemo<string[]>(() => {
     if (columns.length < 2) return [];
     const current1 = columns[0];
-    const current2 = columns[1];
     const flips: string[] = [];
 
     for (const dim of QOL_DIMENSIONS) {
@@ -219,6 +234,27 @@ export default function Matrix() {
 
   const winnerId = columns[0]?.destination.id;
 
+  function getCellTone(values: number[], idx: number, higherIsBetter: boolean): React.CSSProperties | undefined {
+    if (values.length < 2) return undefined;
+
+    const max = Math.max(...values);
+    const min = Math.min(...values);
+    if (max === min) return undefined;
+
+    const rawNormalized = (values[idx] - min) / (max - min);
+    const normalized = higherIsBetter ? rawNormalized : 1 - rawNormalized;
+    const distanceFromMid = normalized - 0.5;
+
+    if (Math.abs(distanceFromMid) < 0.12) return undefined;
+
+    const alpha = Math.min(0.22, 0.06 + Math.abs(distanceFromMid) * 0.28);
+    const rgb = distanceFromMid >= 0 ? '107, 158, 107' : '184, 90, 90';
+
+    return {
+      backgroundColor: `rgba(${rgb}, ${alpha.toFixed(3)})`,
+    };
+  }
+
   return (
     <div className="page-enter matrix-page">
       <div className="matrix-header">
@@ -231,14 +267,12 @@ export default function Matrix() {
           Print Results
         </button>
       </div>
+      <PageGuide sections={MATRIX_GUIDE} />
 
       {/* Print-only weight summary (hidden on screen, visible in print) */}
       <div className="print-only matrix-print-summary">
         <h2>Weight Configuration</h2>
-        <p><strong>Preset:</strong> {WEIGHT_PRESETS.find(p => {
-          return QOL_DIMENSIONS.every(d => p.weights.weights[d] === weights.weights[d]) &&
-                 p.weights.financialWeight === weights.financialWeight;
-        })?.name ?? 'Custom'}</p>
+        <p><strong>Preset:</strong> {WEIGHT_PRESETS.find((preset) => preset.id === currentPresetId)?.name ?? 'Custom'}</p>
         <p><strong>Financial Weight:</strong> {weights.financialWeight}/10</p>
         <div className="matrix-print-weights">
           {QOL_DIMENSION_META.map(dim => (
@@ -258,7 +292,7 @@ export default function Matrix() {
           {WEIGHT_PRESETS.map((preset) => (
             <button
               key={preset.id}
-              className={`btn ${state.matrixPreset === preset.id ? 'btn-active' : ''}`}
+              className={`btn ${currentPresetId === preset.id ? 'btn-active' : ''}`}
               onClick={() => handlePresetClick(preset)}
             >
               {preset.name}
@@ -318,6 +352,7 @@ export default function Matrix() {
                       <td
                         key={col.destination.id}
                         className={`${cellClass(values, i, true)} ${col.destination.id === winnerId ? 'matrix-winner-col' : ''}`}
+                        style={getCellTone(values, i, true)}
                       >
                         {col.effectiveQoL[dim]}
                       </td>
@@ -335,6 +370,7 @@ export default function Matrix() {
                     <td
                       key={col.destination.id}
                       className={`${cellClass(values, i, true)} ${col.destination.id === winnerId ? 'matrix-winner-col' : ''}`}
+                      style={getCellTone(values, i, true)}
                     >
                       {col.financialScore.toFixed(0)}
                     </td>

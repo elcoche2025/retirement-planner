@@ -1,4 +1,5 @@
 import type { WeightPreset } from '@/types';
+import { QOL_DIMENSIONS } from '@/types';
 
 export const WEIGHT_PRESETS: WeightPreset[] = [
   {
@@ -86,3 +87,14 @@ export const WEIGHT_PRESETS: WeightPreset[] = [
     },
   },
 ];
+
+export function getMatchingWeightPresetId(weights: WeightPreset['weights']): string | null {
+  const match = WEIGHT_PRESETS.find((preset) => {
+    return (
+      preset.weights.financialWeight === weights.financialWeight &&
+      QOL_DIMENSIONS.every((dimension) => preset.weights.weights[dimension] === weights.weights[dimension])
+    );
+  });
+
+  return match?.id ?? null;
+}

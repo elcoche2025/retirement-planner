@@ -1,6 +1,8 @@
 import { useScenario } from '@/state/hooks';
+import PageGuide from '@/components/PageGuide';
 import ToggleGroup from '@/components/ToggleGroup';
 import type { ToggleOption } from '@/components/ToggleGroup';
+import { getCareerGuide } from '@/data/page-guides';
 import './CareerTab.css';
 
 const fmtK = (n: number) => `$${(n / 1000).toFixed(0)}K`;
@@ -61,6 +63,7 @@ export default function CareerTab({ destinationId }: { destinationId: string }) 
         Select a career configuration for {destination.name}. Financial projections
         update automatically.
       </p>
+      <PageGuide sections={getCareerGuide(destination.name)} />
 
       <ToggleGroup
         options={options}

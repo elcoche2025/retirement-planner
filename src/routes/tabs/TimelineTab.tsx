@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useScenario, useGlobalAssumptions } from '@/state/hooks';
+import PageGuide from '@/components/PageGuide';
 import SliderInput from '@/components/SliderInput';
+import { getTimelineGuide } from '@/data/page-guides';
+import { getCurrentPlanningYear } from '@/utils/date';
 import './TimelineTab.css';
 
 interface Milestone {
@@ -31,7 +34,7 @@ export default function TimelineTab({ destinationId }: { destinationId: string }
   const moveYear = config?.moveYear ?? globals.moveYear;
   const returnYear = config?.returnYear ?? null;
   const hasReturn = returnYear !== null;
-  const currentYear = 2026;
+  const currentYear = getCurrentPlanningYear();
   const retirementYear = currentYear + (globals.retirementAge - globals.currentAge);
 
   const daughterAge = globals.daughterAge;
@@ -92,6 +95,8 @@ export default function TimelineTab({ destinationId }: { destinationId: string }
 
   return (
     <div className="timeline-tab">
+      <PageGuide sections={getTimelineGuide(destination.name)} />
+
       {/* Move year slider */}
       <section className="card timeline-controls">
         <h3 className="section-title">Timeline Settings</h3>
@@ -100,8 +105,8 @@ export default function TimelineTab({ destinationId }: { destinationId: string }
             label="Move Year"
             value={moveYear}
             onChange={(v) => update({ moveYear: v })}
-            min={2026}
-            max={2032}
+            min={currentYear}
+            max={currentYear + 6}
             step={1}
           />
 

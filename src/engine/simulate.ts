@@ -3,6 +3,7 @@ import { estimateEffectiveTax } from './taxes';
 import { calculateSaleProceeds, calculateRentalCashFlow, projectHomeEquity } from './housing';
 import { getDestination } from '@/data/destinations';
 import { getEducationCost } from './education';
+import { getCurrentPlanningYear } from '@/utils/date';
 
 interface SimulateOverrides {
   dcHomeDecision: 'sell' | 'rent' | 'keep';
@@ -18,11 +19,11 @@ export function simulate(
   overrides: SimulateOverrides,
 ): YearlyProjection[] {
   const totalYears = globals.retirementAge - globals.currentAge;
-  const currentYear = new Date().getFullYear();
+  const currentYear = getCurrentPlanningYear();
   const projections: YearlyProjection[] = [];
 
   let investmentBalance = globals.currentSavings;
-  let retirementBalance = globals.retirement457b;
+  let retirementBalance = globals.retirement457b + globals.otherRetirement;
 
   if (globals.convertToRoth) {
     retirementBalance = retirementBalance * (1 - globals.rothConversionTaxRate / 100);
@@ -66,7 +67,10 @@ export function simulate(
       adjustedKarasIncome = karasIncome * fxAdjustment;
     }
 
-    const grossIncome = (adjustedYourIncome + adjustedKarasIncome) * growthMultiplier;
+    const grossIncomeBase = activeDest.id === 'dc-baseline'
+      ? globals.currentHouseholdIncome
+      : adjustedYourIncome + adjustedKarasIncome;
+    const grossIncome = grossIncomeBase * growthMultiplier;
     const benefitsValue = activeCareer.benefitsMonetaryValue;
     const totalCompensation = grossIncome + benefitsValue;
 

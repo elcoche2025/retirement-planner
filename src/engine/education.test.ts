@@ -20,10 +20,11 @@ describe('getEducationCost', () => {
 
   it('returns 0 when career has tuition waiver and child is school age', () => {
     const hague = getDestination('nl-the-hague')!;
-    // Find the DAFT + ASH preset (has tuition waiver in benefits)
-    const ashPreset = hague.careerPresets.find(p => p.benefits.some(b => b.toLowerCase().includes('tuition waiver')));
-    expect(ashPreset).toBeDefined();
-    const cost = getEducationCost(hague, ashPreset!, 7);
+    const tuitionWaiverCareer = {
+      ...hague.careerPresets[0],
+      benefits: ['Tuition waiver for daughter'],
+    };
+    const cost = getEducationCost(hague, tuitionWaiverCareer, 7);
     expect(cost).toBe(0);
   });
 

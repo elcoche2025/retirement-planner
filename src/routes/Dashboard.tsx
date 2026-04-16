@@ -5,6 +5,8 @@ import { calculateQoLScore } from '@/engine/scoring';
 import { useAppState } from '@/state/AppStateContext';
 import MetricCard from '@/components/MetricCard';
 import DestinationCard from '@/components/DestinationCard';
+import PageGuide from '@/components/PageGuide';
+import { DASHBOARD_GUIDE } from '@/data/page-guides';
 import type { Destination, YearlyProjection } from '@/types';
 import './Dashboard.css';
 
@@ -55,6 +57,8 @@ export default function Dashboard() {
 
   return (
     <div className="page-enter dashboard">
+      <PageGuide sections={DASHBOARD_GUIDE} />
+
       {/* DC Baseline Banner */}
       {dcResult && dcLast && (
         <section className="dashboard-baseline card">

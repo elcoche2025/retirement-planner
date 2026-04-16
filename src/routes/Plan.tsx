@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { ALL_DESTINATIONS, getDestination } from '@/data/destinations';
+import PageGuide from '@/components/PageGuide';
+import { PLAN_GUIDE } from '@/data/page-guides';
 import './Plan.css';
 
 interface Phase {
@@ -103,6 +105,7 @@ export default function Plan() {
       <p className="text-secondary plan-subtitle">
         A phased checklist for your international move. Select a destination to customize.
       </p>
+      <PageGuide sections={PLAN_GUIDE} />
 
       {/* Destination selector */}
       <div className="plan-selector">

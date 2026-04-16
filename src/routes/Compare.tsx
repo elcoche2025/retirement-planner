@@ -8,6 +8,8 @@ import { runMonteCarlo } from '@/engine/montecarlo';
 import { calculateQoLScore } from '@/engine/scoring';
 import ComparisonChart from '@/components/ComparisonChart';
 import DestinationSelector from '@/components/DestinationSelector';
+import PageGuide from '@/components/PageGuide';
+import { COMPARE_GUIDE } from '@/data/page-guides';
 import type { YearlyProjection, Destination, CareerPreset, MonteCarloResult } from '@/types';
 import './Compare.css';
 
@@ -168,7 +170,7 @@ export default function Compare() {
         higherIsBetter: false,
       },
       {
-        label: 'Tax Burden',
+        label: 'Estimated Tax Load',
         values: [fmt(firstA.totalTax), fmt(firstB.totalTax)],
         raw: [firstA.totalTax, firstB.totalTax],
         higherIsBetter: false,
@@ -203,6 +205,7 @@ export default function Compare() {
     <div className="page-enter compare-page">
       <h1>Compare</h1>
       <p className="compare-subtitle">Side-by-side financial and life quality comparison.</p>
+      <PageGuide sections={COMPARE_GUIDE} />
 
       {/* Selectors */}
       <div className="compare-selectors">

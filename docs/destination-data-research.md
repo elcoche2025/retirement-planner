@@ -131,7 +131,7 @@
     mekoce: "Remote SPED consulting/EdTech",
     kara: "Remote US-based work",
     combinedIncome: 120000,
-    benefits: "US-level income, Kenya cost of living, FEIE tax exclusion up to $126,500"
+    benefits: "US-level income, Kenya cost of living, FEIE tax exclusion up to $132,900 (2026)"
   },
   {
     id: "kenya-ngo-education",
@@ -210,20 +210,28 @@
 ```
 [
   {
-    id: "hague-intl-org",
-    label: "International Org + School",
+    id: "hague-kara-hsm-school",
+    label: "Kara HSM + Mekoce School",
     mekoce: "International school SPED teacher",
-    kara: "International org (ICC, OPCW, Europol)",
-    combinedIncome: 95000,
-    benefits: "30% ruling, excellent public transit, bike culture, EU healthcare"
+    kara: "International org / operations / program role",
+    combinedIncome: 140000,
+    benefits: "Possible 30% ruling, strong schools, spouse work rights, EU healthcare"
   },
   {
-    id: "hague-hsm",
-    label: "Highly Skilled Migrant",
-    mekoce: "EdTech or inclusion consultant",
-    kara: "Corporate role (HSM visa)",
-    combinedIncome: 110000,
-    benefits: "30% ruling tax benefit, EU travel, world-class cycling infrastructure"
+    id: "hague-kara-daft-school",
+    label: "Kara DAFT + Mekoce School",
+    mekoce: "International school SEN / inclusion role",
+    kara: "DAFT small business / consultancy / co-owned project",
+    combinedIncome: 105000,
+    benefits: "Low-capital DAFT path, spouse salaried work rights, EU healthcare"
+  },
+  {
+    id: "hague-both-remote",
+    label: "Both Remote from NL Base",
+    mekoce: "Remote SPED / EdTech consulting",
+    kara: "Remote operations / strategy / program work",
+    combinedIncome: 130000,
+    benefits: "US-linked earnings, flexibility, but residency structure still needed"
   }
 ]
 ```
@@ -254,9 +262,9 @@
 | costs | "~€350 per person" |
 
 ### Narrative
-**Pitch**: The pragmatic European choice. The Hague offers international organizations, excellent schools, and the 30% ruling tax benefit. Less expensive than Amsterdam, more international community feel.
+**Pitch**: The pragmatic European choice. The Hague offers strong schools, a more manageable Dutch cost base than Amsterdam, and multiple realistic work/visa structures for this household.
 
-**Pros**: 30% ruling saves thousands, international community, EU healthcare, bike-friendly, safe, excellent schools
+**Pros**: Employer-sponsored scenarios may qualify for the 30% ruling, international community, EU healthcare, bike-friendly, safe, excellent schools
 
 **Cons**: Gray weather, reserved culture, housing shortage, lower net income than DC, far from Kenya
 
@@ -378,28 +386,28 @@
 ```
 [
   {
-    id: "ams-tech-school",
-    label: "Tech/EdTech + International School",
-    mekoce: "International school SPED teacher or EdTech role",
-    kara: "Tech company / startup (Amsterdam is a tech hub)",
-    combinedIncome: 120000,
-    benefits: "30% ruling, startup ecosystem, international community, EU healthcare"
+    id: "ams-kara-hsm-school",
+    label: "Kara HSM + Mekoce School",
+    mekoce: "International school SEN / inclusion role",
+    kara: "Tech / operations / program role",
+    combinedIncome: 155000,
+    benefits: "Possible 30% ruling, broader job market, school-role stability"
   },
   {
-    id: "ams-hsm-dual",
-    label: "Dual Highly Skilled Migrant",
-    mekoce: "EdTech / inclusion consultancy",
-    kara: "Corporate (Booking.com, Adyen, etc.)",
-    combinedIncome: 130000,
-    benefits: "Both qualify for 30% ruling, high earning potential, canal-side living"
+    id: "ams-kara-daft-school",
+    label: "Kara DAFT + Mekoce School",
+    mekoce: "International school SEN / inclusion role",
+    kara: "DAFT business owner / consultancy / co-owned project",
+    combinedIncome: 115000,
+    benefits: "DAFT path with spouse salaried work rights, EU healthcare"
   },
   {
-    id: "ams-remote-plus",
-    label: "Remote US + Local Part-Time",
+    id: "ams-both-remote",
+    label: "Both Remote from NL Base",
     mekoce: "Remote SPED consulting",
-    kara: "Remote US-based work + local freelance",
-    combinedIncome: 110000,
-    benefits: "US income levels, Amsterdam lifestyle, FEIE potential"
+    kara: "Remote operations / strategy / program work",
+    combinedIncome: 150000,
+    benefits: "Higher remote ceiling, Amsterdam network base, but residency still needs structure"
   }
 ]
 ```
@@ -430,9 +438,9 @@
 | costs | "~€350 per person" |
 
 ### Narrative
-**Pitch**: The career-maximizing European option. Amsterdam's tech ecosystem and international companies offer the highest earning potential in Europe, plus the 30% ruling softens the tax blow. More expensive than The Hague but more vibrant.
+**Pitch**: The higher-upside Dutch option. Amsterdam can deliver more opportunity than The Hague, but only if the household earns enough to outrun Amsterdam-level housing pressure.
 
-**Pros**: Strong job market, 30% ruling, international city, direct KLM flights to Nairobi, world-class cycling infrastructure, diverse & progressive
+**Pros**: Strong job market, employer-sponsored scenarios may qualify for the 30% ruling, international city, direct KLM flights to Nairobi, world-class cycling infrastructure, diverse & progressive
 
 **Cons**: Very expensive housing (approaching DC levels), gray weather, tourist overcrowding, housing shortage makes finding apartments competitive, cost of living nearly as high as DC
 
@@ -455,7 +463,7 @@
 | incomeTaxRate | "1.92-35% progressive (ISR); 183+ days = tax resident on worldwide income" |
 | capitalGainsTax | "10% on Mexican real estate; 35% on other gains for residents" |
 | socialCharges | "~2% employee contribution if locally employed" |
-| specialRegime | "None; but FEIE ($126,500 in 2025) shelters most US-source income from US tax" |
+| specialRegime | "None; but FEIE ($132,900 in 2026) shelters most US-source income from US tax" |
 | estimatedEffectiveTotalRate | "20-28% depending on income structure; remote US income + FEIE can minimize Mexican tax exposure with careful structuring" |
 
 ### Housing

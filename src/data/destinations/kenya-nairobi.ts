@@ -29,7 +29,7 @@ export const kenyaNairobi: Destination = {
     incomeTaxRate: 30,
     capitalGainsTax: 5,
     socialCharges: 6,
-    usTaxObligation: 'Must still file US taxes; FEIE ($126,500) + FTC offsets most',
+    usTaxObligation: 'Must still file US taxes; FEIE ($132,900 for 2026) + FTC offsets most',
     treatyBenefits: 'No US-Kenya tax treaty; rely on FEIE and FTC',
     estimatedEffectiveTotalRate: 27,
   },
@@ -83,7 +83,7 @@ export const kenyaNairobi: Destination = {
       incomeGrowthRate: 3,
       benefits: [
         'US-level income at Kenya cost of living',
-        'FEIE tax exclusion up to $126,500',
+        'FEIE tax exclusion up to $132,900 (2026)',
       ],
       benefitsMonetaryValue: 5000,
       visaCompatible: true,

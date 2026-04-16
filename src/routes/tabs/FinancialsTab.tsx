@@ -6,19 +6,21 @@ import { runMonteCarlo } from '@/engine/montecarlo';
 import { getDestination } from '@/data/destinations';
 import MetricCard from '@/components/MetricCard';
 import WealthChart from '@/components/WealthChart';
+import PageGuide from '@/components/PageGuide';
+import { getFinancialsGuide } from '@/data/page-guides';
 import type { YearlyProjection, MonteCarloResult } from '@/types';
 import './FinancialsTab.css';
 
-const fmt = (n: number) =>
+export const formatCompactCurrency = (n: number) =>
   n >= 1e6
     ? `$${(n / 1e6).toFixed(2)}M`
     : n >= 1e3
       ? `$${(n / 1e3).toFixed(0)}K`
       : `$${n}`;
 
-const fmtSigned = (n: number) => {
-  const prefix = n >= 0 ? '+' : '';
-  return prefix + fmt(Math.abs(n));
+export const formatSignedCompactCurrency = (n: number) => {
+  const prefix = n >= 0 ? '+' : '-';
+  return prefix + formatCompactCurrency(Math.abs(n));
 };
 
 export default function FinancialsTab({ destinationId }: { destinationId: string }) {
@@ -85,16 +87,18 @@ export default function FinancialsTab({ destinationId }: { destinationId: string
 
   return (
     <div className="financials-tab">
+      <PageGuide sections={getFinancialsGuide(destination.name)} />
+
       {/* Metric cards row */}
       <div className="financials-metrics">
         <MetricCard
           label={`Net Worth at ${globals.retirementAge}`}
-          value={fmt(netWorthAtRetirement)}
+          value={formatCompactCurrency(netWorthAtRetirement)}
           color={destination.accentColor}
         />
         <MetricCard
           label="vs DC Baseline"
-          value={fmtSigned(delta)}
+          value={formatSignedCompactCurrency(delta)}
           color={delta >= 0 ? 'var(--color-positive)' : 'var(--color-negative)'}
         />
         <MetricCard
@@ -102,7 +106,7 @@ export default function FinancialsTab({ destinationId }: { destinationId: string
           value={`${(avgSavings * 100).toFixed(0)}%`}
         />
         <MetricCard
-          label="Avg Tax Rate"
+          label="Avg Estimated Tax Rate"
           value={`${(avgTax * 100).toFixed(0)}%`}
         />
       </div>
@@ -148,17 +152,17 @@ export default function FinancialsTab({ destinationId }: { destinationId: string
         <div className="financials-mc-stats">
           <MetricCard
             label="Pessimistic (p10)"
-            value={fmt(mcResult.summary.p10Final)}
+            value={formatCompactCurrency(mcResult.summary.p10Final)}
             color="var(--color-negative)"
           />
           <MetricCard
             label="Median (p50)"
-            value={fmt(mcResult.summary.p50Final)}
+            value={formatCompactCurrency(mcResult.summary.p50Final)}
             color={destination.accentColor}
           />
           <MetricCard
             label="Optimistic (p90)"
-            value={fmt(mcResult.summary.p90Final)}
+            value={formatCompactCurrency(mcResult.summary.p90Final)}
             color="var(--color-positive)"
           />
         </div>
@@ -173,7 +177,7 @@ export default function FinancialsTab({ destinationId }: { destinationId: string
               <tr>
                 <th>Age</th>
                 <th className="right">Income</th>
-                <th className="right">Tax</th>
+                <th className="right">Est. Tax</th>
                 <th className="right">Expenses</th>
                 <th className="right">Net Cash</th>
                 <th className="right">Net Worth</th>
@@ -183,13 +187,13 @@ export default function FinancialsTab({ destinationId }: { destinationId: string
               {projections.map((p) => (
                 <tr key={p.year}>
                   <td>{p.age}</td>
-                  <td className="right">{fmt(p.grossIncome)}</td>
-                  <td className="right">{fmt(p.totalTax)}</td>
-                  <td className="right">{fmt(p.totalExpenses)}</td>
+                  <td className="right">{formatCompactCurrency(p.grossIncome)}</td>
+                  <td className="right">{formatCompactCurrency(p.totalTax)}</td>
+                  <td className="right">{formatCompactCurrency(p.totalExpenses)}</td>
                   <td className={`right ${p.netCashFlow < 0 ? 'text-negative' : ''}`}>
-                    {fmt(p.netCashFlow)}
+                    {formatCompactCurrency(p.netCashFlow)}
                   </td>
-                  <td className="right">{fmt(p.totalNetWorth)}</td>
+                  <td className="right">{formatCompactCurrency(p.totalNetWorth)}</td>
                 </tr>
               ))}
             </tbody>

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { estimateUSTax, estimateLocalTax, estimateEffectiveTax } from './taxes';
+import { getDestination } from '@/data/destinations';
 
 describe('estimateUSTax', () => {
   it('returns federal tax at domestic rate for DC', () => {
@@ -18,6 +19,12 @@ describe('estimateUSTax', () => {
     const tax = estimateUSTax(80000, 'kenya-nairobi', true);
     expect(tax).toBe(0);
   });
+
+  it('uses the FEIE stacking approach above the exclusion limit', () => {
+    const tax = estimateUSTax(180000, 'kenya-nairobi', true);
+    expect(tax).toBeGreaterThan(0);
+    expect(tax).toBeLessThan(estimateUSTax(180000, 'dc-baseline', false));
+  });
 });
 
 describe('estimateLocalTax', () => {
@@ -32,8 +39,14 @@ describe('estimateLocalTax', () => {
 });
 
 describe('estimateEffectiveTax', () => {
-  it('effective is max of US and local, not sum', () => {
+  it('uses destination estimated effective rate for total tax', () => {
     const result = estimateEffectiveTax(100000, 'nl-the-hague');
-    expect(result.total).toBeLessThan(result.usTax + result.localTax + 1);
+    const destination = getDestination('nl-the-hague')!;
+    expect(result.total).toBeCloseTo(100000 * (destination.taxRegime.estimatedEffectiveTotalRate / 100), 5);
+  });
+
+  it('keeps local + residual US tax within the total estimate', () => {
+    const result = estimateEffectiveTax(100000, 'nl-the-hague');
+    expect(result.localTax + result.usTax).toBeLessThanOrEqual(result.total + 1);
   });
 });

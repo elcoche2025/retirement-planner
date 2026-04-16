@@ -1,4 +1,6 @@
 import { useScenario } from '@/state/hooks';
+import PageGuide from '@/components/PageGuide';
+import { getVisaGuide } from '@/data/page-guides';
 import './VisaTab.css';
 
 export default function VisaTab({ destinationId }: { destinationId: string }) {
@@ -27,6 +29,8 @@ export default function VisaTab({ destinationId }: { destinationId: string }) {
 
   return (
     <div className="visa-tab">
+      <PageGuide sections={getVisaGuide(destination.name)} />
+
       {/* Visa overview */}
       <section className="visa-overview card">
         <h3 className="section-title">Visa Details</h3>

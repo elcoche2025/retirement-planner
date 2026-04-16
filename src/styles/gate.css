@@ -93,3 +93,10 @@
   color: var(--color-negative);
   margin-top: var(--space-3);
 }
+
+.gate-note {
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: var(--color-text-tertiary);
+  margin-top: var(--space-4);
+}

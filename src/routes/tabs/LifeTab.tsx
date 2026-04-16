@@ -2,8 +2,10 @@ import { useScenario, useQoLWeights, useGlobalAssumptions } from '@/state/hooks'
 import { getDestination } from '@/data/destinations';
 import { QOL_DIMENSION_META } from '@/data/qol-dimensions';
 import { calculateQoLScore } from '@/engine/scoring';
+import PageGuide from '@/components/PageGuide';
 import RadarChart from '@/components/RadarChart';
 import SliderInput from '@/components/SliderInput';
+import { getLifeGuide } from '@/data/page-guides';
 import type { QoLDimension } from '@/types';
 import {
   Heart,
@@ -20,6 +22,7 @@ import {
   ArrowLeftRight,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { getCurrentPlanningYear } from '@/utils/date';
 import './LifeTab.css';
 
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -70,7 +73,7 @@ export default function LifeTab({ destinationId }: { destinationId: string }) {
   const edu = destination.educationSystem;
   const dcEdu = dc?.educationSystem;
   const moveYear = config?.moveYear ?? globals.moveYear;
-  const currentYear = 2026;
+  const currentYear = getCurrentPlanningYear();
   const yearsUntilMove = moveYear - currentYear;
   const ageAtMove = globals.daughterAge + yearsUntilMove;
   const transition = getTransitionAssessment(ageAtMove);
@@ -80,6 +83,8 @@ export default function LifeTab({ destinationId }: { destinationId: string }) {
 
   return (
     <div className="life-tab">
+      <PageGuide sections={getLifeGuide(destination.name)} />
+
       {/* Score header */}
       <div className="life-score-header">
         <div className="life-score-number" style={{ color: destination.accentColor }}>
