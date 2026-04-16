@@ -1,0 +1,174 @@
+/* Admin user management page */
+
+.admin-page {
+  max-width: 720px;
+}
+
+.admin-page h1 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-5);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.admin-table th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-bg-tertiary);
+}
+
+.admin-table td {
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  vertical-align: middle;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-email {
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.admin-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.admin-badge--approved {
+  background: color-mix(in srgb, var(--color-positive) 18%, transparent);
+  color: var(--color-positive);
+}
+
+.admin-badge--pending {
+  background: color-mix(in srgb, var(--color-highlight) 18%, transparent);
+  color: var(--color-highlight);
+}
+
+.admin-badge--admin {
+  background: color-mix(in srgb, var(--color-text-tertiary) 18%, transparent);
+  color: var(--color-text-secondary);
+  margin-left: var(--space-2);
+}
+
+.admin-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.admin-btn {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border: 1px solid transparent;
+  border-radius: var(--card-radius);
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.admin-btn:hover {
+  opacity: 0.85;
+}
+
+.admin-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-btn--approve {
+  background: var(--color-positive);
+  color: var(--color-bg-primary);
+}
+
+.admin-btn--revoke {
+  background: none;
+  border-color: var(--color-highlight);
+  color: var(--color-highlight);
+}
+
+.admin-btn--delete {
+  background: none;
+  border-color: var(--color-negative);
+  color: var(--color-negative);
+}
+
+.admin-empty {
+  color: var(--color-text-tertiary);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: var(--space-8) 0;
+}
+
+.admin-error {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-negative);
+  margin-bottom: var(--space-4);
+}
+
+/* Responsive: stack on mobile */
+@media (max-width: 600px) {
+  .admin-table,
+  .admin-table thead,
+  .admin-table tbody,
+  .admin-table tr,
+  .admin-table th,
+  .admin-table td {
+    display: block;
+  }
+
+  .admin-table thead {
+    display: none;
+  }
+
+  .admin-table tr {
+    margin-bottom: var(--space-3);
+    padding: var(--space-3);
+    background: var(--color-bg-secondary);
+    border-radius: var(--card-radius);
+    border: 1px solid var(--color-bg-tertiary);
+  }
+
+  .admin-table td {
+    padding: var(--space-1) 0;
+    border-bottom: none;
+  }
+
+  .admin-table td:before {
+    content: attr(data-label);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    display: block;
+    margin-bottom: 2px;
+  }
+}

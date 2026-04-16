@@ -1,10 +1,12 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboard, GitCompare, Grid3x3, Map, Settings, FileText, Sun, Moon } from 'lucide-react';
+import { LayoutDashboard, GitCompare, Grid3x3, Map, Settings, FileText, ShieldCheck, Sun, Moon } from 'lucide-react';
 import { useTheme } from '@/state/ThemeContext';
 import ProfileSwitcher from './ProfileSwitcher';
 import './Layout.css';
 
-const NAV_ITEMS: { to: string; label: string; icon: typeof LayoutDashboard; end?: boolean }[] = [
+type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; end?: boolean };
+
+const BASE_NAV_ITEMS: NavItem[] = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { to: '/compare', label: 'Compare', icon: GitCompare },
   { to: '/matrix', label: 'Matrix', icon: Grid3x3 },
@@ -13,8 +15,11 @@ const NAV_ITEMS: { to: string; label: string; icon: typeof LayoutDashboard; end?
   { to: '/report', label: 'Report', icon: FileText },
 ];
 
-export default function Layout() {
+const ADMIN_NAV_ITEM: NavItem = { to: '/admin', label: 'Admin', icon: ShieldCheck };
+
+export default function Layout({ isAdmin = false }: { isAdmin?: boolean }) {
   const { isLight, toggle } = useTheme();
+  const NAV_ITEMS = isAdmin ? [...BASE_NAV_ITEMS, ADMIN_NAV_ITEM] : BASE_NAV_ITEMS;
 
   return (
     <div className="layout">
