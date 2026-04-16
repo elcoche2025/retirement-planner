@@ -1,0 +1,400 @@
+/* ================================================
+   Report Page — print-friendly summary
+   ================================================ */
+
+.report-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  position: relative;
+}
+
+/* --- Print button --- */
+.report-print-btn {
+  position: fixed;
+  top: 64px;
+  right: var(--space-5);
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* --- Header --- */
+.report-header h1 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: var(--space-1);
+}
+
+.report-subtitle {
+  font-size: 0.85rem;
+  color: var(--color-text-tertiary);
+}
+
+/* --- Section --- */
+.report-section {
+  /* spacing handled by gap on parent */
+}
+
+/* --- Assumptions grid --- */
+.report-assumptions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3) var(--space-6);
+}
+
+.report-assumption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: var(--space-1) 0;
+  border-bottom: 1px solid var(--color-row-border);
+}
+
+.report-assumption-label {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+.report-assumption-value {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+}
+
+/* --- Ranking table --- */
+.report-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.report-ranking-table {
+  min-width: 700px;
+}
+
+.report-ranking-table th,
+.report-ranking-table td {
+  font-size: 0.75rem;
+}
+
+.report-dest-cell {
+  white-space: nowrap;
+}
+
+.report-dest-flag {
+  margin-right: var(--space-1);
+}
+
+.report-summary-cell {
+  font-size: 0.7rem;
+  color: var(--color-text-tertiary);
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.report-winner-row td {
+  background: var(--color-winner-bg);
+}
+
+/* --- Top 3 spotlight --- */
+.report-spotlight-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.report-spotlight-card {
+  border-left: 4px solid;
+}
+
+.report-spotlight-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.report-spotlight-header h4 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  flex: 1;
+}
+
+.report-spotlight-flag {
+  font-size: 1.2rem;
+}
+
+.report-spotlight-rank {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+  font-weight: 600;
+}
+
+.report-spotlight-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.report-spotlight-chart {
+  margin-bottom: var(--space-3);
+}
+
+.report-spotlight-lists {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.report-spotlight-pros h5,
+.report-spotlight-cons h5 {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-2);
+}
+
+.report-spotlight-pros h5 {
+  color: var(--color-positive);
+}
+
+.report-spotlight-cons h5 {
+  color: var(--color-negative);
+}
+
+.report-spotlight-pros ul,
+.report-spotlight-cons ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.report-spotlight-pros li,
+.report-spotlight-cons li {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--color-text-secondary);
+  padding: var(--space-1) 0;
+  border-bottom: 1px solid var(--color-row-border);
+}
+
+.report-spotlight-pros li::before {
+  content: '+ ';
+  color: var(--color-positive);
+  font-weight: 600;
+}
+
+.report-spotlight-cons li::before {
+  content: '- ';
+  color: var(--color-negative);
+  font-weight: 600;
+}
+
+/* --- Weight configuration --- */
+.report-preset-name {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.report-weights-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.report-weight-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.report-weight-label {
+  flex: 0 0 140px;
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+}
+
+.report-weight-bar-track {
+  flex: 1;
+  height: 6px;
+  background: var(--color-bg-tertiary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.report-weight-bar-fill {
+  height: 100%;
+  background: var(--color-highlight);
+  border-radius: 3px;
+  transition: width var(--transition-normal);
+}
+
+.report-weight-value {
+  flex: 0 0 32px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-text-tertiary);
+  text-align: right;
+}
+
+/* --- Composite score bars --- */
+.report-composite-title {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  margin-bottom: var(--space-3);
+}
+
+.report-composite-bars {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-bg-tertiary);
+}
+
+.report-composite-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.report-composite-label {
+  flex: 0 0 120px;
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.report-composite-bar-track {
+  flex: 1;
+  height: 10px;
+  background: var(--color-bg-tertiary);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.report-composite-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width var(--transition-normal);
+}
+
+.report-composite-value {
+  flex: 0 0 36px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-text-primary);
+  text-align: right;
+  font-weight: 600;
+}
+
+/* --- Footer --- */
+.report-footer {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+  text-align: center;
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--color-bg-tertiary);
+}
+
+/* --- Mobile --- */
+@media (max-width: 768px) {
+  .report-page {
+    padding: var(--space-4);
+  }
+
+  .report-assumptions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .report-spotlight-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .report-spotlight-lists {
+    grid-template-columns: 1fr;
+  }
+
+  .report-print-btn {
+    top: auto;
+    bottom: 76px;
+    right: var(--space-4);
+  }
+
+  .report-weight-label {
+    flex: 0 0 100px;
+    font-size: 0.72rem;
+  }
+
+  .report-composite-label {
+    flex: 0 0 90px;
+    font-size: 0.72rem;
+  }
+}
+
+/* === Print styles === */
+@media print {
+  .top-nav,
+  .bottom-bar,
+  .report-print-btn {
+    display: none !important;
+  }
+
+  .report-page {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  .card {
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+
+  .report-spotlight-chart {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Prevent spotlight cards from splitting across pages */
+  .report-spotlight-card {
+    page-break-inside: avoid;
+  }
+
+  /* Ensure bar colors print */
+  .report-weight-bar-fill,
+  .report-composite-bar-fill {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .report-winner-row td {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}

@@ -9,6 +9,7 @@ import Compare from './routes/Compare';
 import Matrix from './routes/Matrix';
 import Plan from './routes/Plan';
 import Inputs from './routes/Inputs';
+import Report from './routes/Report';
 import './styles/gate.css';
 
 const HASH = '78163a9b32a43d0bf9bf5a80cd700105ddd6e3abe279bb190fa9b97f05c59e77';
@@ -72,6 +73,7 @@ function AppRouter() {
             <Route path="matrix" element={<Matrix />} />
             <Route path="plan" element={<Plan />} />
             <Route path="inputs" element={<Inputs />} />
+            <Route path="report" element={<Report />} />
           </Route>
         </Routes>
       </HashRouter>
