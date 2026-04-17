@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/services/supabase';
 import { signOut } from '@/services/auth';
-import { pushState } from '@/services/sync';
 import { useAppState } from '@/state/AppStateContext';
 import { LogOut, RefreshCw } from 'lucide-react';
 import './SyncStatus.css';
@@ -21,30 +20,23 @@ function formatRelativeTime(iso: string): string {
 }
 
 export default function SyncStatus() {
-  const { state } = useAppState();
+  const { state, syncStatus, syncNow } = useAppState();
   const [email, setEmail] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [syncing, setSyncing] = useState(false);
-  const [syncError, setSyncError] = useState(false);
+  const [hasUser, setHasUser] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setEmail(session?.user.email ?? null);
-      setUserId(session?.user.id ?? null);
+      setHasUser(Boolean(session?.user.id));
     });
   }, []);
 
   async function handleSyncNow() {
-    if (!userId) return;
-    setSyncing(true);
-    setSyncError(false);
     try {
-      await pushState(userId, state);
+      await syncNow();
     } catch {
-      setSyncError(true);
-    } finally {
-      setSyncing(false);
+      // Error is already captured in syncStatus
     }
   }
 
@@ -57,13 +49,14 @@ export default function SyncStatus() {
     }
   }
 
-  const dotClass = syncError
+  const { syncing, error } = syncStatus;
+  const dotClass = error
     ? 'sync-dot--error'
     : syncing
       ? 'sync-dot--syncing'
       : 'sync-dot--synced';
 
-  const statusLabel = syncError
+  const statusLabel = error
     ? 'Sync error'
     : syncing
       ? 'Syncing...'
@@ -76,7 +69,7 @@ export default function SyncStatus() {
         <span className="sync-timestamp">
           Last updated: {formatRelativeTime(state.localUpdatedAt)}
         </span>
-        <span className="sync-indicator">
+        <span className="sync-indicator" title={error ?? undefined}>
           <span className={`sync-dot ${dotClass}`} />
           {statusLabel}
         </span>
@@ -85,7 +78,7 @@ export default function SyncStatus() {
         <button
           className="sync-btn"
           onClick={handleSyncNow}
-          disabled={syncing || !userId}
+          disabled={syncing || !hasUser}
         >
           <RefreshCw size={14} />
           Sync Now

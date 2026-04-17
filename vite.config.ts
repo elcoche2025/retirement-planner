@@ -8,6 +8,15 @@ export default defineConfig({
   publicDir: 'public',
   build: {
     outDir: 'dist',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'recharts-vendor': ['recharts'],
+          'supabase-vendor': ['@supabase/supabase-js'],
+        },
+      },
+    },
   },
   resolve: {
     alias: {

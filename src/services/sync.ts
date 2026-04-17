@@ -72,7 +72,10 @@ export async function syncState(
 }
 
 // Debounce helper
-export function createDebouncedSync(delayMs: number = 2000) {
+export function createDebouncedSync(
+  delayMs: number = 2000,
+  onError?: (err: unknown) => void,
+) {
   let timer: ReturnType<typeof setTimeout> | null = null;
 
   return function debouncedPush(userId: string, state: AppState) {
@@ -82,6 +85,7 @@ export function createDebouncedSync(delayMs: number = 2000) {
         await pushState(userId, state);
       } catch (err) {
         console.error('Sync push failed:', err);
+        onError?.(err);
       }
     }, delayMs);
   };

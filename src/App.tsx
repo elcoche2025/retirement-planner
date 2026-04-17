@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { HashRouter, Route, Routes } from 'react-router-dom';
+import { HashRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { supabase } from './services/supabase';
 import type { Session } from '@supabase/supabase-js';
 import { AppStateProvider } from './state/AppStateContext';
@@ -14,13 +14,38 @@ import Plan from './routes/Plan';
 import Inputs from './routes/Inputs';
 import Report from './routes/Report';
 import Admin from './routes/Admin';
+import { getMyApproval } from './services/admin';
+
+function LoadingScreen() {
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <p className="text-tertiary">Loading...</p>
+    </div>
+  );
+}
 
 function AppRouter({ session }: { session: Session }) {
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    getMyApproval(session.user.id)
+      .then((approval) => {
+        if (!cancelled) setIsAdmin(approval?.is_admin === true);
+      })
+      .catch(() => {
+        if (!cancelled) setIsAdmin(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [session.user.id]);
+
   return (
     <AppStateProvider userId={session.user.id}>
       <HashRouter>
         <Routes>
-          <Route element={<Layout isAdmin={true} />}>
+          <Route element={<Layout isAdmin={isAdmin} />}>
             <Route index element={<Dashboard />} />
             <Route path="scenario/:id/*" element={<ScenarioDetail />} />
             <Route path="compare" element={<Compare />} />
@@ -28,7 +53,10 @@ function AppRouter({ session }: { session: Session }) {
             <Route path="plan" element={<Plan />} />
             <Route path="inputs" element={<Inputs />} />
             <Route path="report" element={<Report />} />
-            <Route path="admin" element={<Admin />} />
+            <Route
+              path="admin"
+              element={isAdmin ? <Admin /> : <Navigate to="/" replace />}
+            />
           </Route>
         </Routes>
       </HashRouter>
@@ -56,9 +84,7 @@ export default function App() {
   if (loading) {
     return (
       <ThemeProvider>
-        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <p className="text-tertiary">Loading...</p>
-        </div>
+        <LoadingScreen />
       </ThemeProvider>
     );
   }

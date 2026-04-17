@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useEffect, useMemo, useRef, ReactNode } from 'react';
+import { createContext, useContext, useReducer, useEffect, useMemo, useRef, useState, useCallback, ReactNode } from 'react';
 import type {
   AppState,
   FxRatesMeta,
@@ -370,15 +370,29 @@ function reducer(state: AppState, action: Action): AppState {
   return newState;
 }
 
+interface SyncStatus {
+  syncing: boolean;
+  error: string | null;
+}
+
 interface AppStateContextValue {
   state: AppState;
   dispatch: React.Dispatch<Action>;
+  syncStatus: SyncStatus;
+  syncNow: () => Promise<void>;
 }
 
 const AppStateCtx = createContext<AppStateContextValue | null>(null);
 
+function toSyncErrorMessage(err: unknown): string {
+  if (err instanceof Error) return err.message;
+  if (typeof err === 'string') return err;
+  return 'Sync failed';
+}
+
 export function AppStateProvider({ children, userId }: { children: ReactNode; userId?: string }) {
   const [state, dispatch] = useReducer(reducer, null, loadState);
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>({ syncing: false, error: null });
   const initialSyncDone = useRef(false);
 
   // Persist to localStorage
@@ -425,33 +439,60 @@ export function AppStateProvider({ children, userId }: { children: ReactNode; us
     if (!userId || initialSyncDone.current) return;
     initialSyncDone.current = true;
 
-    pullState(userId).then((remote) => {
-      if (!remote) {
-        // No cloud row — push local state
-        pushState(userId, state).catch(console.error);
-        return;
-      }
-      const localTime = state.localUpdatedAt ?? '1970-01-01T00:00:00Z';
-      if (remote.updatedAt > localTime) {
-        // Cloud is newer — replace local
-        dispatch({ type: 'REPLACE_STATE', payload: remote.state });
-      } else if (localTime > remote.updatedAt) {
-        // Local is newer — push
-        pushState(userId, state).catch(console.error);
-      }
-    }).catch(console.error);
+    setSyncStatus({ syncing: true, error: null });
+    pullState(userId)
+      .then((remote) => {
+        if (!remote) {
+          // No cloud row — push local state
+          return pushState(userId, state);
+        }
+        const localTime = state.localUpdatedAt ?? '1970-01-01T00:00:00Z';
+        if (remote.updatedAt > localTime) {
+          // Cloud is newer — replace local
+          dispatch({ type: 'REPLACE_STATE', payload: remote.state });
+          return;
+        }
+        if (localTime > remote.updatedAt) {
+          // Local is newer — push
+          return pushState(userId, state);
+        }
+      })
+      .then(() => setSyncStatus({ syncing: false, error: null }))
+      .catch((err) => {
+        console.error('Initial sync failed:', err);
+        setSyncStatus({ syncing: false, error: toSyncErrorMessage(err) });
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   // Debounced push on state change
-  const debouncedPush = useMemo(() => createDebouncedSync(2000), []);
+  const debouncedPush = useMemo(
+    () =>
+      createDebouncedSync(2000, (err) => {
+        setSyncStatus({ syncing: false, error: toSyncErrorMessage(err) });
+      }),
+    [],
+  );
   useEffect(() => {
     if (!userId || !initialSyncDone.current) return;
     debouncedPush(userId, state);
   }, [state, userId, debouncedPush]);
 
+  const syncNow = useCallback(async () => {
+    if (!userId) return;
+    setSyncStatus({ syncing: true, error: null });
+    try {
+      await pushState(userId, state);
+      setSyncStatus({ syncing: false, error: null });
+    } catch (err) {
+      console.error('Manual sync failed:', err);
+      setSyncStatus({ syncing: false, error: toSyncErrorMessage(err) });
+      throw err;
+    }
+  }, [userId, state]);
+
   return (
-    <AppStateCtx.Provider value={{ state, dispatch }}>
+    <AppStateCtx.Provider value={{ state, dispatch, syncStatus, syncNow }}>
       {children}
     </AppStateCtx.Provider>
   );
