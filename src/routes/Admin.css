@@ -208,3 +208,28 @@
     align-items: stretch;
   }
 }
+
+.admin-signups-supabase-note {
+  background: var(--color-bg-tertiary);
+  border-left: 2px solid var(--color-text-tertiary);
+  border-radius: 0 4px 4px 0;
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+}
+
+.admin-signups-supabase-note strong {
+  color: var(--color-text-primary);
+}
+
+.admin-signups-supabase-note a {
+  color: var(--color-highlight);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.admin-signups-supabase-note a:hover {
+  opacity: 0.85;
+}

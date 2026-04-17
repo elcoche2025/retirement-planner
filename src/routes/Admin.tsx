@@ -128,6 +128,22 @@ export default function Admin() {
         </button>
       </div>
 
+      <div className="admin-signups-supabase-note">
+        <strong>Need a hard cutoff at the auth layer?</strong> The toggle above
+        is app-level — it hides the signup UI and locks out forced API signups,
+        but the Supabase signup endpoint still accepts requests. To have Supabase
+        itself reject all signups, turn off "Allow new users to sign up" on the
+        Email provider:{' '}
+        <a
+          href="https://supabase.com/dashboard/project/misjzqiqihdzzajaoyro/auth/providers"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Supabase → Authentication → Providers → Email
+        </a>
+        .
+      </div>
+
       {users.length === 0 ? (
         <p className="admin-empty">No users found.</p>
       ) : (
