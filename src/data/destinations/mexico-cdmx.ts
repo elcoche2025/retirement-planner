@@ -144,13 +144,18 @@ export const mexicoCdmx: Destination = {
     languageEnvironment: 9,
     healthcareQuality: 7,
     safety: 5,
-    climate: 8,
+    climate: 7,
     culturalFit: 8,
     careerSatisfaction: 7,
     communityBuilding: 8,
     politicalStability: 6,
     adventureNovelty: 9,
     returnFlexibility: 8,
+  },
+
+  qolNotes: {
+    climate:
+      'Subtropical highland at 2,240m — altitude transforms the latitude into a mild year-round climate. Daytime highs 68–78°F, nighttime lows 45–55°F, remarkably consistent. Clear dry season Nov–May; rainy season Jun–Oct is reliable afternoon thunderstorms (mornings stay clear). The honest drawbacks: air quality can be poor (thermal inversions trap pollution in the valley), and at this altitude UV exposure is intense. For Oakland-calibrated tastes: the temperature profile is a near-match, but smog days and the rainy-season pattern are real differences.',
   },
 
   visa: {

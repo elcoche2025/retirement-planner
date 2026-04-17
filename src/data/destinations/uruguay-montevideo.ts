@@ -131,6 +131,11 @@ export const uruguayMontevideo: Destination = {
     returnFlexibility: 6,
   },
 
+  qolNotes: {
+    climate:
+      'Humid subtropical on the Río de la Plata estuary — four real seasons (inverted from the northern hemisphere). Southern-hemisphere summers (Dec–Feb) hit 82–86°F with humid sticky nights; winters (Jun–Aug) drop to 42–48°F, damp and windy off the river. Spring and fall are pleasant. Rain spreads year-round; humidity is the defining feature. For Oakland-calibrated tastes: the pattern is closer to a muted Mid-Atlantic US than a Mediterranean mild — miss Oakland\'s dry summers and rare humidity.',
+  },
+
   visa: {
     type: 'Residencia Legal Permanente (direct permanent residency)',
     duration: 'Permanent from day one',

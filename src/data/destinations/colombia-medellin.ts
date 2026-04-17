@@ -120,13 +120,18 @@ export const colombiaMedellin: Destination = {
     languageEnvironment: 9,
     healthcareQuality: 8,
     safety: 5,
-    climate: 10,
+    climate: 9,
     culturalFit: 8,
     careerSatisfaction: 6,
     communityBuilding: 8,
     politicalStability: 5,
     adventureNovelty: 9,
     returnFlexibility: 7,
+  },
+
+  qolNotes: {
+    climate:
+      'The "City of Eternal Spring" at 1,495m elevation in the Aburrá Valley. Remarkably consistent year-round: daytime highs 78–82°F, nighttime lows 60–65°F, no seasons in the traditional sense. Two rainy seasons (Apr–May, Sep–Nov) bring predictable afternoon showers; mornings usually clear. Humidity is moderate but present. For Oakland-calibrated tastes: slightly warmer and more humid than Oakland\'s coastal cool, but the lack of seasonal variation and the reliable "sweater in the evening" pattern is probably the closest year-round match on the list.',
   },
 
   visa: {

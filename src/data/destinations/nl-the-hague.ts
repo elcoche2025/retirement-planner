@@ -139,13 +139,18 @@ export const nlTheHague: Destination = {
     languageEnvironment: 7,
     healthcareQuality: 9,
     safety: 9,
-    climate: 4,
+    climate: 3,
     culturalFit: 6,
     careerSatisfaction: 7,
     communityBuilding: 6,
     politicalStability: 8,
     adventureNovelty: 6,
     returnFlexibility: 7,
+  },
+
+  qolNotes: {
+    climate:
+      'Maritime / oceanic, with the North Sea right next door — effectively Amsterdam\'s weather plus more wind. Summers (Jun–Aug) 65–70°F, winters (Dec–Feb) 35–40°F. ~190 rainy days/yr, cloudy most of the year, and the coastal exposure makes it notably windier than Amsterdam. Dry, sunny stretches are short and treasured. For Oakland-calibrated tastes: similar SAD risk as Amsterdam, with extra wind.',
   },
 
   visa: {

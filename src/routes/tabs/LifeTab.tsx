@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useScenario, useQoLWeights, useGlobalAssumptions } from '@/state/hooks';
 import { getDestination } from '@/data/destinations';
 import { QOL_DIMENSION_META } from '@/data/qol-dimensions';
@@ -20,6 +21,7 @@ import {
   Landmark,
   Compass,
   ArrowLeftRight,
+  ChevronDown,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { getCurrentPlanningYear } from '@/utils/date';
@@ -58,6 +60,7 @@ export default function LifeTab({ destinationId }: { destinationId: string }) {
     useScenario(destinationId);
   const { weights } = useQoLWeights();
   const { globals } = useGlobalAssumptions();
+  const [expandedDims, setExpandedDims] = useState<Set<QoLDimension>>(new Set());
 
   const dc = getDestination('dc-baseline');
   const dcRatings = dc?.qolDefaults;
@@ -68,6 +71,16 @@ export default function LifeTab({ destinationId }: { destinationId: string }) {
 
   const qolScore = calculateQoLScore(effectiveQoL, weights);
   const customRatings = config?.customQoLRatings ?? {};
+  const qolNotes = destination.qolNotes ?? {};
+
+  function toggleExpanded(dim: QoLDimension) {
+    setExpandedDims((prev) => {
+      const next = new Set(prev);
+      if (next.has(dim)) next.delete(dim);
+      else next.add(dim);
+      return next;
+    });
+  }
 
   // Education comparison data
   const edu = destination.educationSystem;
@@ -127,12 +140,32 @@ export default function LifeTab({ destinationId }: { destinationId: string }) {
           const defaultVal = destination.qolDefaults[dim];
           const currentVal = effectiveQoL[dim];
 
+          const note = qolNotes[dim];
+          const hasNote = Boolean(note);
+          const isExpanded = expandedDims.has(dim);
+
           return (
             <div key={dim} className="life-dimension-card">
-              <div className="life-dimension-header">
-                {Icon && <Icon size={16} className="life-dimension-icon" />}
-                <span className="life-dimension-label">{meta.label}</span>
-              </div>
+              {hasNote ? (
+                <button
+                  type="button"
+                  className="life-dimension-header life-dimension-header--toggle"
+                  onClick={() => toggleExpanded(dim)}
+                  aria-expanded={isExpanded}
+                >
+                  {Icon && <Icon size={16} className="life-dimension-icon" />}
+                  <span className="life-dimension-label">{meta.label}</span>
+                  <ChevronDown
+                    size={14}
+                    className={`life-dimension-chevron${isExpanded ? ' life-dimension-chevron--open' : ''}`}
+                  />
+                </button>
+              ) : (
+                <div className="life-dimension-header">
+                  {Icon && <Icon size={16} className="life-dimension-icon" />}
+                  <span className="life-dimension-label">{meta.label}</span>
+                </div>
+              )}
 
               <SliderInput
                 label=""
@@ -158,6 +191,10 @@ export default function LifeTab({ destinationId }: { destinationId: string }) {
               )}
 
               <div className="life-dimension-description">{meta.description}</div>
+
+              {hasNote && isExpanded && (
+                <div className="life-dimension-note">{note}</div>
+              )}
             </div>
           );
         })}

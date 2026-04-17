@@ -100,13 +100,18 @@ export const spainValencia: Destination = {
     languageEnvironment: 9,
     healthcareQuality: 8,
     safety: 8,
-    climate: 9,
+    climate: 7,
     culturalFit: 8,
     careerSatisfaction: 5,
     communityBuilding: 7,
     politicalStability: 8,
     adventureNovelty: 7,
     returnFlexibility: 6,
+  },
+
+  qolNotes: {
+    climate:
+      'Mediterranean coastal — the reputation as "best climate in Spain" is largely earned. 300+ sunny days a year, winters (Dec–Feb) stay 45–60°F (locals wear jackets; Oakland ears would call it pleasant), shoulder seasons lovely. The dent in the score is Jul–Aug: highs 84–88°F with humid coastal nights, and the Mediterranean sea heat-sinks through September. Cooler and breezier than Barcelona, drier than Bilbao. For Oakland-calibrated tastes: very close, but summer humidity drops it below Oakland\'s dry-summer perfection.',
   },
 
   visa: {

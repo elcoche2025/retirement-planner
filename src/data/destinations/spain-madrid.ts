@@ -102,13 +102,18 @@ export const spainMadrid: Destination = {
     languageEnvironment: 9,
     healthcareQuality: 9,
     safety: 8,
-    climate: 7,
+    climate: 5,
     culturalFit: 8,
     careerSatisfaction: 7,
     communityBuilding: 7,
     politicalStability: 8,
     adventureNovelty: 7,
     returnFlexibility: 8,
+  },
+
+  qolNotes: {
+    climate:
+      'Continental Mediterranean on the inland plateau (~650m elevation, no coastal buffer). Hot dry summers Jul–Aug routinely hit 90–95°F with 100°F+ spikes; winters Dec–Feb drop to 30–38°F with occasional snow. Spring and fall (50–75°F) are brilliant. Very dry year-round with ~2,800 sun hours — great light, but the seasonal swing is larger than anywhere on the Spanish coast. For Oakland-calibrated tastes: the extremes cut both ways; not a mild climate by any measure.',
   },
 
   visa: {

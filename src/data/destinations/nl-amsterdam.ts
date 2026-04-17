@@ -140,13 +140,18 @@ export const nlAmsterdam: Destination = {
     languageEnvironment: 7,
     healthcareQuality: 9,
     safety: 8,
-    climate: 4,
+    climate: 3,
     culturalFit: 7,
     careerSatisfaction: 8,
     communityBuilding: 7,
     politicalStability: 8,
     adventureNovelty: 7,
     returnFlexibility: 8,
+  },
+
+  qolNotes: {
+    climate:
+      'Maritime / oceanic. Summers (Jun–Aug) are cool and variable: highs 68–72°F, with occasional heatwaves that cut through the un-air-conditioned housing stock. Winters (Dec–Feb) hover 34–39°F — rarely deep-freeze, but persistently gray. Cloud cover sits above 60% most of the year, rain falls ~190 days/yr (usually drizzle, not storms), and strong wind off the North Sea is a constant. The seasonal-affective-disorder risk is real. For Oakland-calibrated tastes: expect to miss the sun.',
   },
 
   visa: {

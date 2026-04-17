@@ -101,13 +101,18 @@ export const spainBarcelona: Destination = {
     languageEnvironment: 9,
     healthcareQuality: 9,
     safety: 8,
-    climate: 9,
+    climate: 7,
     culturalFit: 8,
     careerSatisfaction: 7,
     communityBuilding: 7,
     politicalStability: 7,
     adventureNovelty: 8,
     returnFlexibility: 7,
+  },
+
+  qolNotes: {
+    climate:
+      'Mediterranean, sunny, moderated by the sea. Winters (Dec–Feb) are the sweet spot: 40–60°F, mostly dry, crisp — very pleasant. Shoulder seasons (Apr–May, Sep–Oct) are close to perfect. The catch is Jul–Aug: highs 83–86°F paired with humid Mediterranean nights that don\'t cool off, and most older apartments lack AC. Rain clusters in spring and fall; ~2,500 sun hours/yr. For Oakland-calibrated tastes: eight months excellent, two months genuinely uncomfortable.',
   },
 
   visa: {

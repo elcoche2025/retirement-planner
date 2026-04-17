@@ -120,13 +120,18 @@ export const kenyaNairobi: Destination = {
     languageEnvironment: 7,
     healthcareQuality: 5,
     safety: 4,
-    climate: 8,
+    climate: 9,
     culturalFit: 8,
     careerSatisfaction: 6,
     communityBuilding: 7,
     politicalStability: 5,
     adventureNovelty: 9,
     returnFlexibility: 7,
+  },
+
+  qolNotes: {
+    climate:
+      'High-altitude equatorial at 1,795m — arguably the closest analog to Oakland on the list. Year-round daytime highs 70–78°F, lows 50–60°F; almost no temperature variation between "seasons." Two rainy seasons (long: Mar–May, short: Oct–Dec) bring afternoon showers; the rest of the year is sunny and dry. Nights are cool enough to need a light layer. For Oakland-calibrated tastes: very close — the diurnal pattern (mild days, cool nights) and the dry-season/wet-season rhythm will feel familiar.',
   },
 
   visa: {

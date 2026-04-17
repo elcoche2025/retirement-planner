@@ -102,13 +102,18 @@ export const spainBilbao: Destination = {
     languageEnvironment: 9,
     healthcareQuality: 9,
     safety: 9,
-    climate: 7,
+    climate: 6,
     culturalFit: 8,
     careerSatisfaction: 5,
     communityBuilding: 7,
     politicalStability: 8,
     adventureNovelty: 8,
     returnFlexibility: 7,
+  },
+
+  qolNotes: {
+    climate:
+      'Oceanic / Atlantic — Spain\'s greenest region for a reason. Temperatures are the best part: summers (Jun–Aug) 70–75°F, winters (Dec–Feb) 40–45°F, almost no extremes. But rainfall is the defining feature — ~1,200mm/yr spread across ~180 rainy days, more than twice Oakland\'s. Expect stretches of gray drizzle in any month. For Oakland-calibrated tastes: the thermal range is a match, but the wetness is a serious trade-off.',
   },
 
   visa: {

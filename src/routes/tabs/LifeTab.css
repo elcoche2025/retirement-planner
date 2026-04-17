@@ -85,6 +85,38 @@
   gap: var(--space-2);
 }
 
+.life-dimension-header--toggle {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  transition: color var(--transition-fast);
+}
+
+.life-dimension-header--toggle:hover {
+  color: var(--color-highlight);
+}
+
+.life-dimension-header--toggle:hover .life-dimension-icon,
+.life-dimension-header--toggle:hover .life-dimension-chevron {
+  color: var(--color-highlight);
+}
+
+.life-dimension-chevron {
+  margin-left: auto;
+  color: var(--color-text-tertiary);
+  transition: transform var(--transition-fast);
+}
+
+.life-dimension-chevron--open {
+  transform: rotate(180deg);
+}
+
 .life-dimension-icon {
   color: var(--color-text-tertiary);
   flex-shrink: 0;
@@ -100,6 +132,17 @@
   font-size: 0.75rem;
   color: var(--color-text-tertiary);
   line-height: 1.4;
+}
+
+.life-dimension-note {
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-tertiary);
+  border-left: 2px solid var(--color-text-tertiary);
+  border-radius: 0 4px 4px 0;
+  padding: var(--space-3);
+  margin-top: calc(var(--space-1) * -1);
 }
 
 .life-dimension-override {

@@ -37,6 +37,7 @@ export interface Destination {
   housing: HousingMarket;
   careerPresets: CareerPreset[];
   qolDefaults: QualityOfLifeRatings;
+  qolNotes?: Partial<Record<QoLDimension, string>>;
   visa: VisaInfo;
   narrative: string;
   pros: string[];

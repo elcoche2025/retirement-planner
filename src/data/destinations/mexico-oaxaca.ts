@@ -123,13 +123,18 @@ export const mexicoOaxaca: Destination = {
     languageEnvironment: 10,
     healthcareQuality: 5,
     safety: 6,
-    climate: 8,
+    climate: 6,
     culturalFit: 9,
     careerSatisfaction: 5,
     communityBuilding: 7,
     politicalStability: 5,
     adventureNovelty: 9,
     returnFlexibility: 6,
+  },
+
+  qolNotes: {
+    climate:
+      'Semi-arid at 1,555m elevation — milder than the lowland tropics but with real heat windows. Apr–May is the hot stretch: highs 88–92°F, bone dry, intense sun. Nov–Jan is the coolest and most pleasant (highs 75–80°F, lows ~45°F at night, big diurnal swing). Rainy season Jun–Sep brings afternoon showers that cool things down. For Oakland-calibrated tastes: not a year-round match — the spring heat and night-time chill both stretch further than Oakland\'s narrow band.',
   },
 
   visa: {

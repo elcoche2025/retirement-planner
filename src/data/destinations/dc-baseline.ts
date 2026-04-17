@@ -76,13 +76,18 @@ export const dcBaseline: Destination = {
     languageEnvironment: 5,
     healthcareQuality: 8,
     safety: 5,
-    climate: 5,
+    climate: 4,
     culturalFit: 7,
     careerSatisfaction: 6,
     communityBuilding: 7,
     politicalStability: 6,
     adventureNovelty: 3,
     returnFlexibility: 10,
+  },
+
+  qolNotes: {
+    climate:
+      'Humid subtropical. Summers (Jun–Aug) are the weak spot: highs 85–90°F with oppressive humidity and frequent afternoon thunderstorms. Winters (Dec–Feb) drop to 28–35°F with occasional snow and ice. Spring and fall (~55–75°F) are the reward — short, pleasant windows. Rain spreads throughout the year (~40"/yr). For Oakland-calibrated tastes: the humidity makes summers feel much hotter than the thermometer says, and there is no real escape from the seasonal extremes.',
   },
 
   visa: {

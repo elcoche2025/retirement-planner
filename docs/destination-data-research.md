@@ -1113,10 +1113,29 @@
 3. **Kenya** — FEIE covers most income
 4. **Netherlands** — 30% ruling helps but still high
 
-### Best Climate
-1. **Medellin** (10/10 eternal spring)
-2. **Barcelona** / **Valencia** (9/10 Mediterranean)
-3. **CDMX** / **Oaxaca** / **Nairobi** (8/10)
+### Climate Rubric (Oakland = 10 anchor)
+
+Climate is rated 1–10 against **Oakland, CA = 10**: mild Mediterranean coastal, 50–70°F year-round, dry summers (Jun–Oct), mild wet winters (Nov–Mar), rare temperature extremes, abundant sun. This is Mekoce and Kara's stated preference.
+
+| Score | Meaning |
+|---|---|
+| **10** | Oakland-equivalent: mild year-round, no temperature extremes, low humidity, plenty of sun |
+| **9** | Very close to Oakland (small giveaway: slightly warmer, slightly more humid, or a short rainy season) |
+| **7–8** | Pleasant with one real trade-off (hot summer weeks, a persistent rainy season, air-quality days, or notable humidity) |
+| **5–6** | Mixed — strong seasonality, with real heat, cold, humidity, or wet stretches that meaningfully reduce comfort |
+| **3–4** | Persistently gray/cold/wet, *or* severe seasonal extremes — the climate is a drawback, not a draw |
+| **1–2** | Dealbreaker-level discomfort year-round (none of the current destinations hit this) |
+
+### Best Climate (Oakland-calibrated)
+1. **Medellin** (9 — eternal spring, slightly warmer/more humid than Oakland)
+2. **Nairobi** (9 — high-altitude equatorial, 70s days / 50s nights, closest diurnal match)
+3. **Barcelona / Valencia / CDMX** (7 — sunny or mild but with summer humidity, air quality, or rainy-season trade-offs)
+4. **Oaxaca / Bilbao** (6 — April heat or persistent rain)
+5. **Madrid / Montevideo** (5–6 — continental or humid-subtropical extremes)
+6. **DC** (4 — humid summers + cold winters)
+7. **Amsterdam / The Hague** (3 — gray, rainy, windy)
+
+**Source for per-destination notes:** see `qolNotes.climate` in each `src/data/destinations/*.ts` file. Those plain-language descriptions are the source of truth and should be updated alongside the numeric score if either changes.
 
 ### Best for Daughter's Education + Language
 1. **CDMX** — best combo of school options + Spanish immersion
