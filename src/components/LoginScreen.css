@@ -156,3 +156,9 @@
 .login-toggle button:hover {
   opacity: 0.85;
 }
+
+.login-toggle--disabled {
+  color: var(--color-text-tertiary);
+  font-style: italic;
+  text-align: center;
+}

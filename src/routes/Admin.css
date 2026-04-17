@@ -172,3 +172,39 @@
     margin-bottom: 2px;
   }
 }
+
+/* --- Signups toggle --- */
+.admin-signups-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-bg-tertiary);
+  border-radius: var(--card-radius);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.admin-signups-toggle-info {
+  flex: 1;
+}
+
+.admin-signups-toggle-label {
+  font-size: 0.9rem;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.admin-signups-toggle-desc {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+  line-height: 1.4;
+}
+
+@media (max-width: 600px) {
+  .admin-signups-toggle {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

@@ -1,5 +1,6 @@
-import { useState, type FormEvent } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import { signIn, signUp, signInWithGoogle } from '@/services/auth';
+import { getSignupsEnabled } from '@/services/appConfig';
 import './LoginScreen.css';
 
 export default function LoginScreen() {
@@ -9,6 +10,20 @@ export default function LoginScreen() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [signupsEnabled, setSignupsEnabled] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    getSignupsEnabled().then((on) => {
+      if (!cancelled) {
+        setSignupsEnabled(on);
+        if (!on) setMode('signin');
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -111,23 +126,29 @@ export default function LoginScreen() {
           Continue with Google
         </button>
 
-        <p className="login-toggle">
-          {mode === 'signin' ? (
-            <>
-              Need an account?{' '}
-              <button type="button" onClick={toggleMode}>
-                Create one
-              </button>
-            </>
-          ) : (
-            <>
-              Already have an account?{' '}
-              <button type="button" onClick={toggleMode}>
-                Sign in
-              </button>
-            </>
-          )}
-        </p>
+        {signupsEnabled ? (
+          <p className="login-toggle">
+            {mode === 'signin' ? (
+              <>
+                Need an account?{' '}
+                <button type="button" onClick={toggleMode}>
+                  Create one
+                </button>
+              </>
+            ) : (
+              <>
+                Already have an account?{' '}
+                <button type="button" onClick={toggleMode}>
+                  Sign in
+                </button>
+              </>
+            )}
+          </p>
+        ) : (
+          <p className="login-toggle login-toggle--disabled">
+            New signups are currently disabled.
+          </p>
+        )}
       </div>
     </div>
   );
