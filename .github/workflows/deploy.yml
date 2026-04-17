@@ -9,6 +9,12 @@ permissions:
   pages: write
   id-token: write
 
+env:
+  # Opt into Node 24 early for actions still bundled on Node 20
+  # (actions/configure-pages@v5 as of 2026-04). Remove once upstream ships
+  # a newer version, or on June 2, 2026 when Node 24 becomes the default.
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 concurrency:
   group: pages
   cancel-in-progress: false
