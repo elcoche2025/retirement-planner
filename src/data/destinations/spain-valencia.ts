@@ -14,16 +14,17 @@ export const spainValencia: Destination = {
   researchDepth: 'shallow',
 
   costOfLiving: {
-    monthlyBaseline: 3500,
-    monthlyComfortable: 4800,
-    internationalSchoolAnnual: 9000,
-    healthInsuranceMonthly: 250,
-    costMultiplierVsDC: 0.48,
+    monthlyEssentials: 2050,
+    monthlyComfortable: 2800,
+    internationalSchoolAnnual: 8000,
+    healthInsuranceMonthly: 180,
     notes: [
-      'International schools $6K-$12K/yr',
-      'Private health insurance $180-$320/mo',
-      'Cheapest Spanish city on this list',
-      'Free public preschool available',
+      'Essentials (~\u20AC1,880/mo) = groceries (~\u20AC620 with light bio premium) + utilities (~\u20AC142) + internet/mobile (~\u20AC49) + transit pass (~\u20AC30) + household (~\u20AC120) + dining (~\u20AC215) + kid extras (~\u20AC150) + clothing/personal (~\u20AC130). 15\u201320% cheaper than Madrid on day-to-day.',
+      'Organic/non-GMO premium: only ~+$100/mo bump (EU baseline).',
+      'Rent tracked separately; Valencia 3BR runs \u20AC1,600\u20132,200/mo in central/Ruzafa.',
+      'Family private health insurance \u20AC140\u2013200/mo (slightly cheaper than Madrid/BCN).',
+      'International school: ASV K1\u2013K3 \u20AC7,246/yr; G1\u20135 \u20AC7,687/yr. Notably cheaper than Madrid/BCN; first-year extras \u20AC5,325.',
+      'Sources: Numbeo Apr 2026, ASV admissions page.',
     ],
   },
 
