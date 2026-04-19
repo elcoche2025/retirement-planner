@@ -14,15 +14,17 @@ export const colombiaMedellin: Destination = {
   researchDepth: 'moderate',
 
   costOfLiving: {
-    monthlyBaseline: 2500,
-    monthlyComfortable: 4000,
-    internationalSchoolAnnual: 11250,
-    healthInsuranceMonthly: 225,
-    costMultiplierVsDC: 0.40,
+    monthlyEssentials: 2150,
+    monthlyComfortable: 2850,
+    internationalSchoolAnnual: 9000,
+    healthInsuranceMonthly: 280,
     notes: [
-      'International schools $7,500-$15,000/yr',
-      'Private EPS/prepagada insurance $150-$300/mo for family',
-      'Colombia is a medical tourism hub \u2014 excellent private healthcare',
+      'Essentials (~COP 9M/mo) = groceries (~\\$700 organic-leaning, Carulla Wong / \u00C9xito Premium / specialty stores; mainstream Colombian supply chain includes GMO Mon810 corn) + utilities (~\\$140) + Metro+Uber mix (~\\$160) + part-time cleaner (~\\$250) + dining (~\\$250) + kid extras (~\\$100) + household (~\\$100) + clothing/personal (~\\$150) + buffer. Higher with full-time nanny (~+\\$250).',
+      'Organic/non-GMO premium: ~+$250/mo. Colombia permits GMO corn (Mon810) and uses chemicals US-organic households would avoid; organic = Carulla Wong / specialty / farmer\u2019s markets at heavy markup.',
+      'Rent tracked separately; Poblado 3BR runs \\$1,500\u20132,000 furnished, Laureles \\$1,100\u20131,600 unfurnished.',
+      'Health insurance: EPS contributory + Plan Complementario \\$200\u2013350/mo for family of 3; full prepagada (ColSanitas/SURA premium) \\$300\u2013400/mo.',
+      'International school: TCS (Columbus School, Envigado, IB-accredited) ~\\$6,000\u20139,000/yr primary; Vermont/Canadian School \\$5,000\u201310,000/yr. Top-tier secondary trends higher.',
+      'Sources: Numbeo Apr 2026, Medell\u00EDn Advisors COL guide, Medell\u00EDn Guru insurance overview.',
     ],
   },
 
