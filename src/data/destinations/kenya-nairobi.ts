@@ -13,15 +13,18 @@ export const kenyaNairobi: Destination = {
   researchDepth: 'deep',
 
   costOfLiving: {
-    monthlyBaseline: 3500,
-    monthlyComfortable: 5500,
-    internationalSchoolAnnual: 20000,
-    healthInsuranceMonthly: 325,
-    costMultiplierVsDC: 0.45,
+    monthlyEssentials: 1950,
+    monthlyComfortable: 2700,
+    internationalSchoolAnnual: 22000,
+    healthInsuranceMonthly: 550,
     notes: [
-      'International schools range $15K-$25K/yr',
-      'Private health insurance $250-$400/mo for family',
-      'Gated community housing often included with school employment',
+      'Essentials (~KES 250,000/mo) = groceries (~\\$600 organic-leaning, Karen organic markets + Westgate/Carrefour Junction premium produce + small farms in Karen/Tigoni) + utilities (~\\$100) + Uber/Bolt (~\\$170) + live-in nanny/housekeeper (~\\$220) + dining (~\\$240) + kid extras (~\\$110) + household (~\\$100) + clothing/personal (~\\$120) + buffer.',
+      'Organic/non-GMO premium: ~+$200/mo. Karen-area organic farms and weekend markets (Karen, Spring Valley) make local organic produce accessible; imported organic dairy + specialty items carry heavy import duties.',
+      'Rent tracked separately; Karen 3BR (gated, garden) \\$1,300\u20131,540, Lavington 3BR \\$845\u20131,540, Westlands 3BR \\$1,150\u20131,925 furnished.',
+      'Health insurance: international IPMI (Cigna/Allianz/AXA) \\$500\u2013700/mo for family of 3 \u2014 standard for expat families due to repatriation coverage. Local-only (Jubilee/AAR) cheaper at \\$200\u2013350/mo but limited international scope.',
+      'International school: ISK (top-tier US curriculum) KG2 \\$20,420/yr, KG3 \\$32,350/yr, G1\u20135 \\$34,090/yr + \\$1,550 capital levy. Braeburn/Hillcrest (British) ~\\$7,000\u201310,000/yr early years, \\$18,000+ G3\u20135.',
+      'Family in Kenya \u2014 logistical reason this destination matters; school cost cliff is the biggest financial concern.',
+      'Sources: Numbeo Apr 2026, ISK fees page, Pacific Prime Kenya insurance, BuyRentKenya listings.',
     ],
   },
 
