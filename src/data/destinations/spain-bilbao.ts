@@ -14,15 +14,18 @@ export const spainBilbao: Destination = {
   researchDepth: 'deep',
 
   costOfLiving: {
-    monthlyBaseline: 3800,
-    monthlyComfortable: 5200,
-    internationalSchoolAnnual: 11000,
-    healthInsuranceMonthly: 275,
-    costMultiplierVsDC: 0.52,
+    monthlyEssentials: 2150,
+    monthlyComfortable: 2900,
+    internationalSchoolAnnual: 8800,
+    healthInsuranceMonthly: 180,
     notes: [
-      'International schools $8K-$14K/yr',
-      'Private health insurance $200-$350/mo or access to public healthcare',
-      'Affordable by European standards',
+      'Essentials (~\u20AC1,975/mo) = groceries (~\u20AC640 with light bio premium) + utilities (~\u20AC128) + internet/mobile (~\u20AC45) + transit pass (~\u20AC45) + household (~\u20AC120) + dining (~\u20AC230, pintxos culture) + kid extras (~\u20AC150) + clothing/personal (~\u20AC130).',
+      'Organic/non-GMO premium: only ~+$100/mo bump (EU baseline; Basque Country has good local farm-to-table supply that helps).',
+      'Rent tracked separately; Bilbao 3BR runs \u20AC1,500\u20132,200/mo (Indautxu/Abando premium).',
+      'Family private health insurance \u20AC140\u2013200/mo (Basque region not premium-priced).',
+      'International school: ASOB nursery\u2013K \u20AC7,087\u20137,813/yr; G1\u20136 \u20AC8,619\u20139,777/yr. Smaller IB program than ASM/BFIS.',
+      'Per-sqm ownership is high relative to city size (\u20AC3,889/m\u00B2 citywide, \u20AC5,000+ in Indautxu).',
+      'Sources: Numbeo Apr 2026, ASOB fees, Idealista listings.',
     ],
   },
 
