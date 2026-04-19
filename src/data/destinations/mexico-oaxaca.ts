@@ -14,16 +14,17 @@ export const mexicoOaxaca: Destination = {
   researchDepth: 'shallow',
 
   costOfLiving: {
-    monthlyBaseline: 2200,
-    monthlyComfortable: 3500,
-    internationalSchoolAnnual: 4500,
-    healthInsuranceMonthly: 150,
-    costMultiplierVsDC: 0.32,
+    monthlyEssentials: 2200,
+    monthlyComfortable: 2900,
+    internationalSchoolAnnual: 4200,
+    healthInsuranceMonthly: 380,
     notes: [
-      'Limited international schools; mostly bilingual private ($3K-$6K/yr)',
-      'Private health insurance $100-$200/mo',
-      'Lowest cost of living on this list',
-      'Serious medical needs require travel to CDMX/Puebla',
+      'Essentials (~MXN 38,500/mo) = groceries (~\\$650, supplemented by Pochote organic market + local sustainable farms) + utilities (~\\$120, mild climate, low A/C) + transit (~\\$120, taxis or modest car) + household help (~\\$130) + dining (~\\$300, lots of street food) + kid extras (~\\$150) + household (~\\$130) + clothing/personal (~\\$100) + buffer.',
+      'Organic/non-GMO premium: ~+$200/mo. Pochote organic market and Etla-area farms make local organic accessible at lower premium than CDMX; some imports still needed for specialty items.',
+      'Rent tracked separately; Centro/Reforma 3BR runs MXN 18,000\u201330,000/mo (~\\$1,030\u20131,715).',
+      'Health insurance: same national AXA/GNP product as CDMX (~\\$300\u2013480/mo); Oaxaca network is thinner so some expats pick plans with CDMX/Guadalajara hospital access.',
+      'No true international school: best private bilingual options (Colegio La Paz, etc.) MXN 36,000\u201396,000/yr (~\\$2,000\u20135,500). English-instruction quality and accreditation noticeably below ASF.',
+      'Sources: Expatistan Mar 2026, Real Estate Oaxaca, ExpatExchange schools guide.',
     ],
   },
 
