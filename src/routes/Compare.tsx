@@ -168,6 +168,8 @@ export default function Compare() {
     const qolScoreA = qolWeights ? calculateQoLScore(qolA, qolWeights) : 0;
     const qolScoreB = qolWeights ? calculateQoLScore(qolB, qolWeights) : 0;
 
+    const dcEssentials = getDestination('dc-baseline')!.costOfLiving.monthlyEssentials;
+
     return [
       {
         label: `Net Worth at ${globals.retirementAge}`,
@@ -194,12 +196,15 @@ export default function Compare() {
         higherIsBetter: false,
       },
       {
-        label: 'COL Multiplier',
+        label: 'Essentials vs DC',
         values: [
-          `${destA.costOfLiving.costMultiplierVsDC.toFixed(2)}x`,
-          `${destB.costOfLiving.costMultiplierVsDC.toFixed(2)}x`,
+          `${(destA.costOfLiving.monthlyEssentials / dcEssentials).toFixed(2)}x`,
+          `${(destB.costOfLiving.monthlyEssentials / dcEssentials).toFixed(2)}x`,
         ],
-        raw: [destA.costOfLiving.costMultiplierVsDC, destB.costOfLiving.costMultiplierVsDC],
+        raw: [
+          destA.costOfLiving.monthlyEssentials / dcEssentials,
+          destB.costOfLiving.monthlyEssentials / dcEssentials,
+        ],
         higherIsBetter: false,
       },
       {
