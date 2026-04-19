@@ -14,15 +14,17 @@ export const dcBaseline: Destination = {
   researchDepth: 'deep',
 
   costOfLiving: {
-    monthlyBaseline: 7500,
-    monthlyComfortable: 10500,
+    monthlyEssentials: 3700,
+    monthlyComfortable: 4900,
     internationalSchoolAnnual: 0,
-    healthInsuranceMonthly: 600,
-    costMultiplierVsDC: 1.0,
+    healthInsuranceMonthly: 570,
     notes: [
-      'Public school for daughter (no tuition)',
-      'Employer-subsidized family health plan',
-      'High baseline driven by housing, childcare, and transportation',
+      'Essentials = groceries (~$1,250 organic-leaning) + utilities (~$410) + Metro/rideshare (~$300) + dining (~$400) + kid activities (~$300) + household & personal care (~$450) + buffer.',
+      'Organic/non-GMO premium: ~25\u201335% bump on grocery line (~+$300/mo vs conventional). Household preference.',
+      'Mortgage is tracked separately via globals.monthlyMortgage (~$4,600/mo).',
+      'Health insurance: KFF 2025 family-coverage employee share (~$571/mo at ~26% of $26,993 total).',
+      'Public school for daughter (no tuition); childcare for under-5 tracked via childcareMonthly.',
+      'Sources: CityCost.org, BLS CEX, KFF 2025 Employer Benefits, WMATA, Pepco rate updates.',
     ],
   },
 
