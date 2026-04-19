@@ -156,3 +156,54 @@ describe('simulate', () => {
     expect(dcYears.length).toBeGreaterThan(0);
   });
 });
+
+describe('simulate — expense composition (regression for double-counted housing bug)', () => {
+  it('reads monthlyEssentials per destination, not a hardcoded constant', () => {
+    const dc = getDestination('dc-baseline')!;
+    const career = dc.careerPresets[0];
+    const result = simulate(dc, career, GLOBAL_DEFAULTS, {
+      dcHomeDecision: 'keep', moveYear: NEXT_YEAR, returnYear: null,
+    });
+    // Year 1 living expenses should be DC's monthlyEssentials × 12 × inflationMultiplier(1).
+    const inflation = 1 + GLOBAL_DEFAULTS.inflationRate / 100;
+    const expected = Math.round(dc.costOfLiving.monthlyEssentials * 12 * inflation);
+    expect(result[0].livingExpenses).toBe(expected);
+  });
+
+  it('does not double-count housing inside livingExpenses', () => {
+    const dc = getDestination('dc-baseline')!;
+    const career = dc.careerPresets[0];
+    const result = simulate(dc, career, GLOBAL_DEFAULTS, {
+      dcHomeDecision: 'keep', moveYear: NEXT_YEAR, returnYear: null,
+    });
+    // year-1 livingExpenses must be < monthlyMortgage × 12 (proves housing is not folded in twice).
+    expect(result[0].livingExpenses).toBeLessThan(GLOBAL_DEFAULTS.monthlyMortgage * 12);
+  });
+
+  it('DC year-1 totalExpenses lands in the realistic family-of-3 band ($100K–$150K/yr)', () => {
+    const dc = getDestination('dc-baseline')!;
+    const career = dc.careerPresets[0];
+    const result = simulate(dc, career, GLOBAL_DEFAULTS, {
+      dcHomeDecision: 'keep', moveYear: NEXT_YEAR, returnYear: null,
+    });
+    // ~$3,700 essentials (organic-adjusted) + $4,600 mortgage + $570 health
+    // + DC childcare $2,500/mo for daughter age 3 (under primaryAge 5)
+    // → ~$11,370/mo → ~$140K/yr year 1. Band is wide to accommodate
+    // childcare phase-out as daughter ages.
+    expect(result[0].totalExpenses).toBeGreaterThan(100_000);
+    expect(result[0].totalExpenses).toBeLessThan(150_000);
+  });
+
+  it('Amsterdam year-1 totalExpenses is reasonable for an expat family ($80K–$125K/yr)', () => {
+    const ams = getDestination('nl-amsterdam')!;
+    const career = ams.careerPresets[0];
+    const result = simulate(ams, career, GLOBAL_DEFAULTS, {
+      dcHomeDecision: 'sell', moveYear: NEXT_YEAR, returnYear: null,
+    });
+    // ~$2,900 essentials (organic-adjusted) + ~$3,650 rent + ~$425 health
+    // + AMS childcare $700/mo at age 3 (under primaryAge 4) or ISA tuition once
+    // age ≥ 4 → $80K–$125K/yr depending on schooling stage.
+    expect(result[0].totalExpenses).toBeGreaterThan(80_000);
+    expect(result[0].totalExpenses).toBeLessThan(125_000);
+  });
+});
