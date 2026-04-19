@@ -14,16 +14,17 @@ export const nlAmsterdam: Destination = {
   researchDepth: 'moderate',
 
   costOfLiving: {
-    monthlyBaseline: 6500,
-    monthlyComfortable: 9000,
-    internationalSchoolAnnual: 23000,
+    monthlyEssentials: 2900,
+    monthlyComfortable: 3900,
+    internationalSchoolAnnual: 24000,
     healthInsuranceMonthly: 425,
-    costMultiplierVsDC: 0.88,
     notes: [
-      'International schools $18K-$28K/yr',
-      'Mandatory health insurance: basic ~\u20AC120/person + supplemental',
-      'Housing costs approaching DC levels',
-      'Nearly as expensive as DC overall',
+      'Essentials (~\u20AC2,660/mo) = groceries (~\u20AC500 with light bio-label premium) + utilities/internet/mobile (~\u20AC350) + 2 OV-chipkaart + bike (~\u20AC220) + household (~\u20AC150) + dining (~\u20AC200) + kid extras (~\u20AC150) + clothing/personal (~\u20AC150).',
+      'Organic/non-GMO premium: only ~+$100/mo bump. EU bans most GMO cultivation, restricts glyphosate, prohibits ractopamine \u2014 conventional EU food already meets a higher floor than US conventional, so the bio/eco upcharge is smaller.',
+      'Rent tracked separately via housing.rentMonthly3BR; AMS 3BR clusters \u20AC3,200\u20134,200/mo in family neighborhoods.',
+      'Health insurance: \u20AC159/adult basic in 2026 + supplemental, kids under 18 free \u2192 ~\u20AC380\u2013420/mo for two adults.',
+      'International school: ISA Pre-K \u20AC23,915/yr, K \u20AC24,285/yr, G1\u20135 \u20AC26,645/yr (2025\u201326).',
+      'Sources: Numbeo Apr 2026, IamExpat 2026 health premiums, ISA fees page.',
     ],
   },
 
