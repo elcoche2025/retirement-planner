@@ -51,11 +51,19 @@ export interface Destination {
 }
 
 export interface CostOfLiving {
-  monthlyBaseline: number;
+  /**
+   * Day-to-day essentials for a family of 3 (two adults + young child), in USD/mo.
+   * INCLUDES: groceries, utilities (electric/gas/water/internet/mobile), local transit,
+   *           household goods, modest dining out, kid activities, clothing, personal care.
+   * EXCLUDES: rent/mortgage, health insurance, school/childcare tuition.
+   * These three are modeled as separate line items so they can vary by housing decision,
+   * insurance choice, and child age. See plan 2026-04-18-fix-double-counted-housing.md.
+   */
+  monthlyEssentials: number;
+  /** Comfortable lifestyle figure for the same scope as monthlyEssentials. Display-only. */
   monthlyComfortable: number;
   internationalSchoolAnnual: number;
   healthInsuranceMonthly: number;
-  costMultiplierVsDC: number;
   notes: string[];
 }
 
