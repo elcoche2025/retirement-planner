@@ -14,15 +14,17 @@ export const nlTheHague: Destination = {
   researchDepth: 'deep',
 
   costOfLiving: {
-    monthlyBaseline: 5500,
-    monthlyComfortable: 7500,
-    internationalSchoolAnnual: 21500,
-    healthInsuranceMonthly: 425,
-    costMultiplierVsDC: 0.75,
+    monthlyEssentials: 2400,
+    monthlyComfortable: 3300,
+    internationalSchoolAnnual: 22000,
+    healthInsuranceMonthly: 420,
     notes: [
-      'International schools $18K-$25K/yr',
-      'Mandatory health insurance: basic ~\u20AC120/person + supplemental',
-      'Cycling infrastructure reduces transport costs significantly',
+      'Essentials (~\u20AC2,200/mo) = groceries (~\u20AC500 with light bio premium) + utilities (~\u20AC257) + 2 OV-chipkaart + bike (~\u20AC240) + household (~\u20AC130) + dining (~\u20AC180) + kid extras (~\u20AC120) + clothing/personal (~\u20AC130). About 5\u201310% cheaper than Amsterdam day-to-day.',
+      'Organic/non-GMO premium: only ~+$100/mo bump (same EU regulatory baseline as Amsterdam).',
+      'Rent tracked separately via housing.rentMonthly3BR; The Hague 3BR runs \u20AC2,400\u20133,200/mo in expat-preferred zones (Statenkwartier, Benoordenhout).',
+      'Health insurance: same Dutch national system as Amsterdam (~\u20AC380\u2013420/mo two adults + free kids).',
+      'International school: ASH Pre-K \u20AC20,325/yr, K\u2013G4 \u20AC23,910/yr (2026\u201327). British School / ISH similar range.',
+      'Sources: Numbeo Apr 2026, IamExpat 2026 health premiums, ASH fees page.',
     ],
   },
 
