@@ -14,16 +14,17 @@ export const mexicoCdmx: Destination = {
   researchDepth: 'moderate',
 
   costOfLiving: {
-    monthlyBaseline: 3200,
-    monthlyComfortable: 5000,
-    internationalSchoolAnnual: 13000,
-    healthInsuranceMonthly: 225,
-    costMultiplierVsDC: 0.45,
+    monthlyEssentials: 3300,
+    monthlyComfortable: 4100,
+    internationalSchoolAnnual: 22000,
+    healthInsuranceMonthly: 450,
     notes: [
-      'International schools $8K-$18K/yr',
-      'Private health insurance $150-$300/mo; public IMSS ~$50',
-      'World-class culture and food at 45% of DC costs',
-      'Largest city in North America',
+      'Essentials (~MXN 57,750/mo) = groceries (~\\$1,000 organic-leaning, La Comer Premium / Costco / Wholefoods-style stores; conventional MX food chain has GMO corn + heavy chemical use, so US-organic-equivalent shop is import-heavy) + utilities (~\\$150) + Uber-heavy transport (~\\$200) + part-time cleaner 2x/week (~\\$200) + dining (~\\$400) + kid extras (~\\$200) + household (~\\$150) + clothing/personal (~\\$200) + buffer.',
+      'Organic/non-GMO premium: ~+$300/mo. Premium tier of essentials. Conventional MX supply chain uses chemicals + GMO corn that US-organic households would avoid; organic = specialty/import stores at heavy markup.',
+      'Rent tracked separately; Roma/Condesa/Polanco 3BR runs MXN 38,000\u201355,000/mo (~\\$2,170\u20133,140).',
+      'Health insurance: AXA/GNP family major-medical MXN 7,000\u201310,000/mo (~\\$400\u2013570). 2026 premiums up 20\u201340% YoY due to Mexico medical inflation.',
+      'International school: ASF first-year ~MXN 415,000 (~\\$23,700); ongoing primary ~MXN 330,000\u2013380,000/yr (~\\$19,000\u201321,700). Greengates similar range.',
+      'Sources: Numbeo Apr 2026, ASF tuition page, Mexico News Daily 2026 health insurance reporting.',
     ],
   },
 
