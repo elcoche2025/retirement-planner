@@ -79,8 +79,9 @@ export function simulate(
     // Apply inflation compounding to all expenses (year-over-year)
     const inflationMultiplier = Math.pow(1 + inflationRate, y);
 
-    const colMultiplier = activeDest.costOfLiving.costMultiplierVsDC;
-    const livingExpenses = 6500 * 12 * colMultiplier * inflationMultiplier;
+    // Essentials = groceries, utilities, transit, household, activities, clothing.
+    // Housing, health insurance, schooling are tracked as separate line items.
+    const livingExpenses = activeDest.costOfLiving.monthlyEssentials * 12 * inflationMultiplier;
     // Mortgage is fixed (locked rate), but rent inflates
     const housingCost = activeDest.id === 'dc-baseline'
       ? globals.monthlyMortgage * 12  // fixed mortgage — no inflation
