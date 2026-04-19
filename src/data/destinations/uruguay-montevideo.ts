@@ -13,15 +13,17 @@ export const uruguayMontevideo: Destination = {
   researchDepth: 'moderate',
 
   costOfLiving: {
-    monthlyBaseline: 3500,
-    monthlyComfortable: 5000,
-    internationalSchoolAnnual: 14000,
-    healthInsuranceMonthly: 300,
-    costMultiplierVsDC: 0.52,
+    monthlyEssentials: 2700,
+    monthlyComfortable: 3550,
+    internationalSchoolAnnual: 13000,
+    healthInsuranceMonthly: 380,
     notes: [
-      'International schools $10K-$18K/yr',
-      'Mutualista health system ~$70-$150/person/mo',
-      'Higher cost of living than Colombia/Mexico but lower than DC',
+      'Essentials (~UYU 113,400/mo) = groceries (~\\$950 organic-leaning, La Tienda Inglesa premium + Mercado Agr\u00EDcola farmer\u2019s markets + Disco Premium; conventional UY ag is chemical-heavy and Uruguay grows GMO soy/corn) + utilities (~\\$380) + transit (~\\$150) + household help (~\\$400 with BPS compliance) + dining (~\\$350) + kid extras (~\\$120) + household (~\\$120) + clothing/personal (~\\$200).',
+      'Organic/non-GMO premium: ~+$250/mo. Uruguay grows GMO soy and corn at scale, conventional ag uses heavy agrochemicals; organic = La Tienda Inglesa premium + farmer\u2019s markets at notable markup, plus utility costs and labor-compliance burden are already structurally high.',
+      'Rent tracked separately; Pocitos/Punta Carretas 3BR \\$1,550\u20132,260, Carrasco \\$1,785\u20132,860.',
+      'Health insurance: mutualista (Hospital Brit\u00E1nico/M\u00E9dica Uruguaya) \\$325\u2013400/mo family of 3; international (Cigna/Allianz) \\$500\u2013800/mo if global coverage needed. Hospital Brit\u00E1nico new-member cutoff age 60.',
+      'International school: UAS Pre-K/K \\$10,520/yr; G1\u20135 \\$16,980/yr (charged in USD). British Schools \\$12,000\u201315,000/yr. \\$13K midpoint reflects mix of school-stage years.',
+      'Sources: Numbeo Apr 2026, US State Dept UAS fact sheet, Jarniascyril Uruguay healthcare guide.',
     ],
   },
 
