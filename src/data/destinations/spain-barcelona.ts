@@ -14,15 +14,18 @@ export const spainBarcelona: Destination = {
   researchDepth: 'shallow',
 
   costOfLiving: {
-    monthlyBaseline: 4500,
-    monthlyComfortable: 6200,
-    internationalSchoolAnnual: 12500,
-    healthInsuranceMonthly: 300,
-    costMultiplierVsDC: 0.60,
+    monthlyEssentials: 2450,
+    monthlyComfortable: 3300,
+    internationalSchoolAnnual: 14000,
+    healthInsuranceMonthly: 200,
     notes: [
-      'International schools $9K-$16K/yr',
-      'Private health insurance $200-$400/mo or public access',
-      'More expensive than other Spanish cities but less than DC',
+      'Essentials (~\u20AC2,250/mo) = groceries (~\u20AC720 with light bio premium) + utilities (~\u20AC157) + internet/mobile (~\u20AC49) + T-Casual transit (~\u20AC22) + household (~\u20AC150) + dining (~\u20AC240) + kid extras (~\u20AC180) + clothing/personal (~\u20AC150).',
+      'Organic/non-GMO premium: only ~+$100/mo bump (EU baseline).',
+      'Rent tracked separately; BCN 3BR runs \u20AC2,800\u20133,800/mo in central/family neighborhoods (Eixample, Gr\u00E0cia, Sarri\u00E0).',
+      'Family private health insurance (Sanitas/Adeslas) \u20AC150\u2013220/mo, similar to Madrid.',
+      'International school: BFIS primary \u20AC12,100\u201315,000/yr; first-year ~\u20AC19,930 with entrance fee.',
+      'Ownership market is the most expensive of the four Spanish cities (\u20AC6,300/m\u00B2+ in Eixample).',
+      'Sources: Numbeo Apr 2026, BFIS fees, Sanitas/Adeslas published rates.',
     ],
   },
 
