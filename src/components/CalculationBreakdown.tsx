@@ -53,8 +53,8 @@ export default function CalculationBreakdown({
   }
 
   // Expense breakdown
-  const colMultiplier = activeDest.costOfLiving.costMultiplierVsDC;
-  const baseLiving = 6500 * 12 * colMultiplier;
+  const monthlyEssentials = activeDest.costOfLiving.monthlyEssentials;
+  const baseLiving = monthlyEssentials * 12;
   const baseHousing = activeDest.id === 'dc-baseline'
     ? globals.monthlyMortgage * 12
     : activeDest.housing.rentMonthly3BR * 12;
@@ -186,7 +186,7 @@ export default function CalculationBreakdown({
       <div className="calc-section">
         <div className="calc-section-title">Expenses (inflating at {globals.inflationRate}%/yr — year {yearIndex} multiplier: {inflationMultiplier.toFixed(3)})</div>
         <div className="calc-row">
-          <span>Living: $6,500/mo × {colMultiplier.toFixed(2)} COL × 12 × {inflationMultiplier.toFixed(3)}</span>
+          <span>Essentials (groceries, utilities, transit, household, activities): ${monthlyEssentials.toLocaleString()}/mo × 12 × {inflationMultiplier.toFixed(3)}</span>
           <span className="mono text-negative">−{$(year.livingExpenses)}</span>
         </div>
         <div className="calc-row">
