@@ -14,15 +14,17 @@ export const spainMadrid: Destination = {
   researchDepth: 'shallow',
 
   costOfLiving: {
-    monthlyBaseline: 4200,
-    monthlyComfortable: 5800,
-    internationalSchoolAnnual: 11500,
-    healthInsuranceMonthly: 275,
-    costMultiplierVsDC: 0.57,
+    monthlyEssentials: 2580,
+    monthlyComfortable: 3500,
+    internationalSchoolAnnual: 13000,
+    healthInsuranceMonthly: 200,
     notes: [
-      'International schools $8K-$15K/yr',
-      'Private health insurance $200-$350/mo',
-      'Slightly cheaper than Barcelona',
+      'Essentials (~\u20AC2,365/mo) = groceries (~\u20AC735 with light bio premium) + utilities (~\u20AC177) + internet/mobile (~\u20AC46) + Metro pass (~\u20AC35) + household (~\u20AC150) + dining (~\u20AC250) + kid extras (~\u20AC180) + clothing/personal (~\u20AC150). Madrid Metro is unusually cheap due to subsidized passes.',
+      'Organic/non-GMO premium: only ~+$100/mo bump (EU regulatory baseline already cleaner than US conventional).',
+      'Rent tracked separately via housing.rentMonthly3BR; Chamber\u00ED/Chamart\u00EDn 3BR runs \u20AC2,800\u20133,500/mo.',
+      'Family private health insurance (Sanitas/Adeslas) \u20AC150\u2013220/mo for couple + child on mid-tier plan.',
+      'International school: ASM K1\u2013K3 \u20AC11,593\u201312,050/yr; G1\u20132 \u20AC16,267/yr; G3\u20134 \u20AC18,263/yr.',
+      'Sources: Numbeo Apr 2026, ASM fees page, Sanitas/Adeslas published rates.',
     ],
   },
 
