@@ -1,5 +1,23 @@
 # International Relocation Destination Data
 
+> **⚠ Historical snapshot (April 2026, initial build).** This doc captured the first-pass
+> cost data used when building the 12 destinations. It has been **partially superseded**
+> by the double-counted-housing fix of 2026-04-18 (see
+> `docs/superpowers/plans/2026-04-18-fix-double-counted-housing.md`).
+>
+> **Canonical source of truth going forward:**
+> - Each destination file (`src/data/destinations/*.ts`) carries its own `costOfLiving.notes`
+>   array with inline sourcing rationale, 2026 research figures, and organic-adjusted
+>   essentials values.
+> - The type `CostOfLiving.monthlyEssentials` replaced the old `monthlyBaseline`
+>   (which ambiguously meant all-in costs including housing). `costMultiplierVsDC`
+>   was dropped entirely — each destination carries an absolute USD/mo essentials figure.
+> - Health insurance, rent, and international-school numbers were also refreshed where
+>   research showed the original values were materially off.
+>
+> Below is the **original April 2026 research**, kept for historical reference only.
+> The climate rubric section at the end IS still current.
+>
 > **Research compiled**: April 2026
 > **Family profile**: Mekoce (43, SPED teacher, $130K) + Kara ($90K) + young daughter
 > **All monetary values in USD unless noted**
